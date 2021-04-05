@@ -1,7 +1,9 @@
 Options +FollowSymLinks
 RewriteEngine on
+RewriteCond %{REQUEST_URI} !^/build/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /build/$1
+RewriteCond %{REQUEST_URI} !\.(css|js|html?|jpg|gif|map|png|pdf|woff|woff2)$
+RewriteRule ^(.*)$ build/index.html [L]
 
-RewriteBase /
-
-RewriteCond %{REQUEST_URI}  !\.(php|css|js|html?|jpg|gif|png|pdf|woff|woff2)$
-RewriteRule ^ build/index.html [L]
