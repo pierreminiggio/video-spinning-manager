@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-import axios from 'axios';
+import fetch from 'node-fetch';
 
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -15,12 +15,20 @@ function App() {
 
   useEffect(() => {
     const token = getToken();
-    if (!token) {
+    if (! token) {
       return;
     }
 
-    axios.get(`http://localhost:4000/verifyToken?token=${token}`).then(response => {
-      setUserSession(response.data.token, response.data.user);
+    fetch(`https://miniggiodev.fr/api/auth/token?token=${token}`).then(response => response.json()).then(response => {
+      if ([400, 403, 404].includes(response.status)) {
+        removeUserSession();
+        setAuthLoading(false);
+        return
+      }
+      const user = {...response}
+      delete user.token
+
+      setUserSession(response.token, user);
       setAuthLoading(false);
     }).catch(error => {
       removeUserSession();

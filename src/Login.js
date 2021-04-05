@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import fetch from 'node-fetch';
 import { setUserSession } from './Utils/Common';
 
 function Login(props) {
@@ -12,13 +12,35 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    axios.post('http://localhost:4000/users/signin', { username: username.value, password: password.value }).then(response => {
-      setLoading(false);
-      setUserSession(response.data.token, response.data.user);
-      props.history.push('/dashboard');
+    const url = 'https://miniggiodev.fr/api/auth/login';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        email: username.value,
+        password: password.value
+      })
+    }).then(response => {
+      response.json().then(jsonResponse => {
+        setLoading(false)
+        if ([400, 403, 404].includes(response.status)) {
+          setError(jsonResponse.error)
+          return
+        }
+
+        const user = {...jsonResponse}
+        delete user.token
+
+        setUserSession(jsonResponse.token, user);
+        props.history.push('/dashboard');
+      })
     }).catch(error => {
       setLoading(false);
-      if (error.response.status === 401) setError(error.response.data.message);
+      if (error.response.status === 403) setError(error.response.data.error);
       else setError("Something went wrong. Please try again later.");
     });
   }
@@ -27,12 +49,12 @@ function Login(props) {
     <div>
       Login<br /><br />
       <div>
-        Username<br />
-        <input type="text" {...username} autoComplete="new-password" />
+        <label for="login">Username</label><br/>
+        <input type="text" id="login" {...username} autoComplete="login" />
       </div>
       <div style={{ marginTop: 10 }}>
-        Password<br />
-        <input type="password" {...password} autoComplete="new-password" />
+        <label for="password">Password</label><br/>
+        <input type="password" id="password" {...password} autoComplete="password" />
       </div>
       {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
       <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
