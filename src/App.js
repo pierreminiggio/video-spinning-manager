@@ -19,7 +19,7 @@ function App() {
       return;
     }
 
-    fetch(`https://miniggiodev.fr/api/auth/token?token=${token}`).then(response => response.json()).then(response => {
+    fetch(`${process.env.REACT_APP_LOGIN_API_URL}/api/auth/token?token=${token}`).then(response => response.json()).then(response => {
       if ([400, 403, 404].includes(response.status)) {
         removeUserSession();
         setAuthLoading(false);

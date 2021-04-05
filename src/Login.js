@@ -12,7 +12,7 @@ function Login(props) {
   const handleLogin = () => {
     setError(null);
     setLoading(true);
-    const url = 'https://miniggiodev.fr/api/auth/login';
+    const url = `${process.env.REACT_APP_LOGIN_API_URL}/api/auth/login`;
     fetch(url, {
       method: 'POST',
       headers: {
