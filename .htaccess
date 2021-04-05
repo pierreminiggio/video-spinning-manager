@@ -1,0 +1,7 @@
+Options +FollowSymLinks
+RewriteEngine on
+
+RewriteBase /
+
+RewriteCond %{REQUEST_URI}  !\.(php|css|js|html?|jpg|gif|png|pdf|woff|woff2)$
+RewriteRule ^ build/index.html [L]
