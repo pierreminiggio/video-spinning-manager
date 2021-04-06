@@ -49,11 +49,11 @@ function Login(props) {
     <div>
       Login<br /><br />
       <div>
-        <label for="login">Username</label><br/>
+        <label htmlFor="login">Username</label><br/>
         <input type="text" id="login" {...username} autoComplete="login" />
       </div>
       <div style={{ marginTop: 10 }}>
-        <label for="password">Password</label><br/>
+        <label htmlFor="password">Password</label><br/>
         <input type="password" id="password" {...password} autoComplete="password" />
       </div>
       {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />

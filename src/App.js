@@ -12,15 +12,17 @@ import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const token = getToken();
-    if (! token) {
+    const appToken = getToken();
+    if (! appToken) {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_LOGIN_API_URL}/api/auth/token?token=${token}`).then(response => response.json()).then(response => {
+    fetch(`${process.env.REACT_APP_LOGIN_API_URL}/api/auth/token?token=${appToken}`).then(response => response.json()).then(response => {
       if ([400, 403, 404].includes(response.status)) {
+        setToken(null)
         removeUserSession();
         setAuthLoading(false);
         return
@@ -28,9 +30,11 @@ function App() {
       const user = {...response}
       delete user.token
 
+      setToken(appToken)
       setUserSession(response.token, user);
       setAuthLoading(false);
     }).catch(error => {
+      setToken(null)
       removeUserSession();
       setAuthLoading(false);
     });
@@ -53,7 +57,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <PublicRoute path="/login" component={Login} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
             </Switch>
           </div>
         </div>

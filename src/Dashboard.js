@@ -1,5 +1,6 @@
 import React from 'react';
 import { getUser, removeUserSession } from './Utils/Common';
+import ToProcessList from './ToProcessList'
 
 function Dashboard(props) {
   const user = getUser();
@@ -14,6 +15,7 @@ function Dashboard(props) {
     <div>
       Welcome {user.name}!<br /><br />
       <input type="button" onClick={handleLogout} value="Logout" />
+      <ToProcessList token={props.token} />
     </div>
   );
 }
