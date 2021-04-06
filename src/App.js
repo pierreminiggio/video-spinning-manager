@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 
 import Login from './Login';
 import Dashboard from './Dashboard';
+import ContentToSpin from './ContentToSpin';
 import Home from './Home';
 
 import PrivateRoute from './Utils/PrivateRoute';
@@ -50,14 +51,15 @@ function App() {
         <div>
           <div className="header">
             <NavLink exact activeClassName="active" to="/">Home</NavLink>
-            <NavLink activeClassName="active" to="/login">Login</NavLink><small>(Access without token only)</small>
-            <NavLink activeClassName="active" to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            <NavLink exact activeClassName="active" to="/login">Login</NavLink><small>(Access without token only)</small>
+            <NavLink exact activeClassName="active" to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
           </div>
           <div className="content">
             <Switch>
               <Route exact path="/" component={Home} />
               <PublicRoute path="/login" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
+              <PrivateRoute path="/content/" component={ContentToSpin} passProps={{token}} />
             </Switch>
           </div>
         </div>

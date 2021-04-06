@@ -4,7 +4,6 @@ import { getToken } from './Common';
 
 // handle the private routes
 function PrivateRoute({ component: Component, passProps: PassProps, ...rest }) {
-  
   return (
     <Route
       {...rest}
