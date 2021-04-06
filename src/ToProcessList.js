@@ -22,7 +22,7 @@ function ToProcessList({token}) {
         return
       }
 
-      setProcessList([{id: 1, title: 'test', url: 'https://google.fr'}]);
+      setProcessList(response);
     }).catch(error => {
       setProcessList([]);
     });
@@ -34,7 +34,9 @@ function ToProcessList({token}) {
 
   return (
     <div>
-      Ici on aura la liste
+      {processList.map(video => {
+          return <div><a href={video.url} target="_blank">{video.title}</a></div>
+      })}
     </div>
   );
 }
