@@ -18,7 +18,7 @@ function Dashboard(props) {
 
   return (
     <div>
-      Welcome {user.name}!<br /><br />
+      Welcome {user.first_name} {user.name} !<br /><br />
       <input type="button" onClick={handleLogout} value="Logout" />
       <ToProcessList token={token} history={props.history} />
     </div>
