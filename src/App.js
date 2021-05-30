@@ -5,6 +5,7 @@ import fetch from 'node-fetch';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import ContentToSpin from './ContentToSpin';
+import NewForm from './Video/NewForm';
 import Home from './Home';
 
 import PrivateRoute from './Utils/PrivateRoute';
@@ -59,7 +60,8 @@ function App() {
               <Route exact path="/" component={Home} />
               <PublicRoute path="/login" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
-              <PrivateRoute path="/content/" component={ContentToSpin} passProps={{token}} />
+              <PrivateRoute path="/content/:id/new" component={NewForm} passProps={{token}} />
+              <PrivateRoute path="/content/:id" component={ContentToSpin} passProps={{token}} />
             </Switch>
           </div>
         </div>
