@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 export default function NewForm(props) {
   const token = props.token
   const {id: videoId} = useParams()
+  const [name, setName] = useState()
   
   const submitForm = e => {
     e.preventDefault()
@@ -40,8 +41,12 @@ export default function NewForm(props) {
 
   return (
     <div>
-      <br/><a href="" onClick={(e) => submitForm(e)}>Create</a>
-      <br/><a href="" onClick={(e) => goBack(e)}>Return</a>
+        <div>
+            <label for="name">Name : </label>
+            <input type="text" value={name} id="name" placeholder="Name" onChange={e => {setName(e.target.value)}}/>
+        </div>
+        <br/><a href="" onClick={(e) => submitForm(e)}>Create</a>
+        <br/><a href="" onClick={(e) => goBack(e)}>Return</a>
     </div>
   );
 }
