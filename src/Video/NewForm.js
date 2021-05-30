@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { Button } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 
 export default function NewForm(props) {
   const token = props.token
   const {id: videoId} = useParams()
-  const [name, setName] = useState()
+  const [name, setName] = useState('')
+  const [error, setError] = useState(null)
   
   const submitForm = e => {
     e.preventDefault()
+
+    if (! name) {
+        setError('Please pick a name')
+
+        return
+    }
+
+    setError(null)
 
     // fetch(
     //     process.env.REACT_APP_SPINNER_API_URL + '/done/' + videoId,
@@ -41,11 +52,18 @@ export default function NewForm(props) {
 
   return (
     <div>
+        {error ? (
+            <Alert variant="filled" severity="error">{error}</Alert>
+        ) : ''}
         <div>
-            <label for="name">Name : </label>
+            <label htmlFor="name">Name : </label>
             <input type="text" value={name} id="name" placeholder="Name" onChange={e => {setName(e.target.value)}}/>
         </div>
-        <br/><a href="" onClick={(e) => submitForm(e)}>Create</a>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => submitForm(e)}
+        >Create</Button>
         <br/><a href="" onClick={(e) => goBack(e)}>Return</a>
     </div>
   );
