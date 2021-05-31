@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -8,6 +9,7 @@ function ContentToSpin(props) {
   const historyVideo = history?.location?.state?.video
   const [video, setVideo] = useState({content: historyVideo ? historyVideo : {}})
   const videoContent = video.content ? video.content : {}
+  const videoVideos = video.videos ? video.videos : []
 
   useEffect(() => {
 
@@ -71,6 +73,15 @@ function ContentToSpin(props) {
     <div>
       {videoContent.title ? videoContent.title : 'Loading...'}
       <br/><a href="" onClick={(e) => createNewVideo(e)}>Create a new video</a>
+      {videoVideos ? <div style={{display: 'flex', flexDirection: 'column'}}>
+        {videoVideos.map(videoVideo => <Button
+          variant="contained"
+          color="primary"
+          onClick={(e) => null}
+        >
+          {videoVideo.name}
+        </Button>)}
+      </div> : ''}
       <br/><a href="" onClick={(e) => finishEditingContent(e)}>Done</a>
     </div>
   );

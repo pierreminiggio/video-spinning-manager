@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Button } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 
 export default function NewForm(props) {
@@ -20,26 +20,27 @@ export default function NewForm(props) {
 
     setError(null)
 
-    // fetch(
-    //     process.env.REACT_APP_SPINNER_API_URL + '/done/' + videoId,
-    //     {
-    //       method: 'post',
-    //       headers: new Headers({
-    //         'Authorization': 'Bearer ' + token, 
-    //         'Content-Type': 'application/json'
-    //       }), 
-    //     }
-    //   ).then(response => {
-    //     if (response.status !== 204) {
-    //       return
-    //     }
+    fetch(
+        process.env.REACT_APP_SPINNER_API_URL + '/content/' + videoId,
+        {
+          method: 'post',
+          headers: new Headers({
+            'Authorization': 'Bearer ' + token, 
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify({name})
+        }
+      ).then(response => {
+        if (response.status !== 200) {
+          return
+        }
   
-    //     history.push({
-    //       pathname: '/dashboard/'
-    //     })
-    //   }).catch(error => {
-    //     // error
-    //   });
+        props.history.push({
+            pathname: '/content/' + videoId, //TODO create component for video detail
+        })
+      }).catch(error => {
+        // error
+      });
   }
 
   const goBack = e => {
@@ -51,14 +52,11 @@ export default function NewForm(props) {
   }
 
   return (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'column'}}>
         {error ? (
             <Alert variant="filled" severity="error">{error}</Alert>
         ) : ''}
-        <div>
-            <label htmlFor="name">Name : </label>
-            <input type="text" value={name} id="name" placeholder="Name" onChange={e => {setName(e.target.value)}}/>
-        </div>
+        <TextField id="standard-basic" label="Name" value={name} onChange={e => {setName(e.target.value)}} />
         <Button
             variant="contained"
             color="primary"
