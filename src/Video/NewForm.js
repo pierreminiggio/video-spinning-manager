@@ -34,10 +34,18 @@ export default function NewForm(props) {
         if (response.status !== 200) {
           return
         }
-  
-        props.history.push({
-            pathname: '/content/' + videoId, //TODO create component for video detail
+
+        response.json().then(jsonResponse => {
+
+            if (! jsonResponse['id']) {
+                return
+            }
+
+            props.history.push({
+                pathname: '/content/' + videoId + '/video/' + jsonResponse.id,
+            })
         })
+        
       }).catch(error => {
         // error
       });
