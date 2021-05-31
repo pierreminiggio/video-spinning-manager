@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 function ContentToSpin(props) {
@@ -69,6 +69,13 @@ function ContentToSpin(props) {
       });
   }
 
+  const navigateToVideo = (e, id) => {
+    e.preventDefault()
+    history.push({
+      pathname: '/content/' + videoId + '/video/' + id
+    })
+  }
+
   return (
     <div>
       {videoContent.title ? videoContent.title : 'Loading...'}
@@ -77,7 +84,7 @@ function ContentToSpin(props) {
         {videoVideos.map(videoVideo => <Button
           variant="contained"
           color="primary"
-          onClick={(e) => null}
+          onClick={(e) => navigateToVideo(e, videoVideo.id)}
         >
           {videoVideo.name}
         </Button>)}

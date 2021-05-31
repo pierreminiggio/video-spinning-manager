@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import fetch from 'node-fetch';
 
@@ -11,6 +11,7 @@ import Home from './Home';
 import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, removeUserSession, setUserSession } from './Utils/Common';
+import Detail from './Video/Detail';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -61,6 +62,7 @@ function App() {
               <PublicRoute path="/login" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
               <PrivateRoute path="/content/:id/new" component={NewForm} passProps={{token}} />
+              <PrivateRoute path="/content/:videoId/video/:id" component={Detail} passProps={{token}} />
               <PrivateRoute path="/content/:id" component={ContentToSpin} passProps={{token}} />
             </Switch>
           </div>
