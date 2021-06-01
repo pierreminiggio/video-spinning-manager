@@ -90,9 +90,9 @@ export default function Detail(props) {
         {video === null ? (<h1>Loading...</h1>) : (
             <>
                 <h1>{video.video.name}</h1>
-                <div>
-                    Youtube video : {video.downloaded ? 'downloaded' : (downloading ? 'downloading...' : 'not downloaded')}
-                </div>
+                {video.downloaded === false ? <div>
+                    Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
+                </div> : ''}
                 {videoUrl ? <video width="480" height="270" controls>
                     <source src={videoUrl} type="video/mp4"/>
                 </video> : ''}
