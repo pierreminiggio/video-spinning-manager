@@ -62,7 +62,7 @@ function App() {
               <PublicRoute path="/login" component={Login} />
               <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
               <PrivateRoute path="/content/:id/new" component={NewForm} passProps={{token}} />
-              <PrivateRoute path="/content/:videoId/video/:id" component={Detail} passProps={{token}} />
+              <PrivateRoute path="/content/:contentId/video/:id" component={Detail} passProps={{token}} />
               <PrivateRoute path="/content/:id" component={ContentToSpin} passProps={{token}} />
             </Switch>
           </div>
