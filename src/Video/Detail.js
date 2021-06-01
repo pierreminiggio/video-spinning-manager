@@ -34,7 +34,7 @@ export default function Detail(props) {
 
     useEffect(
         () => updateDetails(token, id),
-        [updateDetails, token, id]
+        [token, id]
     );
 
     useEffect(
