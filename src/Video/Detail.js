@@ -6,6 +6,7 @@ export default function Detail(props) {
     const {contentId, id} = useParams()
     const [video, setVideo] = useState(null)
     const [downloading, setDownloading] = useState(false)
+    const videoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
 
     const updateDetails = (token, id) => {
         if (token === null) {
@@ -92,6 +93,9 @@ export default function Detail(props) {
                 <div>
                     Youtube video : {video.downloaded ? 'downloaded' : (downloading ? 'downloading...' : 'not downloaded')}
                 </div>
+                {videoUrl ? <video width="480" height="270" controls>
+                    <source src={videoUrl} type="video/mp4"/>
+                </video> : ''}
             </>
         )}
     </div>

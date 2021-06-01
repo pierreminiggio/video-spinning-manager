@@ -13,8 +13,9 @@ function ContentToSpin(props) {
 
   useEffect(() => {
 
+    
     if (token === null) {
-        return
+      return
     }
 
     fetch(
