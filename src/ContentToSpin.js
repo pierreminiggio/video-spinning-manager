@@ -6,8 +6,7 @@ function ContentToSpin(props) {
   const token = props.token
   const history = props.history
   const {id: videoId} = useParams()
-  const historyVideo = history?.location?.state?.video
-  const [video, setVideo] = useState({content: historyVideo ? historyVideo : {}})
+  const [video, setVideo] = useState(null)
   const videoContent = video.content ? video.content : {}
   const videoVideos = video.videos ? video.videos : []
 
@@ -28,13 +27,13 @@ function ContentToSpin(props) {
       }
     ).then(response => response.json()).then(response => {
       if ([400, 401, 403, 404].includes(response.status)) {
-        setVideo(historyVideo);
+        setVideo(null);
         return
       }
 
       setVideo(response);
     }).catch(error => {
-      setVideo(historyVideo);
+      setVideo(null);
     });
   }, [token, videoId]);
 
