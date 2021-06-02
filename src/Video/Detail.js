@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router"
 
 export default function Detail(props) {
-    const token = props.token
+    const history = props.history
+    const location = history?.location
+    const token = props.token || location?.token
     const {contentId, id} = useParams()
     const [video, setVideo] = useState(null)
     const [downloading, setDownloading] = useState(false)
@@ -80,7 +82,7 @@ export default function Detail(props) {
 
     const navigateToContent = (e, contentId) => {
         e.preventDefault()
-        props.history.push({
+        history.push({
             pathname: '/content/' + contentId,
         })
     }
