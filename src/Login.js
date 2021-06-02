@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import fetch from 'node-fetch';
 import { setUserSession } from './Utils/Common';
+import { Button } from '@material-ui/core'
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -57,7 +58,14 @@ function Login(props) {
         <input type="password" id="password" {...password} autoComplete="password" />
       </div>
       {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
-      <input type="button" value={loading ? 'Loading...' : 'Login'} onClick={handleLogin} disabled={loading} /><br />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={(e) => handleLogin()}
+        disabled={loading}
+      >
+        {loading ? 'Loading...' : 'Login'}
+      </Button>
     </div>
   );
 }
