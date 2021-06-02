@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { Button } from '@material-ui/core';
+import { useState, useEffect } from 'react';
 import fetch, { Headers } from 'node-fetch';
 
 function ToProcessList(props) {
@@ -46,15 +47,17 @@ function ToProcessList(props) {
     return <div className="content">Loading...</div>
   }
 
-  let i = 0
-
   return (
-    <div>
-      {processList ? processList.map(video => {
-          i++
-          return <div key={i}>
-              <a href="" onClick={(e) => navigateToContent(e, video)}>{video.title}</a>
-            </div>
+    <div style={props.style ? props.style : {}}>
+      {processList ? processList.map((video, videoIndex) => {
+          return <Button
+            key={videoIndex + 1}
+            variant="contained"
+            color="primary"
+            onClick={(e) => navigateToContent(e, video)}
+          >
+            {video.title}
+          </Button>
       }) : ''}
     </div>
   );

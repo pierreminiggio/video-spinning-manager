@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router';
 import { Button, TextField } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
+import flexColumn from '../Style/flexColumn';
 
 export default function NewForm(props) {
   const history = props.history
@@ -64,11 +65,11 @@ export default function NewForm(props) {
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={flexColumn}>
         {error ? (
             <Alert variant="filled" severity="error">{error}</Alert>
         ) : ''}
-        <TextField id="standard-basic" label="Name" value={name} onChange={e => {setName(e.target.value)}} />
+        <TextField label="Name" value={name} onChange={e => {setName(e.target.value)}} />
         <Button
             variant="contained"
             color="primary"

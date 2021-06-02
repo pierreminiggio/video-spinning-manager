@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import fetch from 'node-fetch';
 import { setUserSession } from './Utils/Common';
-import { Button } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
+import flexColumn from './Style/flexColumn';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -47,16 +48,10 @@ function Login(props) {
   }
 
   return (
-    <div>
-      Login<br /><br />
-      <div>
-        <label htmlFor="login">Username</label><br/>
-        <input type="text" id="login" {...username} autoComplete="login" />
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <label htmlFor="password">Password</label><br/>
-        <input type="password" id="password" {...password} autoComplete="password" />
-      </div>
+    <div style={flexColumn}>
+      <h1>Login</h1>
+      <TextField label="Username" {...username} autoComplete="login"/>
+      <TextField label="Password" {...password} autoComplete="password" type="password"/>
       {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}<br />
       <Button
         variant="contained"

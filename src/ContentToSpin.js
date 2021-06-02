@@ -1,6 +1,8 @@
 import { Button } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import flexColumn from './Style/flexColumn';
+import gap from './Style/gap';
 
 function ContentToSpin(props) {
   const history = props.history
@@ -80,19 +82,32 @@ function ContentToSpin(props) {
   }
 
   return (
-    <div>
+    <div style={flexColumn}>
       {videoContent.title ? videoContent.title : 'Loading...'}
-      <br/><a href="" onClick={(e) => createNewVideo(e)}>Create a new video</a>
-      {videoVideos ? <div style={{display: 'flex', flexDirection: 'column'}}>
-        {videoVideos.map(videoVideo => <Button
+      <Button
+        variant="contained"
+        onClick={createNewVideo}
+      >
+        Create a new video
+      </Button>
+      {videoVideos ? <>
+        {videoVideos.map((videoVideo, videoIndex) => <Button
           variant="contained"
           color="primary"
+          style={videoIndex === 0 ? {marginTop: gap} : null}
           onClick={(e) => navigateToVideo(e, videoVideo.id)}
         >
           {videoVideo.name}
         </Button>)}
-      </div> : ''}
-      <br/><a href="" onClick={(e) => finishEditingContent(e)}>Done</a>
+      </> : ''}
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{marginTop: gap}}
+        onClick={finishEditingContent}
+      >
+        Done
+      </Button>
     </div>
   );
 }

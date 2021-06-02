@@ -1,6 +1,8 @@
-import React from 'react';
+import { Button } from '@material-ui/core';
 import { getUser, getToken, removeUserSession } from './Utils/Common';
 import ToProcessList from './ToProcessList'
+import gap from './Style/gap';
+import flexColumn from './Style/flexColumn';
 
 function Dashboard(props) {
   const user = getUser();
@@ -17,10 +19,21 @@ function Dashboard(props) {
   }
 
   return (
-    <div>
-      Welcome {user.first_name} {user.name} !<br /><br />
-      <input type="button" onClick={handleLogout} value="Logout" />
-      <ToProcessList token={token} history={props.history} />
+    <div style={flexColumn}>
+      <h1 style={{textAlign: 'center'}}>Welcome {user.first_name} {user.name} !</h1>
+      <ToProcessList token={token} history={props.history} style={{
+        marginTop: gap,
+        ...flexColumn,
+        gap: 10
+      }} />
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{marginTop: gap}}
+        onClick={handleLogout}
+      >
+        Logout
+      </Button>
     </div>
   );
 }
