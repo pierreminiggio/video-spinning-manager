@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 function ContentToSpin(props) {
-  const token = props.token
   const history = props.history
+  const token = props.token | props.location.token
   const {id: videoId} = useParams()
   const [video, setVideo] = useState({})
   const videoContent = video.content ? video.content : {}
