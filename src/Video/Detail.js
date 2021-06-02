@@ -84,6 +84,7 @@ export default function Detail(props) {
         e.preventDefault()
         history.push({
             pathname: '/content/' + contentId,
+            token
         })
     }
 
