@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router"
-import flex from "../Style/flex";
 import flexColumn from '../Style/flexColumn';
 
 export default function Detail(props) {
@@ -11,6 +10,10 @@ export default function Detail(props) {
     const [video, setVideo] = useState(null)
     const [downloading, setDownloading] = useState(false)
     const videoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
+    const { innerWidth: width } = window
+    const videoWidthDividedBy16 = Math.trunc((width - 20) / 16)
+    const videoWidth = videoWidthDividedBy16 * 16
+    const videoHeight = videoWidthDividedBy16 * 9
 
     const updateDetails = (token, id) => {
         if (token === null) {
@@ -99,7 +102,7 @@ export default function Detail(props) {
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
-                    {videoUrl ? <video width="320" height="180" controls>
+                    {videoUrl ? <video width={videoWidth} height={videoHeight} controls>
                         <source src={videoUrl} type="video/mp4"/>
                     </video> : ''}
                 </>
