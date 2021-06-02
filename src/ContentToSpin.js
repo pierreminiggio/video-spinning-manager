@@ -92,6 +92,7 @@ function ContentToSpin(props) {
       </Button>
       {videoVideos ? <>
         {videoVideos.map((videoVideo, videoIndex) => <Button
+          key={videoIndex + 1}
           variant="contained"
           color="primary"
           style={videoIndex === 0 ? {marginTop: gap} : null}

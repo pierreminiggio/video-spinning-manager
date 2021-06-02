@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router"
 import flexColumn from '../Style/flexColumn';
+import Editor from "./Editor";
 
 export default function Detail(props) {
     const history = props.history
@@ -11,7 +12,7 @@ export default function Detail(props) {
     const [downloading, setDownloading] = useState(false)
     const videoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
     const { innerWidth: width } = window
-    const videoWidthDividedBy16 = Math.trunc((width - 20) / 16)
+    const videoWidthDividedBy16 = Math.min(Math.trunc((width - 20) / 16), 45 /* 1280/720 (16*45) */)
     const videoWidth = videoWidthDividedBy16 * 16
     const videoHeight = videoWidthDividedBy16 * 9
 
@@ -98,7 +99,7 @@ export default function Detail(props) {
             <a href="#" onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
             {video === null ? (<h1>Loading...</h1>) : (
                 <>
-                    <h1>{video.video.name}</h1>
+                    <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
@@ -108,5 +109,6 @@ export default function Detail(props) {
                 </>
             )}
         </div>
+        <Editor/>
     </div>
 }

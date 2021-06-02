@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { setUserSession } from './Utils/Common';
 import { Button, TextField } from '@material-ui/core'
 import flexColumn from './Style/flexColumn';
+import useFormInput from './Form/useFormInput';
 
 function Login(props) {
   const [loading, setLoading] = useState(false);
@@ -63,18 +64,6 @@ function Login(props) {
       </Button>
     </div>
   );
-}
-
-const useFormInput = initialValue => {
-  const [value, setValue] = useState(initialValue);
-
-  const handleChange = e => {
-    setValue(e.target.value);
-  }
-  return {
-    value,
-    onChange: handleChange
-  }
 }
 
 export default Login;
