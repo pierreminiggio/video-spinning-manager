@@ -15,6 +15,10 @@ export default function Editor(props) {
     const handleClose = clip => {
         setOpen(false);
 
+        if (Object.keys(clip).length === 0) {
+            return
+        }
+
         if (! clip.id) {
             const newClipList = [...clips]
             const newClipValues = {...clip}
