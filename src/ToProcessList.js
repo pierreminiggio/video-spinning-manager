@@ -36,8 +36,7 @@ function ToProcessList(props) {
   const navigateToContent = (e, video) => {
     e.preventDefault()
     props.history.push({
-      pathname: '/content/' + video.id,
-      state: { video, token }
+      pathname: '/content/' + video.id
     })
   }
 
