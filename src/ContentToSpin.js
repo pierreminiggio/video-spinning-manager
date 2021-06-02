@@ -7,7 +7,7 @@ function ContentToSpin(props) {
   const location = history?.location
   const token = props.token || location?.token
   const {id: videoId} = useParams()
-  const [video, setVideo] = useState({})
+  const [video, setVideo] = useState({content: location?.videoContent})
   const videoContent = video.content ? video.content : {}
   const videoVideos = video.videos ? video.videos : []
 
