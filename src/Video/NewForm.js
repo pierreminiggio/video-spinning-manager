@@ -4,7 +4,9 @@ import { Button, TextField } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 
 export default function NewForm(props) {
-  const token = props.token
+  const history = props.history
+  const location = history?.location
+  const token = props.token || location?.token
   const {id: videoId} = useParams()
   const [name, setName] = useState('')
   const [error, setError] = useState(null)
@@ -41,8 +43,9 @@ export default function NewForm(props) {
                 return
             }
 
-            props.history.push({
+            history.push({
                 pathname: '/content/' + videoId + '/video/' + jsonResponse.id,
+                token
             })
         })
         
@@ -54,8 +57,9 @@ export default function NewForm(props) {
   const goBack = e => {
     e.preventDefault()
 
-    props.history.push({
-        pathname: '/content/' + videoId
+    history.push({
+        pathname: '/content/' + videoId,
+        token
     })
   }
 
