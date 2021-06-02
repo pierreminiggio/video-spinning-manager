@@ -37,7 +37,8 @@ function ToProcessList(props) {
     e.preventDefault()
     props.history.push({
       pathname: '/content/' + video.id,
-      token
+      token,
+      videoContent: video
     })
   }
 
