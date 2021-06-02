@@ -41,7 +41,8 @@ function ContentToSpin(props) {
   const createNewVideo = e => {
     e.preventDefault()
     history.push({
-      pathname: '/content/' + videoId + '/new'
+      pathname: '/content/' + videoId + '/new',
+      token
     })
   }
   
