@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router"
+import flex from "../Style/flex";
+import flexColumn from '../Style/flexColumn';
 
 export default function Detail(props) {
     const history = props.history
@@ -88,18 +90,20 @@ export default function Detail(props) {
         })
     }
 
-    return <div>
-        <a href="#" onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
-        {video === null ? (<h1>Loading...</h1>) : (
-            <>
-                <h1>{video.video.name}</h1>
-                {video.downloaded === false ? <div>
-                    Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
-                </div> : ''}
-                {videoUrl ? <video width="480" height="270" controls>
-                    <source src={videoUrl} type="video/mp4"/>
-                </video> : ''}
-            </>
-        )}
+    return <div style={{...flexColumn, alignItems: 'center'}}>
+        <div>
+            <a href="#" onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
+            {video === null ? (<h1>Loading...</h1>) : (
+                <>
+                    <h1>{video.video.name}</h1>
+                    {video.downloaded === false ? <div>
+                        Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
+                    </div> : ''}
+                    {videoUrl ? <video width="320" height="180" controls>
+                        <source src={videoUrl} type="video/mp4"/>
+                    </video> : ''}
+                </>
+            )}
+        </div>
     </div>
 }

@@ -1,2 +1,4 @@
-const flexColumn = {display: 'flex', flexDirection: 'column'}
+import flex from "./flex"
+
+const flexColumn = {... flex, flexDirection: 'column'}
 export default flexColumn
