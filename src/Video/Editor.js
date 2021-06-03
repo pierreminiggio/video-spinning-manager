@@ -1,8 +1,9 @@
 import { Button, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
+import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
 
@@ -63,31 +64,9 @@ export default function Editor(props) {
                 onDragStart={() => null}
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
-            ><Droppable
-                droppableId={'clip-timeline'} 
-            >{provided => <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
             >
-                {orderedClips.map((clip, clipIndex) => (
-                    <Draggable
-                        draggableId={clip.id}
-                        index={clipIndex}
-                        key={clip.id}
-                    >
-                        {draggableProvided => (
-                            <div
-                                {...draggableProvided.draggableProps}
-                                {...draggableProvided.dragHandleProps}
-                                ref={draggableProvided.innerRef}
-                            >
-                                {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
-                            </div>
-                        )}
-                    </Draggable>
-                ))}
-                {provided.placeholder}
-            </div>}</Droppable></DragDropContext> : ''}
+                <Timeline clips={orderedClips} timelineId={'timeline-1'} />
+            </DragDropContext> : ''}
         </div>
     );
 }
