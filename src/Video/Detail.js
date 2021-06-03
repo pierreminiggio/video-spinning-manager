@@ -109,6 +109,6 @@ export default function Detail(props) {
                 </>
             )}
         </div>
-        <Editor/>
+        <Editor videoUrl={videoUrl} />
     </div>
 }

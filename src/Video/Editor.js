@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import flex from "../Style/flex";
@@ -7,7 +7,7 @@ import ClipModalForm from "./Clip/ClipModalForm";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
-
+    const { videoUrl } = props
     const [clips, setClips] = useState([])
     const [open, setOpen] = useState(false);
 
@@ -98,9 +98,21 @@ export default function Editor(props) {
         setClips(newClipList)
     }
 
+    const fps = 60
+    const remotionProps = {clips: []}
+    orderedClips.forEach(orderedClip => {
+        const startFrame = parseInt(orderedClip.start * fps)
+        const endFrame = parseInt(orderedClip.end * fps)
+        remotionProps.clips.push({
+            video: videoUrl,
+            from: startFrame,
+            durationInFrames: endFrame - startFrame
+        })
+    })
+
     return (
         <div>
-            <Typography variant="subtitle1">Selected: {JSON.stringify(clips)}</Typography>
+            {JSON.stringify(remotionProps)}
             <div style={{...flex, justifyContent: 'center', marginTop: gap / 2}}>
                 <Button
                     variant="contained"
