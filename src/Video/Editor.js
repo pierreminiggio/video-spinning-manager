@@ -1,5 +1,6 @@
 import { Button, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
 import flex from '../Style/flex';
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
@@ -41,6 +42,10 @@ export default function Editor(props) {
         
         return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
     })
+    
+    const onClipDragEnd = result => {
+        // TODO UPDATE STATE ORDER
+    }
 
     return (
         <div>
@@ -55,11 +60,29 @@ export default function Editor(props) {
                 Add a clip
             </Button>
             <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />    
-            { orderedClips ? <div style={flex}>
-                { orderedClips.map((clip, clipIndex) => <div key={clipIndex + 1}>
+            {orderedClips ? <DragDropContext
+                onDragStart={() => null}
+                onDragUpdate={() => null}
+                onDragEnd={onClipDragEnd}
+            ><Droppable
+                droppable-id={'clip-timeline'} 
+            >{provided => <div
+                style={flex}
+                innerRef={provided.innerRef}
+                {...provided.droppableProps}
+            >
+                {orderedClips.map((clip, clipIndex) => <Draggable
+                    draggable-id={clip.id}
+                    index={clipIndex}
+                >{provided => <div
+                    {...provided.droppableProps}
+                    {...provided.dragHandleProps}
+                    innerRef={provided.innerRef}
+                >
                     {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
-                </div>) }
-            </div> : '' }
+                </div>}</Draggable>)}
+                {provided.placeholder}
+            </div>}</Droppable></DragDropContext> : ''}
         </div>
     );
 }
