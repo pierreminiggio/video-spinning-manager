@@ -64,13 +64,13 @@ export default function ClipModalForm(props) {
             <TextField
                 label="Start"
                 type="number"
-                inputProps={{ step: inputStep }}
+                inputProps={{ min: 0, step: inputStep }}
                 {...startInputState}
             />
             <TextField
                 label="End"
                 type="number"
-                inputProps={{ step: inputStep }}
+                inputProps={{ min: 0, step: inputStep }}
                 {...endInputState}
             />
             <Button

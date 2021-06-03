@@ -1,6 +1,7 @@
 import { Button, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
+import flex from "../Style/flex";
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
 import Timeline from "./Timeline/Timeline";
@@ -100,23 +101,23 @@ export default function Editor(props) {
     return (
         <div>
             <Typography variant="subtitle1">Selected: {JSON.stringify(clips)}</Typography>
-            <br />
-            <Button
-                style={{marginTop: gap / 2}}
-                variant="contained"
-                color="primary"
-                onClick={handleClickOpen}
-            >
-                Add a clip
-            </Button>
+            <div style={{...flex, justifyContent: 'center', marginTop: gap / 2}}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClickOpen}
+                >
+                    Add a clip
+                </Button>
+            </div>
             <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />    
-            {orderedClips ? <DragDropContext
+            <DragDropContext
                 onDragStart={() => null}
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
                 <Timeline clips={orderedClips} timelineId={timelineId} />
-            </DragDropContext> : ''}
+            </DragDropContext>
         </div>
     );
 }

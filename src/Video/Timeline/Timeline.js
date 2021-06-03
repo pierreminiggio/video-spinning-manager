@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 
-const Container = styled.div`
-    margin: 8px;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
+const Container = styled.div`${props => props.hasClips ? `
+margin: 8px;
+border: 1px solid lightgrey;
+border-radius: 2px;
+` : ``}  
 `
 
 const ClipList = styled.div`
@@ -15,7 +16,7 @@ const ClipList = styled.div`
 
 export default function Timeline(props) {
     const {clips, timelineId} = props
-    return <Container>
+    return <Container hasClips={clips.length > 0}>
         <Droppable droppableId={timelineId} direction="horizontal">
             {provided => <ClipList
                 ref={provided.innerRef}
