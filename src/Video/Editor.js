@@ -1,7 +1,9 @@
 import { Button, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import flex from '../Style/flex';
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
+i
 
 export default function Editor(props) {
 
@@ -28,6 +30,18 @@ export default function Editor(props) {
             setClips(newClipList);
         }
     };
+    
+    const orderedClips = [...clips]
+    orderedClips.sort((firstClip, secondClip) => {
+        const firstClipOrder = firstClip.order
+        const secondClipOrder = secondClip.order
+        
+        if (firstClipOrder === secondClipOrder) {
+            return 0
+        }
+        
+        return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
+    })
 
     return (
         <div>
@@ -41,7 +55,12 @@ export default function Editor(props) {
             >
                 Add a clip
             </Button>
-            <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />
+            <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />    
+            { orderedClips ? <div style={flex}>
+                orderedClips.map((clip, clipIndex) => <div key={clipIndex + 1}>
+                {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
+                </div>)
+            </div> : '' }
         </div>
     );
 }
