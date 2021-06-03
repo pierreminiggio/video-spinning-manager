@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import flex from '../Style/flex';
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
-i
 
 export default function Editor(props) {
 
