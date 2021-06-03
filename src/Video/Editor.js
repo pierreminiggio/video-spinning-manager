@@ -56,9 +56,9 @@ export default function Editor(props) {
             </Button>
             <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />    
             { orderedClips ? <div style={flex}>
-                orderedClips.map((clip, clipIndex) => <div key={clipIndex + 1}>
-                {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
-                </div>)
+                { orderedClips.map((clip, clipIndex) => <div key={clipIndex + 1}>
+                    {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
+                </div>) }
             </div> : '' }
         </div>
     );
