@@ -73,7 +73,7 @@ export default function Editor(props) {
                     draggableId={clip.id}
                     index={clipIndex}
                 >{draggableProvided => <div
-                    {...draggableProvided.droppableProps}
+                    {...draggableProvided.draggableProps}
                     {...draggableProvided.dragHandleProps}
                     ref={draggableProvided.innerRef}
                 >
