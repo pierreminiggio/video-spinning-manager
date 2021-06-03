@@ -63,7 +63,7 @@ export default function Editor(props) {
                 onDragStart={() => null}
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
-            ><Droppable
+            ><div><Droppable
                 droppableId={'clip-timeline'} 
             >{provided => <div
                 ref={provided.innerRef}
@@ -83,7 +83,7 @@ export default function Editor(props) {
                     </Draggable>
                 ))}
                 {provided.placeholder}
-            </div>}</Droppable></DragDropContext> : ''}
+            </div>}</Droppable></div></DragDropContext> : ''}
         </div>
     );
 }
