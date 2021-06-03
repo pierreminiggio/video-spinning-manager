@@ -1,7 +1,6 @@
 import { Button, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Draggable, DragDropContext, Droppable } from "react-beautiful-dnd";
-import flex from '../Style/flex';
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
 
@@ -67,7 +66,6 @@ export default function Editor(props) {
             ><Droppable
                 droppableId={'clip-timeline'} 
             >{provided => <div
-                style={flex}
                 innerRef={provided.innerRef}
                 {...provided.droppableProps}
             >
