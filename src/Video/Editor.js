@@ -65,7 +65,7 @@ export default function Editor(props) {
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             ><Droppable
-                droppable-id={'clip-timeline'} 
+                droppableId={'clip-timeline'} 
             >{provided => <div
                 style={flex}
                 innerRef={provided.innerRef}
