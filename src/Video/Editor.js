@@ -74,10 +74,10 @@ export default function Editor(props) {
                 {orderedClips.map((clip, clipIndex) => <Draggable
                     draggable-id={clip.id}
                     index={clipIndex}
-                >{provided => <div
-                    {...provided.droppableProps}
-                    {...provided.dragHandleProps}
-                    innerRef={provided.innerRef}
+                >{draggableProvided => <div
+                    {...draggableProvided.droppableProps}
+                    {...draggableProvided.dragHandleProps}
+                    innerRef={draggableProvided.innerRef}
                 >
                     {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
                 </div>}</Draggable>)}
