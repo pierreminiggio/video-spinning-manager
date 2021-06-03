@@ -76,7 +76,6 @@ export default function Editor(props) {
                     {...draggableProvided.droppableProps}
                     {...draggableProvided.dragHandleProps}
                     innerRef={draggableProvided.innerRef}
-                    style={{padding: '10px 20px'}}
                 >
                     {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
                 </div>}</Draggable>)}
