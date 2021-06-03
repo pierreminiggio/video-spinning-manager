@@ -22,7 +22,7 @@ export default function Editor(props) {
         }
 
         if (! clip.id) {
-            const newClipList = [...clips]
+            const newClipList = Array.from(clips)
             const newClipValues = {...clip}
             newClipValues.id = clips.length + 1
             newClipValues.order = newClipValues.id
@@ -42,9 +42,59 @@ export default function Editor(props) {
         
         return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
     })
+
+    const timelineId = 'timeline'
     
     const onClipDragEnd = result => {
-        // TODO UPDATE STATE ORDER
+        const { destination, source, draggableId } = result
+
+        if (! destination) {
+            return
+        }
+
+        const sourceDroppableId = source.droppableId
+        const destinationDroppableId = destination.droppableId
+
+        const sourceIndex = source.index
+        const destinationIndex = destination.index
+
+        if (
+            sourceDroppableId === destinationDroppableId
+            && sourceIndex === destinationIndex
+        ) {
+            return
+        }
+
+        if (sourceDroppableId !== timelineId) {
+            return // I've only 1 timeline right now
+        }
+
+        const newClipList = Array.from(clips)
+        const movedForward = destinationIndex - sourceIndex > 0
+        newClipList.forEach(newClip => {
+            if (newClip.id === parseInt(draggableId)) {
+                newClip.order = destinationIndex
+                return
+            }
+
+            if (
+                movedForward
+            ) {
+                if (newClip.order > sourceIndex && newClip.order <= destinationIndex) {
+                    newClip.order -= 1
+
+                    return
+                }
+            }
+
+            if (newClip.order < sourceIndex && newClip.order >= destinationIndex) {
+                newClip.order += 1
+
+                return
+            }
+        })
+        
+        setClips(newClipList)
     }
 
     return (
@@ -65,7 +115,7 @@ export default function Editor(props) {
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
-                <Timeline clips={orderedClips} timelineId={'timeline-1'} />
+                <Timeline clips={orderedClips} timelineId={timelineId} />
             </DragDropContext> : ''}
         </div>
     );

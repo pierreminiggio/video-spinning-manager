@@ -22,7 +22,7 @@ export default function Timeline(props) {
                 {...provided.droppableProps}
                 
             >
-                {clips.map((clip, index) => <Clip key={clip.id} clip={clip} index={index} />)}
+                {clips.map(clip => <Clip key={clip.id} clip={clip} index={clip.order} />)}
                 {provided.placeholder}
             </ClipList>}
         </Droppable>

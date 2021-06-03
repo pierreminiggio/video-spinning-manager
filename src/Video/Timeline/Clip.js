@@ -10,7 +10,7 @@ const Container = styled.div`
 
 export default function Clip(props) {
     const {clip, index} = props
-    return <Draggable draggableId={'clip-' + clip.id.toString()} index={index}>
+    return <Draggable draggableId={clip.id.toString()} index={index}>
         {provided => (
             <Container
                 {...provided.draggableProps}
