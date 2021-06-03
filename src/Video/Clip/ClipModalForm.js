@@ -23,7 +23,6 @@ export default function ClipModalForm(props) {
 
         const start = parseFloat(startInputState?.value)
         const end = parseFloat(endInputState?.value)
-        console.log(end)
 
         if ((! start && start !== 0) || ! end) {
             setError('Please fill Start and End !')
