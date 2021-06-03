@@ -66,7 +66,7 @@ export default function Editor(props) {
             ><Droppable
                 droppableId={'clip-timeline'} 
             >{provided => <div
-                innerRef={provided.innerRef}
+                ref={provided.innerRef}
                 {...provided.droppableProps}
             >
                 {orderedClips.map((clip, clipIndex) => <Draggable
@@ -75,7 +75,7 @@ export default function Editor(props) {
                 >{draggableProvided => <div
                     {...draggableProvided.droppableProps}
                     {...draggableProvided.dragHandleProps}
-                    innerRef={draggableProvided.innerRef}
+                    ref={draggableProvided.innerRef}
                 >
                     {clip.id.toString()} {clip.start.toString()} {clip.end.toString()} {clip.order.toString()}
                 </div>}</Draggable>)}
