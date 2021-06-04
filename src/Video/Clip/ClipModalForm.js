@@ -7,6 +7,8 @@ import gap from "../../Style/gap";
 
 const inputStep = 0.016
 
+const tooltipIndexes = [0, 1]
+
 export default function ClipModalForm(props) {
     const { onClose, videoDuration, selectedValue, open } = props;
     const [value, setValue] = useState([0, 10]);
@@ -29,7 +31,7 @@ export default function ClipModalForm(props) {
     };
 
     const handleChange = (e, newValue) => {
-        [0, 1].forEach(tooltipIndex => {
+        tooltipIndexes.forEach(tooltipIndex => {
             if (value[tooltipIndex] !== newValue[tooltipIndex]) {
                 setLastChangedIndex(tooltipIndex)
             }
@@ -154,7 +156,7 @@ ClipModalForm.propTypes = {
 };
 
 const getValueLabelComponent = {};
-[0, 1].forEach(lastChangedIndex => {
+tooltipIndexes.forEach(lastChangedIndex => {
     getValueLabelComponent[lastChangedIndex] = (props) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
 })
 
