@@ -160,7 +160,6 @@ export default function Editor(props) {
 
     return (
         <div>
-            {JSON.stringify(remotionProps)}
             <ClipModalForm selectedValue={selectedValue} open={open} onClose={handleClose} />    
             <DragDropContext
                 onDragStart={onClipDragStart}
