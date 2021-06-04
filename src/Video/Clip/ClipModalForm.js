@@ -10,6 +10,7 @@ const inputStep = 0.016
 export default function ClipModalForm(props) {
     const { onClose, videoDuration, selectedValue, open } = props;
     const [value, setValue] = useState([0, 10]);
+    const [lastChangedValue, setLastChangedValue] = useState(0)
     const selectedValueId = selectedValue?.id
     const [error, setError] = useState(null)
   
@@ -28,6 +29,11 @@ export default function ClipModalForm(props) {
     };
 
     const handleChange = (e, newValue) => {
+        [0, 1].forEach(tooltipIndex => {
+            if (value[tooltipIndex] !== newValue[tooltipIndex]) {
+                setLastChangedValue(tooltipIndex)
+            }
+        })
         setValue(newValue);
     };
   
@@ -122,7 +128,7 @@ export default function ClipModalForm(props) {
                     onChange={handleChange}
                     valueLabelDisplay="on"
                     getAriaValueText={getValueText}
-                    valueLabelFormat={value => <div>{getValueText(value)}</div>}
+                    valueLabelFormat={value => <div><span style={{display: 'none'}}>{lastChangedValue}</span>{getValueText(value)}</div>}
                     ValueLabelComponent={ValueLabelComponent}
                     min={0}
                     max={videoDuration}
@@ -148,7 +154,7 @@ ClipModalForm.propTypes = {
 };
 
 function ValueLabelComponent(props) {
-  const { children, open, value } = props;
+  const { children, index, open, value } = props;
 
   const popperRef = useRef(null);
   useEffect(() => {
@@ -157,11 +163,17 @@ function ValueLabelComponent(props) {
     }
   });
 
+  const popperProps = {
+    popperRef
+  }
+
+  if (index === props.value.props.children[0].props.children) {
+    popperProps.style = {zIndex: 1501}
+  }
+
   return (
     <Tooltip
-      PopperProps={{
-        popperRef,
-      }}
+      PopperProps={popperProps}
       open={open}
       enterTouchDelay={0}
       placement="top"
