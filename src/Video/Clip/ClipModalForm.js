@@ -1,7 +1,7 @@
-import { Button, Dialog, DialogTitle, Slider, Typography, TextField } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, Slider, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFormInput from "../../Form/useFormInput";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
@@ -10,14 +10,20 @@ const inputStep = 0.016
 
 export default function ClipModalForm(props) {
     const { onClose, videoDuration, selectedValue, open } = props;
-    const defaultRangeValues = [
-        selectedValue?.start ? selectedValue.start : 0,
-        selectedValue?.end ? selectedValue.end : 10
-    ]
-    const [value, setValue] = useState(defaultRangeValues);
+    const [value, setValue] = useState([0, 10]);
     const selectedValueId = selectedValue?.id
     const [error, setError] = useState(null)
   
+    useEffect(
+        () => {
+            setValue([
+                selectedValue?.start ? selectedValue.start : 0,
+                selectedValue?.end ? selectedValue.end : 10
+            ])
+        },
+        [selectedValue]
+    )
+
     const handleClose = () => {
         onClose(selectedValue);
     };
