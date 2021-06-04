@@ -54,6 +54,8 @@ export default function ClipModalForm(props) {
 
         onClose(updatedClip);
     };
+    
+    const commandVerb = selectedValueId ? 'Edit' : 'Add'
   
     return (
       <Dialog
@@ -61,7 +63,7 @@ export default function ClipModalForm(props) {
         aria-labelledby="clip-form-modal"
         open={open}
     >
-        <DialogTitle id="clip-form-modal" style={{textAlign: 'center'}}>Add clip</DialogTitle>
+        <DialogTitle id="clip-form-modal" style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
             { error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
             <TextField
@@ -81,7 +83,7 @@ export default function ClipModalForm(props) {
                 color="primary"
                 onClick={handleFormSubmit}
             >
-                {selectedValueId ? 'Edit' : 'Add'}
+                {commandVerb}
             </Button>
         </div>
       </Dialog>
