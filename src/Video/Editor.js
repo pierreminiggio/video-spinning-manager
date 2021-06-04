@@ -9,7 +9,7 @@ import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
-    const { videoUrl } = props
+    const { videoDuration, videoUrl } = props
     const [clips, setClips] = useState([])
     const [selectedValue, setSelectedValue] = useState({})
     const [open, setOpen] = useState(false)
@@ -160,7 +160,12 @@ export default function Editor(props) {
 
     return (
         <div>
-            <ClipModalForm selectedValue={selectedValue} open={open} onClose={handleClose} />    
+            <ClipModalForm
+                selectedValue={selectedValue}
+                videoDuration={videoDuration}
+                open={open}
+                onClose={handleClose}
+            />
             <DragDropContext
                 onDragStart={onClipDragStart}
                 onDragUpdate={() => null}

@@ -9,7 +9,7 @@ import gap from "../../Style/gap";
 const inputStep = "0.016"
 
 export default function ClipModalForm(props) {
-    const { onClose, selectedValue, open } = props;
+    const { onClose, videoDuration, selectedValue, open } = props;
     const startInputValue = selectedValue?.start ? selectedValue.start.toString() : ''
     const startInputState = useFormInput(startInputValue);
     const endInputValue = selectedValue?.end ? selectedValue.end.toString() : ''
@@ -45,6 +45,12 @@ export default function ClipModalForm(props) {
             return
         }
 
+        if (videoDuration && end > videoDuration) {
+            setError('The clip\'s end go further than the video\'s end !')
+
+            return
+        }
+
         setError(null)
 
         const updatedClip = { start, end }
@@ -56,7 +62,12 @@ export default function ClipModalForm(props) {
     };
     
     const commandVerb = selectedValueId ? 'Edit' : 'Add'
-  
+    const numberInputProps = { min: 0, step: inputStep }
+
+    if (videoDuration !== null) {
+        numberInputProps.max = videoDuration
+    }
+
     return (
       <Dialog
         onClose={handleClose}
@@ -69,13 +80,13 @@ export default function ClipModalForm(props) {
             <TextField
                 label="Start"
                 type="number"
-                inputProps={{ min: 0, step: inputStep }}
+                inputProps={numberInputProps}
                 {...startInputState}
             />
             <TextField
                 label="End"
                 type="number"
-                inputProps={{ min: 0, step: inputStep }}
+                inputProps={numberInputProps}
                 {...endInputState}
             />
             <Button
