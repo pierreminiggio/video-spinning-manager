@@ -16,6 +16,11 @@ const ClipList = styled.div`
 
 export default function Timeline(props) {
     const {clips, timelineId} = props
+    let totalTime = 0
+    clips.forEach(clip => {
+        totalTime += clip.end - clip.start
+    })
+
     return <Container hasClips={clips.length > 0}>
         <Droppable droppableId={timelineId} direction="horizontal">
             {provided => <ClipList
@@ -23,7 +28,12 @@ export default function Timeline(props) {
                 {...provided.droppableProps}
                 
             >
-                {clips.map(clip => <Clip key={clip.id} clip={clip} index={clip.order} />)}
+                {clips.map(clip => <Clip
+                    key={clip.id}
+                    clip={clip}
+                    index={clip.order}
+                    width={Math.floor(100 * (clip.end - clip.start) / totalTime)}
+                />)}
                 {provided.placeholder}
             </ClipList>}
         </Droppable>
