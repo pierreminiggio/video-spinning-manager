@@ -1,7 +1,7 @@
-import { Button, Dialog, DialogTitle, Slider, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, Slider, Tooltip, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useFormInput from "../../Form/useFormInput";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
@@ -74,7 +74,37 @@ export default function ClipModalForm(props) {
     
     const commandVerb = selectedValueId ? 'Edit' : 'Add'
 
-    const getValueText = value => value.toString()
+    const getValueText = value => {
+        const minutesFromSeconds = Math.floor(value / 60)
+        const secondsAndMillisecondsFromValue = value % 60
+        const seconds = Math.floor(secondsAndMillisecondsFromValue)
+        const belowSeconds = secondsAndMillisecondsFromValue - seconds
+        const hoursFromMinutes = Math.floor(minutesFromSeconds / 60)
+        const minutes = minutesFromSeconds % 60
+
+        let display = ''
+
+        const displayHours = hoursFromMinutes > 0
+        if (displayHours) {
+            display += hoursFromMinutes.toString() + 'h '
+        }
+
+       const displayMinutes = minutes > 0 || displayHours
+       if (displayMinutes) {
+           const minutesString = minutes.toString()
+           display += (displayHours ? minutesString.padStart(2, '0') : minutesString) + 'm '
+       }
+
+       const secondsString = seconds.toString()
+       display += (displayMinutes ? secondsString.padStart(2, '0') : secondsString)
+       
+       const millisecondsString = (belowSeconds.toFixed(3) * 1000).toString()
+       display += '.' + millisecondsString.padStart(3, '0')
+
+       display += ' s'
+
+       return display
+    }
 
     return (
       <Dialog
@@ -91,8 +121,10 @@ export default function ClipModalForm(props) {
                 <Slider
                     value={value}
                     onChange={handleChange}
-                    valueLabelDisplay="auto"
+                    valueLabelDisplay="on"
                     getAriaValueText={getValueText}
+                    valueLabelFormat={value => <div>{getValueText(value)}</div>}
+                    ValueLabelComponent={ValueLabelComponent}
                     min={0}
                     max={videoDuration}
                     step={inputStep}
@@ -115,3 +147,28 @@ ClipModalForm.propTypes = {
     open: PropTypes.bool.isRequired,
     selectedValue: PropTypes.object.isRequired,
 };
+
+function ValueLabelComponent(props) {
+  const { children, open, value } = props;
+
+  const popperRef = useRef(null);
+  useEffect(() => {
+    if (popperRef.current) {
+      popperRef.current.update();
+    }
+  });
+
+  return (
+    <Tooltip
+      PopperProps={{
+        popperRef,
+      }}
+      open={open}
+      enterTouchDelay={0}
+      placement="top"
+      title={value}
+    >
+      {children}
+    </Tooltip>
+  );
+}
