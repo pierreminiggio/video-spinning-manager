@@ -4,17 +4,25 @@ import { DragDropContext } from "react-beautiful-dnd";
 import flex from "../Style/flex";
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
+import Edit from "./Timeline/Edit";
 import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
     const { videoUrl } = props
     const [clips, setClips] = useState([])
-    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState({})
+    const [open, setOpen] = useState(false)
+    const [dragging, setDragging] = useState(false)
 
     const handleClickOpen = () => {
-        setOpen(true);
+        openModal({})
     };
+
+    const openModal = (value) => {
+        setSelectedValue(value)
+        setOpen(true);
+    }
 
     const handleClose = clip => {
         setOpen(false);
@@ -23,8 +31,9 @@ export default function Editor(props) {
             return
         }
 
+        const newClipList = Array.from(clips)
+
         if (! clip.id) {
-            const newClipList = Array.from(clips)
             const newClipValues = {...clip}
             let maxId = 0
             newClipList.forEach(newClip => {
@@ -35,8 +44,13 @@ export default function Editor(props) {
             newClipValues.id = maxId + 1
             newClipValues.order = clips.length + 1
             newClipList.push(newClipValues)
-            setClips(newClipList);
+        } else {
+            const clipToEdit = newClipList.filter(newClip => newClip.id === clip.id)[0]
+            clipToEdit.start = clip.start
+            clipToEdit.end = clip.end
         }
+
+        setClips(newClipList);
     };
     
     const orderedClips = [...clips]
@@ -51,10 +65,17 @@ export default function Editor(props) {
         return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
     })
 
+    const onClipDragStart = result => {
+        setDragging(true)
+    }
+
     const timelineId = 'timeline'
     const junkId = 'junk'
+    const editId = 'edit'
     
     const onClipDragEnd = result => {
+        setDragging(false)
+
         const { destination, source, draggableId } = result
 
         if (! destination) {
@@ -112,6 +133,10 @@ export default function Editor(props) {
                     newClip.order -= 1
                 }
             })
+        } else if (destinationDroppableId === editId) {
+            const clipToEdit = newClipList.filter(newClip => newClip.id === draggedClipId)[0]
+            openModal(clipToEdit)
+            return;
         }
         
         setClips(newClipList)
@@ -129,24 +154,30 @@ export default function Editor(props) {
         })
     })
 
+    const transition = '.5s'
+    const appearingStyle = {opacity: dragging ? 1 : 0, transition}
+    const disappearingStyle = {opacity: dragging ? 0 : 1, transition}
+
     return (
         <div>
             {JSON.stringify(remotionProps)}
-            <ClipModalForm selectedValue={{}} open={open} onClose={handleClose} />    
+            <ClipModalForm selectedValue={selectedValue} open={open} onClose={handleClose} />    
             <DragDropContext
-                onDragStart={() => null}
+                onDragStart={onClipDragStart}
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
                 <div style={{...flex, justifyContent: 'center', marginTop: gap / 2}}>
+                <div style={appearingStyle}><Edit editId={editId} /></div>
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={handleClickOpen}
+                        style={disappearingStyle}
                     >
                         Add a clip
                     </Button>
-                    <Junk junkId={junkId} />
+                    <div style={appearingStyle}><Junk junkId={junkId} /></div>
                 </div>
                 <Timeline clips={orderedClips} timelineId={timelineId} />
             </DragDropContext>

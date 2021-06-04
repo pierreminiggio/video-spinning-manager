@@ -10,8 +10,11 @@ const inputStep = "0.016"
 
 export default function ClipModalForm(props) {
     const { onClose, selectedValue, open } = props;
-    const startInputState = useFormInput(selectedValue?.start ? selectedValue.start : '');
-    const endInputState = useFormInput(selectedValue?.end ? selectedValue.end : '');
+    const startInputValue = selectedValue?.start ? selectedValue.start.toString() : ''
+    const startInputState = useFormInput(startInputValue);
+    const endInputValue = selectedValue?.end ? selectedValue.end.toString() : ''
+    const endInputState = useFormInput(endInputValue);
+    const selectedValueId = selectedValue?.id
     const [error, setError] = useState(null)
   
     const handleClose = () => {
@@ -45,8 +48,8 @@ export default function ClipModalForm(props) {
         setError(null)
 
         const updatedClip = { start, end }
-        if (selectedValue.id) {
-            updatedClip.id = selectedValue.id
+        if (selectedValueId) {
+            updatedClip.id = selectedValueId
         }
 
         onClose(updatedClip);
@@ -78,7 +81,7 @@ export default function ClipModalForm(props) {
                 color="primary"
                 onClick={handleFormSubmit}
             >
-                Add
+                {selectedValueId ? 'Edit' : 'Add'}
             </Button>
         </div>
       </Dialog>
