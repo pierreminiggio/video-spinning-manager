@@ -4,6 +4,6 @@ RewriteCond %{REQUEST_URI} !^/build/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /build/$1
-RewriteCond %{REQUEST_URI} !\.(css|js|html?|jpg|gif|map|png|pdf|woff|woff2)$
+RewriteCond %{REQUEST_URI} !\.(css|js|html?|jpg|gif|map|png|pdf|svg|woff|woff2)$
 RewriteRule ^(.*)$ build/index.html [L]
 
