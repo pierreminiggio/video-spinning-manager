@@ -1,8 +1,7 @@
-import { Button, Dialog, DialogTitle, Slider, Tooltip, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, Slider, Tooltip } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from "react";
-import useFormInput from "../../Form/useFormInput";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 

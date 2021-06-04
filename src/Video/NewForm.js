@@ -75,7 +75,7 @@ export default function NewForm(props) {
             color="primary"
             onClick={(e) => submitForm(e)}
         >Create</Button>
-        <br/><a href="" onClick={(e) => goBack(e)}>Return</a>
+        <br/><a href={"/content/" + videoId } onClick={(e) => goBack(e)}>Return</a>
     </div>
   );
 }

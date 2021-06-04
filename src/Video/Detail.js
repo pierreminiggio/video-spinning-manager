@@ -32,13 +32,11 @@ export default function Detail(props) {
             }
         ).then(response => response.json()).then(response => {
             if ([400, 401, 403, 404].includes(response.status)) {
-                setVideo(video);
                 return
             }
         
             setVideo(response);
         }).catch(error => {
-            setVideo(null);
         });
     }
 
@@ -84,7 +82,7 @@ export default function Detail(props) {
                 setDownloading(false)
             });
         },
-        [video, contentId]
+        [video, contentId, id, token]
     );
 
     const navigateToContent = (e, contentId) => {
@@ -97,7 +95,7 @@ export default function Detail(props) {
 
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
-            <a href="#" onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
+            <a href={"/content/" + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
             {video === null ? (<h1>Loading...</h1>) : (
                 <>
                     <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
