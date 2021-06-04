@@ -53,8 +53,8 @@ function App() {
         <div>
           <div className="header">
             <NavLink exact activeClassName="active" to="/">Home</NavLink>
-            <NavLink exact activeClassName="active" to="/login">Login</NavLink><small>(Access without token only)</small>
-            <NavLink exact activeClassName="active" to="/dashboard">Dashboard</NavLink><small>(Access with token only)</small>
+            <NavLink exact activeClassName="active" to="/login">Login</NavLink>
+            <NavLink exact activeClassName="active" to="/dashboard">Dashboard</NavLink>
           </div>
           <div className="content">
             <Switch>
