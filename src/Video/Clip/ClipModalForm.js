@@ -81,19 +81,17 @@ export default function ClipModalForm(props) {
         onClose={handleClose}
         aria-labelledby="clip-form-modal"
         open={open}
+        fullWidth
+        maxWidth="md"
     >
         <DialogTitle id="clip-form-modal" style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
             { videoDuration === null ? <h2>Loading...</h2> : (<>
                 { error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
-                <Typography id="range-slider" gutterBottom>
-                   Clip range
-                </Typography>
                 <Slider
                     value={value}
                     onChange={handleChange}
                     valueLabelDisplay="auto"
-                    aria-labelledby="range-slider"
                     getAriaValueText={getValueText}
                     min={0}
                     max={videoDuration}
