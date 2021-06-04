@@ -10,7 +10,7 @@ const inputStep = 0.016
 export default function ClipModalForm(props) {
     const { onClose, videoDuration, selectedValue, open } = props;
     const [value, setValue] = useState([0, 10]);
-    const [lastChangedValue, setLastChangedValue] = useState(0)
+    const [lastChangedIndex, setLastChangedIndex] = useState(0)
     const selectedValueId = selectedValue?.id
     const [error, setError] = useState(null)
   
@@ -31,7 +31,7 @@ export default function ClipModalForm(props) {
     const handleChange = (e, newValue) => {
         [0, 1].forEach(tooltipIndex => {
             if (value[tooltipIndex] !== newValue[tooltipIndex]) {
-                setLastChangedValue(tooltipIndex)
+                setLastChangedIndex(tooltipIndex)
             }
         })
         setValue(newValue);
@@ -128,8 +128,8 @@ export default function ClipModalForm(props) {
                     onChange={handleChange}
                     valueLabelDisplay="on"
                     getAriaValueText={getValueText}
-                    valueLabelFormat={value => <div><span style={{display: 'none'}}>{lastChangedValue}</span>{getValueText(value)}</div>}
-                    ValueLabelComponent={ValueLabelComponent}
+                    valueLabelFormat={value => getValueText(value)}
+                    ValueLabelComponent={getValueLabelComponent[lastChangedIndex]}
                     min={0}
                     max={videoDuration}
                     step={inputStep}
@@ -153,21 +153,18 @@ ClipModalForm.propTypes = {
     selectedValue: PropTypes.object.isRequired,
 };
 
-function ValueLabelComponent(props) {
-  const { children, index, open, value } = props;
+const getValueLabelComponent = {};
+[0, 1].forEach(lastChangedIndex => {
+    getValueLabelComponent[lastChangedIndex] = (props) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
+})
 
-  const popperRef = useRef(null);
-  useEffect(() => {
-    if (popperRef.current) {
-      popperRef.current.update();
-    }
-  });
+function ValueLabelComponent(props) {
+  const { children, index, lastChangedIndex, open, value } = props;
 
   const popperProps = {
-    popperRef
   }
 
-  if (index === props.value.props.children[0].props.children) {
+  if (index === lastChangedIndex) {
     popperProps.style = {zIndex: 1501}
   }
 
