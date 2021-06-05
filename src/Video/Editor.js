@@ -4,12 +4,13 @@ import { DragDropContext } from "react-beautiful-dnd";
 import flex from "../Style/flex";
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
+import RemotionPreview from "./Preview/RemotionPreview";
 import Edit from "./Timeline/Edit";
 import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
-    const { contentId, videoDuration, videoUrl, width } = props
+    const { contentId, videoDuration, videoUrl, videoHeight, videoWidth } = props
     const [clips, setClips] = useState([])
     const [selectedValue, setSelectedValue] = useState({})
     const [open, setOpen] = useState(false)
@@ -142,6 +143,8 @@ export default function Editor(props) {
         setClips(newClipList)
     }
 
+    let totalClipTime = 0
+
     const fps = 60
     const remotionClips = []
     orderedClips.forEach(orderedClip => {
@@ -152,10 +155,12 @@ export default function Editor(props) {
             from: startFrame,
             durationInFrames: endFrame - startFrame
         })
+        totalClipTime += orderedClip.end - orderedClip.start
     })
 
+    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * 60)
+
     const remotionProps = {props: JSON.stringify({clips: remotionClips})}
-    console.log(remotionProps)
 
     const transition = '.5s'
     const appearingStyle = {opacity: dragging ? 1 : 0, transition}
@@ -186,8 +191,16 @@ export default function Editor(props) {
                     </Button>
                     <div style={appearingStyle}><Junk junkId={junkId} /></div>
                 </div>
-                <Timeline contentId={contentId} clips={orderedClips} timelineId={timelineId} width={width} />
+                <Timeline contentId={contentId} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
             </DragDropContext>
+            {totalClipTime > 0 ? <RemotionPreview
+                compositionHeight={videoHeight}
+                compositionWidth={videoWidth}
+                durationInFrames={remotionProjectDurationInFrames}
+                fps={fps}
+                remotionProps={remotionProps}
+
+            /> : ''}
         </div>
     );
 }

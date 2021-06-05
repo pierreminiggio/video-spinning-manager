@@ -23,12 +23,8 @@ const TimeCode = styled.div`
 `
 
 export default function Timeline(props) {
-    const {contentId, clips, timelineId, width} = props
+    const {contentId, clips, timelineId, totalTime, width} = props
     const hasClips = clips.length > 0
-    let totalTime = 0
-    clips.forEach(clip => {
-        totalTime += clip.end - clip.start
-    })
 
     return <Container hasClips={hasClips} width={width}>
         {hasClips ? <div style={{

@@ -42,6 +42,7 @@ export default function Clip(props) {
                             height: '100%',
                         }}
                         src={process.env.REACT_APP_SPINNER_API_URL + '/thumbnail/' + contentId + '?s=' + time}
+                        alt={'Clip thumbnail for clip ' + clip.id}
                     />
                 ))}
             </Container>
