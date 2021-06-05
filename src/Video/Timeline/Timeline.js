@@ -53,6 +53,7 @@ export default function Timeline(props) {
                     contentId={contentId}
                     clip={clip}
                     index={clip.order}
+                    timelineWidth={width}
                     width={Math.floor(100 * (clip.end - clip.start) / totalTime)}
                 />)}
                 {provided.placeholder}

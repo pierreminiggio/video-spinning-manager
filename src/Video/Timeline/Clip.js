@@ -13,17 +13,19 @@ const Container = styled.div`
 `
 
 export default function Clip(props) {
-    const {contentId, clip, index, width} = props
+    const {contentId, clip, index, timelineWidth, width} = props
     
     const clipStart = clip.start
     const clipEnd = clip.end
 
-    const times = [
-        Math.round(clipStart).toString(),
-        Math.round(clipStart + ((clipEnd - clipStart) / 3)).toString(),
-        Math.round(clipStart + ((clipEnd - clipStart) * 2 / 3)).toString(),
-        Math.round(clipEnd).toString(),
-    ]
+    const times = [Math.round(clipStart).toString()]
+
+    if (timelineWidth > 400) {
+        times.push(Math.round(clipStart + ((clipEnd - clipStart) / 3)).toString())
+        times.push(Math.round(clipStart + ((clipEnd - clipStart) * 2 / 3)).toString())
+    }
+
+    times.push(Math.round(clipEnd).toString())
 
     return <Draggable draggableId={clip.id.toString()} index={index}>
         {provided => (
