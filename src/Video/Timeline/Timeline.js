@@ -4,11 +4,12 @@ import Clip from './Clip'
 import flex from '../../Style/flex'
 
 const Container = styled.div`${props => props.hasClips ? `
-margin: 8px;
-border: 1px #303F9F solid;
-border-radius: 2px;
-background-color: #303F9F
-` : ``}  
+    margin: 8px;
+    border: 1px #303F9F solid;
+    border-radius: 2px;
+    background-color: #303F9F;
+` : ``}
+    width: ${props => props.width}px;
 `
 
 const ClipList = styled.div`
@@ -22,14 +23,14 @@ const TimeCode = styled.div`
 `
 
 export default function Timeline(props) {
-    const {clips, timelineId} = props
+    const {contentId, clips, timelineId, width} = props
     const hasClips = clips.length > 0
     let totalTime = 0
     clips.forEach(clip => {
         totalTime += clip.end - clip.start
     })
 
-    return <Container hasClips={hasClips}>
+    return <Container hasClips={hasClips} width={width}>
         {hasClips ? <div style={{
             ...flex,
             justifyContent: 'space-between',
@@ -49,6 +50,7 @@ export default function Timeline(props) {
             >
                 {clips.map(clip => <Clip
                     key={clip.id}
+                    contentId={contentId}
                     clip={clip}
                     index={clip.order}
                     width={Math.floor(100 * (clip.end - clip.start) / totalTime)}

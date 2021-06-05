@@ -9,7 +9,7 @@ import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
-    const { videoDuration, videoUrl } = props
+    const { contentId, videoDuration, videoUrl, width } = props
     const [clips, setClips] = useState([])
     const [selectedValue, setSelectedValue] = useState({})
     const [open, setOpen] = useState(false)
@@ -183,7 +183,7 @@ export default function Editor(props) {
                     </Button>
                     <div style={appearingStyle}><Junk junkId={junkId} /></div>
                 </div>
-                <Timeline clips={orderedClips} timelineId={timelineId} />
+                <Timeline contentId={contentId} clips={orderedClips} timelineId={timelineId} width={width} />
             </DragDropContext>
         </div>
     );

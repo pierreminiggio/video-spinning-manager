@@ -113,6 +113,6 @@ export default function Detail(props) {
                 </>
             )}
         </div>
-        <Editor videoDuration={videoDuration} videoUrl={videoUrl} />
+        <Editor contentId={contentId} videoDuration={videoDuration} videoUrl={videoUrl} width={videoWidth} />
     </div>
 }
