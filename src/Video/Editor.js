@@ -143,16 +143,19 @@ export default function Editor(props) {
     }
 
     const fps = 60
-    const remotionProps = {clips: []}
+    const remotionClips = []
     orderedClips.forEach(orderedClip => {
         const startFrame = parseInt(orderedClip.start * fps)
         const endFrame = parseInt(orderedClip.end * fps)
-        remotionProps.clips.push({
+        remotionClips.push({
             video: videoUrl,
             from: startFrame,
             durationInFrames: endFrame - startFrame
         })
     })
+
+    const remotionProps = {props: JSON.stringify({clips: remotionClips})}
+    console.log(remotionProps)
 
     const transition = '.5s'
     const appearingStyle = {opacity: dragging ? 1 : 0, transition}
