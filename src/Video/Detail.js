@@ -16,6 +16,9 @@ export default function Detail(props) {
     const videoWidthDividedBy16 = Math.min(Math.trunc((width - 20) / 16), 45 /* 1280/720 (16*45) */)
     const videoWidth = videoWidthDividedBy16 * 16
     const videoHeight = videoWidthDividedBy16 * 9
+    const videoVideo = video && video.video ? video.video : null
+    const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
+    const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
 
     const updateDetails = (token, id) => {
         if (token === null) {
@@ -115,9 +118,10 @@ export default function Detail(props) {
         </div>
         <Editor
             contentId={contentId}
+            finishedVideoWidth={finishedVideoWidth}
+            finishedVideoHeight={finishedVideoHeight}
             videoDuration={videoDuration}
             videoUrl={videoUrl}
-            videoHeight={videoHeight}
             videoWidth={videoWidth}
         />
     </div>

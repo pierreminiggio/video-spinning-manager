@@ -10,6 +10,8 @@ export default function NewForm(props) {
   const token = props.token || location?.token
   const {id: videoId} = useParams()
   const [name, setName] = useState('')
+  const [width, setWidth] = useState(1080)
+  const [height, setHeight] = useState(1920)
   const [error, setError] = useState(null)
   
   const submitForm = e => {
@@ -31,7 +33,7 @@ export default function NewForm(props) {
             'Authorization': 'Bearer ' + token, 
             'Content-Type': 'application/json'
           }),
-          body: JSON.stringify({name})
+          body: JSON.stringify({name, width, height})
         }
       ).then(response => {
         if (response.status !== 200) {
@@ -69,13 +71,29 @@ export default function NewForm(props) {
         {error ? (
             <Alert variant="filled" severity="error">{error}</Alert>
         ) : ''}
-        <TextField label="Name" value={name} onChange={e => {setName(e.target.value)}} />
+        <TextField
+          label="Name"
+          value={name}
+          onChange={e => {setName(e.target.value)}}
+        />
+        <TextField
+          label="Width"
+          type="number"
+          value={width}
+          onChange={e => {setWidth(e.target.value)}}
+        />
+        <TextField
+          label="Height"
+          type="number"
+          value={height}
+          onChange={e => {setHeight(e.target.value)}}
+        />
         <Button
             variant="contained"
             color="primary"
             onClick={(e) => submitForm(e)}
         >Create</Button>
-        <br/><a href={"/content/" + videoId } onClick={(e) => goBack(e)}>Return</a>
+        <br/><a href={'/content/' + videoId} onClick={(e) => goBack(e)}>Return</a>
     </div>
   );
 }

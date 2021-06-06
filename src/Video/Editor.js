@@ -10,7 +10,14 @@ import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
 
 export default function Editor(props) {
-    const { contentId, videoDuration, videoUrl, videoHeight, videoWidth } = props
+    const {
+        contentId,
+        finishedVideoWidth,
+        finishedVideoHeight,
+        videoDuration,
+        videoUrl,
+        videoWidth
+    } = props
     const [clips, setClips] = useState([])
     const [selectedValue, setSelectedValue] = useState({})
     const [open, setOpen] = useState(false)
@@ -194,12 +201,12 @@ export default function Editor(props) {
                 <Timeline contentId={contentId} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
             </DragDropContext>
             {totalClipTime > 0 ? <RemotionPreview
-                compositionHeight={videoHeight}
-                compositionWidth={videoWidth}
+                compositionHeight={finishedVideoHeight}
+                compositionWidth={finishedVideoWidth}
                 durationInFrames={remotionProjectDurationInFrames}
                 fps={fps}
                 remotionProps={remotionProps}
-
+                width={videoWidth}
             /> : ''}
         </div>
     );
