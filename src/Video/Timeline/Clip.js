@@ -15,6 +15,7 @@ const Container = styled.div`
 export default function Clip(props) {
     const {contentId, clip, index, timelineWidth, width} = props
     
+    const clipId = clip.id
     const clipStart = clip.start
     const clipEnd = clip.end
 
@@ -27,7 +28,7 @@ export default function Clip(props) {
 
     times.push(Math.round(clipEnd).toString())
 
-    return <Draggable draggableId={clip.id.toString()} index={index}>
+    return <Draggable draggableId={clipId.toString()} index={index}>
         {provided => (
             <Container
                 {...provided.draggableProps}
@@ -42,7 +43,7 @@ export default function Clip(props) {
                             height: '100%',
                         }}
                         src={process.env.REACT_APP_SPINNER_API_URL + '/thumbnail/' + contentId + '?s=' + time}
-                        alt={'Clip thumbnail for clip ' + clip.id}
+                        alt={'Clip thumbnail for clip ' + clipId}
                     />
                 ))}
             </Container>
