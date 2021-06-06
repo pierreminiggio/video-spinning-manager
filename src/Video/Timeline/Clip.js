@@ -8,8 +8,12 @@ const Container = styled.div`
     background-color: #EEE;
     width: ${props => props.width}%;
     height: 100px;
+    box-sizing: border-box;
     overflow: hidden;
     display: flex;
+    ${props => props.isDragging ? `
+        max-width: 100px;
+    ` : ``}
 `
 
 export default function Clip(props) {
@@ -29,12 +33,13 @@ export default function Clip(props) {
     times.push(Math.round(clipEnd).toString())
 
     return <Draggable draggableId={clipId.toString()} index={index}>
-        {provided => (
+        {(provided, snapshot) => (
             <Container
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
                 width={width}
+                isDragging={snapshot.isDragging}
             >
                 {times.map((time, timeKey) => (
                     <img
