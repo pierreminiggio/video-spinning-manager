@@ -12,10 +12,11 @@ import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 import Detail from './Video/Detail';
+import Token from "./Video/Struct/Token";
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
-  const [token, setToken] = useState<string|null>(null);
+  const [token, setToken] = useState<Token>(null);
 
   useEffect(() => {
     const appToken = getToken();
