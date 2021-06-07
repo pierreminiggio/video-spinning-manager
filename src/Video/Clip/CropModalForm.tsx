@@ -25,9 +25,9 @@ export default function CropModalForm(props: CropModalFormProps) {
         maxWidth="md"
     >
         <DialogTitle id="crop-clip-form-modal" style={{textAlign: 'center'}}>Crop clip</DialogTitle>
-        <div style={{padding: gap / 2, ...flexColumn}}>
-            test
-        </div>
-      </Dialog>
+            <div style={{padding: gap / 2, ...flexColumn}}>
+                test
+            </div>
+        </Dialog>
     );
 }
