@@ -9,8 +9,7 @@ import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
 import formatTime from "../../Formatter/formatTime";
 import ValueLabelComponentGetter from "../../Form/Slider/ValueLabelComponentGetter";
-
-const inputStep = 0.016
+import inputStep from "../../Domain/inputStep";
 
 const tooltipIndexes = [0, 1]
 const valueLabelComponentGetter = new ValueLabelComponentGetter(tooltipIndexes)
