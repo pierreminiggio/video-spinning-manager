@@ -1,7 +1,7 @@
 import {Button, Dialog, DialogTitle, Slider, Tooltip, ValueLabelProps} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
-import {ChangeEvent, ElementType, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
