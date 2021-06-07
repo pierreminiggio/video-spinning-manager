@@ -224,8 +224,8 @@ export default function Editor(props: EditorProps) {
                 <Timeline contentId={contentId} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
             </DragDropContext>
             {totalClipTime > 0 ? <RemotionPreview
-                compositionHeight={finishedVideoHeight}
-                compositionWidth={finishedVideoWidth}
+                compositionHeight={finishedVideoHeight ?? 0}
+                compositionWidth={finishedVideoWidth ?? 0}
                 durationInFrames={remotionProjectDurationInFrames}
                 fps={fps}
                 remotionProps={remotionProps}

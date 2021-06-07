@@ -1,7 +1,17 @@
 import { Player } from '@remotion/player'
 import { ClipMaker } from '@pierreminiggio/spinning-manager-clip-maker/dist/ClipMaker.js';
+import RemotionProps from "../../Entity/Remotion/RemotionProps";
 
-export default function RemotionPreview(props) {
+interface RemotionPreviewProps {
+    compositionWidth: number
+    compositionHeight: number
+    durationInFrames: number
+    fps: number
+    remotionProps: RemotionProps
+    width: number
+}
+
+export default function RemotionPreview(props: RemotionPreviewProps) {
     const { compositionWidth, compositionHeight, durationInFrames, fps, remotionProps, width } = props
 
     return <Player
