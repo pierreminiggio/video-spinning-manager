@@ -15,7 +15,7 @@ import Detail from './Video/Detail';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<string|null>(null);
 
   useEffect(() => {
     const appToken = getToken();
