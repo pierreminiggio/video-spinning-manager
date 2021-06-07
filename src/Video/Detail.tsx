@@ -1,3 +1,4 @@
+import { History } from "history";
 import { MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router"
 import flexColumn from '../Style/flexColumn';
@@ -8,7 +9,7 @@ import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
 
 interface DetailProps {
-    history: any
+    history: History
     token: Token
 }
 
@@ -20,6 +21,7 @@ interface DetailParams {
 export default function Detail(props: DetailProps) {
     const history = props.history
     const location = history?.location
+    // @ts-ignore
     const token = props.token || location?.token
     const {contentId: contentIdParam, id: idParam} = useParams<DetailParams>()
     const contentId = parseInt(contentIdParam ?? '')
@@ -106,6 +108,7 @@ export default function Detail(props: DetailProps) {
 
     const navigateToContent = (e: MouseEvent<HTMLAnchorElement>, contentId: number) => {
         e.preventDefault()
+        // @ts-ignore
         history.push({
             pathname: '/content/' + contentId,
             token
