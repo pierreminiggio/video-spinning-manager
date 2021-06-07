@@ -18,7 +18,7 @@ const Container = styled.div`
     overflow: hidden;
     display: flex;
     ${(props: ContainerProps) => props.isDragging ? `
-        max-width: 100px;
+        box-shadow: 0px 0px 0px 6px rgba(255, 255, 0, .7);
     ` : ``}
 `
 
@@ -59,7 +59,7 @@ export default function Clip(props: ClipProps) {
                     <img
                         key={timeKey}
                         style={{
-                            height: '100%',
+                            height: '100%'
                         }}
                         src={process.env.REACT_APP_SPINNER_API_URL + '/thumbnail/' + contentId + '?s=' + time}
                         alt={'Clip thumbnail for clip ' + clipId}
