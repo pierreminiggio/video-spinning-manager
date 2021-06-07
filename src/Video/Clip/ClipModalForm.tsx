@@ -8,6 +8,7 @@ import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
 import formatTime from "../../Formatter/formatTime";
+import ValueLabelComponent from "../../Form/Slider/ValueLabelComponent";
 
 const inputStep = 0.016
 
@@ -150,31 +151,3 @@ tooltipIndexes.forEach(lastChangedIndex => {
     // @ts-ignore
     getValueLabelComponent[lastChangedIndex] = (props: ValueLabelComponentsProps) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
 })
-
-interface ValueLabelComponentsProps extends ValueLabelProps {
-    index: number
-    lastChangedIndex: number
-}
-
-function ValueLabelComponent(props: ValueLabelComponentsProps) {
-  const { children, index, lastChangedIndex, open, value } = props;
-
-  const popperProps: {style?: Object} = {
-  }
-
-  if (index === lastChangedIndex) {
-    popperProps.style = {zIndex: 1501}
-  }
-
-  return (
-    <Tooltip
-      PopperProps={popperProps}
-      open={open}
-      enterTouchDelay={0}
-      placement="top"
-      title={value}
-    >
-      {children}
-    </Tooltip>
-  );
-}

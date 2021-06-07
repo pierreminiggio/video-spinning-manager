@@ -11,6 +11,8 @@ interface CropModalFormProps {
 
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
+    const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
+    console.log(clipLength)
 
     const handleClose = () => {
         onClose(clip);
