@@ -1,22 +1,36 @@
-import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd'
+import styled, {StyledFunction} from 'styled-components';
+import {Draggable} from 'react-beautiful-dnd'
+import {HTMLProps} from "react";
+
+interface ContainerProps {
+    width: number
+    isDragging: boolean
+}
 
 const Container = styled.div`
     border: 1px lightgrey solid;
     border-radius: 2px;
     padding: 8px 0;
     background-color: #EEE;
-    width: ${props => props.width}%;
+    width: ${(props: ContainerProps) => props.width}%;
     height: 100px;
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
-    ${props => props.isDragging ? `
+    ${(props: ContainerProps) => props.isDragging ? `
         max-width: 100px;
     ` : ``}
 `
 
-export default function Clip(props) {
+interface ClipProps {
+    contentId: number
+    clip: any
+    index: number
+    timelineWidth: number
+    width: number
+}
+
+export default function Clip(props: ClipProps) {
     const {contentId, clip, index, timelineWidth, width} = props
     
     const clipId = clip.id
