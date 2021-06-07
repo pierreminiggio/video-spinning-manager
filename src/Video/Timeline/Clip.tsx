@@ -1,6 +1,5 @@
 import styled, {StyledFunction} from 'styled-components';
 import {Draggable} from 'react-beautiful-dnd'
-import {HTMLProps} from "react";
 
 interface ContainerProps {
     width: number
