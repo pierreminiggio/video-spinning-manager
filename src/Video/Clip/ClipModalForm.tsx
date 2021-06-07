@@ -8,7 +8,7 @@ import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
 import formatTime from "../../Formatter/formatTime";
-import ValueLabelComponent from "../../Form/Slider/ValueLabelComponent";
+import ValueLabelComponentGetter from "../../Form/Slider/ValueLabelComponentGetter";
 
 const inputStep = 0.016
 
@@ -104,6 +104,8 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         return formatTime(value)
     }
 
+    const valueLabelComponentGetter = new ValueLabelComponentGetter(tooltipIndexes)
+
     return (
       <Dialog
         onClose={handleClose}
@@ -122,7 +124,7 @@ export default function ClipModalForm(props: ClipModalFormProps) {
                     valueLabelDisplay="on"
                     getAriaValueText={getValueText}
                     valueLabelFormat={value => getValueText(value)}
-                    ValueLabelComponent={getValueLabelComponent[lastChangedIndex]}
+                    ValueLabelComponent={valueLabelComponentGetter.get[lastChangedIndex]}
                     min={0}
                     max={videoDuration}
                     step={inputStep}
@@ -146,8 +148,3 @@ ClipModalForm.propTypes = {
     selectedValue: PropTypes.object.isRequired,
 };
 
-const getValueLabelComponent: {[key: number]: ElementType<ValueLabelProps> | undefined} = {};
-tooltipIndexes.forEach(lastChangedIndex => {
-    // @ts-ignore
-    getValueLabelComponent[lastChangedIndex] = (props: ValueLabelComponentsProps) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
-})
