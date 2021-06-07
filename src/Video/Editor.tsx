@@ -39,10 +39,10 @@ export default function Editor(props: EditorProps) {
     const [dragging, setDragging] = useState(false)
 
     const handleClickOpen = () => {
-        openModal({})
+        openFormModal({})
     };
 
-    const openModal = (value: Clip|Object) => {
+    const openFormModal = (value: Clip|Object) => {
         setSelectedValue(value)
         setOpen(true);
     }
@@ -168,7 +168,7 @@ export default function Editor(props: EditorProps) {
             })
         } else if (destinationDroppableId === editId) {
             const clipToEdit = newClipList.filter(newClip => newClip.id === draggedClipId)[0]
-            openModal(clipToEdit)
+            openFormModal(clipToEdit)
             return;
         } else if (destinationDroppableId === cropId) {
             // TODO
