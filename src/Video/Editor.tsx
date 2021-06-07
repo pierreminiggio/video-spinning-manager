@@ -14,6 +14,7 @@ import NullableNumber from "../Struct/NullableNumber";
 import Clip from "../Entity/Clip";
 import RemotionClip from "../Entity/Remotion/RemotionClip";
 import Crop from "./Timeline/Crop";
+import CropModalForm from "./Clip/CropModalForm";
 
 interface EditorProps {
     contentId: NullableNumber
@@ -36,6 +37,7 @@ export default function Editor(props: EditorProps) {
     const [clips, setClips] = useState<Array<Clip>>([])
     const [selectedValue, setSelectedValue] = useState<Clip|Object>({})
     const [formOpen, setFormOpen] = useState(false)
+    const [cropOpen, setCropOpen] = useState(false)
     const [dragging, setDragging] = useState(false)
 
     const handleFormClickOpen = () => {
@@ -45,6 +47,11 @@ export default function Editor(props: EditorProps) {
     const openFormModal = (value: Clip|Object) => {
         setSelectedValue(value)
         setFormOpen(true);
+    }
+
+     const openCropModal = (value: Clip) => {
+        setSelectedValue(value)
+        setCropOpen(true);
     }
 
     const handleFormClose = (clip: Object|Clip) => {
@@ -83,6 +90,11 @@ export default function Editor(props: EditorProps) {
         }
 
         setClips(newClipList);
+    };
+
+    const handleCropClose = (clip: Clip) => {
+        setCropOpen(false);
+        //setClips(newClipList);
     };
     
     const orderedClips = [...clips]
@@ -169,9 +181,11 @@ export default function Editor(props: EditorProps) {
         } else if (destinationDroppableId === editId) {
             const clipToEdit = newClipList.filter(newClip => newClip.id === draggedClipId)[0]
             openFormModal(clipToEdit)
-            return;
+            return
         } else if (destinationDroppableId === cropId) {
-            // TODO
+            const clipToCrop = newClipList.filter(newClip => newClip.id === draggedClipId)[0]
+            openCropModal(clipToCrop)
+            return
         }
         
         setClips(newClipList)
@@ -200,6 +214,9 @@ export default function Editor(props: EditorProps) {
     const appearingStyle = {opacity: dragging ? 1 : 0, transition}
     const disappearingStyle = {opacity: dragging ? 0 : 1, transition}
 
+    // @ts-ignore
+    const clipToCrop: Clip = selectedValue
+
     return (
         <div>
             <ClipModalForm
@@ -207,6 +224,11 @@ export default function Editor(props: EditorProps) {
                 videoDuration={videoDuration}
                 open={formOpen}
                 onClose={handleFormClose}
+            />
+            <CropModalForm
+                clip={clipToCrop}
+                open={cropOpen}
+                onClose={handleCropClose}
             />
             <DragDropContext
                 onDragStart={onClipDragStart}

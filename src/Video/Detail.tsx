@@ -117,7 +117,7 @@ export default function Detail(props: DetailProps) {
 
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
-            <a href={"/content/" + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
+            <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
             {video === null ? (<h1>Loading...</h1>) : (
                 <>
                     <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
