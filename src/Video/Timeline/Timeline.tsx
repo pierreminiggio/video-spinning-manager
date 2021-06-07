@@ -2,8 +2,14 @@ import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 import flex from '../../Style/flex'
+import {default as ClipEntity} from '../../Entity/Clip'
 
-const Container = styled.div`${props => props.hasClips ? `
+interface ContainerProps {
+    hasClips: boolean
+    width: number
+}
+
+const Container = styled.div`${(props: ContainerProps) => props.hasClips ? `
     margin: 8px;
     border: 1px #303F9F solid;
     border-radius: 2px;
@@ -22,7 +28,15 @@ const TimeCode = styled.div`
     padding: 3px 6px;
 `
 
-export default function Timeline(props) {
+interface TimelineProps {
+    contentId: number
+    clips: Array<ClipEntity>
+    timelineId: string
+    totalTime: number
+    width: number
+}
+
+export default function Timeline(props: TimelineProps) {
     const {contentId, clips, timelineId, totalTime, width} = props
     const hasClips = clips.length > 0
 
