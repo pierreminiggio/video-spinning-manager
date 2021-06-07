@@ -1,4 +1,4 @@
-export default function formatTime(time: number): string {
+export default function formatTime(time: number, displayMilliseconds: boolean = true): string {
     const minutesFromSeconds = Math.floor(time / 60)
     const secondsAndMillisecondsFromValue = time % 60
     const seconds = Math.floor(secondsAndMillisecondsFromValue)
@@ -22,8 +22,10 @@ export default function formatTime(time: number): string {
    const secondsString = seconds.toString()
    display += (displayMinutes ? secondsString.padStart(2, '0') : secondsString)
 
-   const millisecondsString = (parseFloat(belowSeconds.toFixed(3)) * 1000).toString()
-   display += '.' + millisecondsString.padStart(3, '0')
+    if (displayMilliseconds) {
+        const millisecondsString = (parseFloat(belowSeconds.toFixed(3)) * 1000).toString()
+        display += '.' + millisecondsString.padStart(3, '0')
+    }
 
    display += ' s'
 

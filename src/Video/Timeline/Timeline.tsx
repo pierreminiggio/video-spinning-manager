@@ -3,6 +3,7 @@ import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 import flex from '../../Style/flex'
 import {default as ClipEntity} from '../../Entity/Clip'
+import formatTime from "../../Formatter/formatTime";
 
 interface ContainerProps {
     hasClips: boolean
@@ -49,8 +50,8 @@ export default function Timeline(props: TimelineProps) {
             color: 'white'
         }}>
             <TimeCode>0s</TimeCode>
-            <TimeCode>{Math.round(totalTime / 2)}s</TimeCode>
-            <TimeCode>{Math.round(totalTime)}s</TimeCode>
+            <TimeCode>{formatTime(Math.round(totalTime / 2), false)}</TimeCode>
+            <TimeCode>{formatTime(Math.round(totalTime), false)}</TimeCode>
         </div> : ''}
         <Droppable droppableId={timelineId} direction="horizontal">
             {provided => <ClipList
