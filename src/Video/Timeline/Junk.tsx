@@ -8,17 +8,25 @@ const Container = styled.div`
     background-color: red;
 `
 
+interface JunkListProps {
+    trash: string
+}
+
 const JunkList = styled.div`
     padding: 8px;
     display: flex;
-    background-image: url(${props => props.trash});
+    background-image: url(${(props: JunkListProps) => props.trash});
     background-position: center;
     background-repeat: no-repeat;
     min-width: 34px;
     min-height: 34px;
 `
 
-export default function Junk(props) {
+interface JunkProps {
+    junkId: string
+}
+
+export default function Junk(props: JunkProps) {
     const {junkId} = props
     return <Container>
         <Droppable droppableId={junkId} direction="horizontal">
