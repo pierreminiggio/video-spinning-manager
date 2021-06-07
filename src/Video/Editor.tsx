@@ -38,7 +38,7 @@ export default function Editor(props: EditorProps) {
     const [open, setOpen] = useState(false)
     const [dragging, setDragging] = useState(false)
 
-    const handleClickOpen = () => {
+    const handleFormClickOpen = () => {
         openFormModal({})
     };
 
@@ -47,7 +47,7 @@ export default function Editor(props: EditorProps) {
         setOpen(true);
     }
 
-    const handleClose = (clip: Object|Clip) => {
+    const handleFormClose = (clip: Object|Clip) => {
         setOpen(false);
 
         if (Object.keys(clip).length === 0) {
@@ -206,7 +206,7 @@ export default function Editor(props: EditorProps) {
                 selectedValue={selectedValue}
                 videoDuration={videoDuration}
                 open={open}
-                onClose={handleClose}
+                onClose={handleFormClose}
             />
             <DragDropContext
                 onDragStart={onClipDragStart}
@@ -219,7 +219,7 @@ export default function Editor(props: EditorProps) {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleClickOpen}
+                        onClick={handleFormClickOpen}
                         style={disappearingStyle}
                     >
                         Add a clip
