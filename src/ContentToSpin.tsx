@@ -1,20 +1,37 @@
 import { Button } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import flexColumn from './Style/flexColumn';
 import gap from './Style/gap';
+import {History} from "history";
+import Content from "./Entity/Content/Content";
 
-function ContentToSpin(props) {
+interface ContentToSpinProps {
+  history: History
+}
+
+interface ContentToSpinParams {
+    id: string|undefined
+}
+
+function ContentToSpin(props: ContentToSpinProps) {
   const history = props.history
   const location = history?.location
+  // @ts-ignore
   const token = props.token || location?.token
-  const {id: videoId} = useParams()
-  const [video, setVideo] = useState({content: location?.videoContent})
+  const {id} = useParams<ContentToSpinParams>()
+  const videoId = parseInt(id ?? '')
+
+  const defaultContent: Content = {
+    // @ts-ignore
+    content: location?.videoContent,
+    videos: []
+  }
+  const [video, setVideo] = useState<Content>(defaultContent)
   const videoContent = video.content ? video.content : {}
   const videoVideos = video.videos ? video.videos : []
 
   useEffect(() => {
-
     
     if (token === null) {
       return
@@ -30,25 +47,26 @@ function ContentToSpin(props) {
       }
     ).then(response => response.json()).then(response => {
       if ([400, 401, 403, 404].includes(response.status)) {
-        setVideo({});
+        setVideo(defaultContent);
         return
       }
 
       setVideo(response);
     }).catch(error => {
-      setVideo({});
+      setVideo(defaultContent);
     });
   }, [token, videoId]);
 
-  const createNewVideo = e => {
+  const createNewVideo = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    // @ts-ignore
     history.push({
       pathname: '/content/' + videoId + '/new',
       token
     })
   }
   
-  const finishEditingContent = e => {
+  const finishEditingContent = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     fetch(
@@ -73,17 +91,20 @@ function ContentToSpin(props) {
       });
   }
 
-  const navigateToVideo = (e, id) => {
+  const navigateToVideo = (e: MouseEvent<HTMLButtonElement>, id: number) => {
     e.preventDefault()
+    // @ts-ignore
     history.push({
       pathname: '/content/' + videoId + '/video/' + id,
       token
     })
   }
 
+  // @ts-ignore
+  const videoContentTitle: string = videoContent.title ? videoContent.title : 'Loading...'
   return (
     <div style={flexColumn}>
-      {videoContent.title ? videoContent.title : 'Loading...'}
+      {videoContentTitle}
       <Button
         variant="contained"
         onClick={createNewVideo}
@@ -95,7 +116,7 @@ function ContentToSpin(props) {
           key={videoIndex + 1}
           variant="contained"
           color="primary"
-          style={videoIndex === 0 ? {marginTop: gap} : null}
+          style={videoIndex === 0 ? {marginTop: gap} : {}}
           onClick={(e) => navigateToVideo(e, videoVideo.id)}
         >
           {videoVideo.name}

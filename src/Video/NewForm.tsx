@@ -22,7 +22,7 @@ export default function NewForm(props: NewFormProps) {
     // @ts-ignore
     const token = props.token || location?.token
     const {id} = useParams<NewFormParams>()
-    const videoId = id ? parseInt(id) : 0
+    const videoId = parseInt(id ?? '')
     const [name, setName] = useState('')
     const [width, setWidth] = useState(1080)
     const [height, setHeight] = useState(1920)
