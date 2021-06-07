@@ -12,7 +12,7 @@ import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 import Detail from './Video/Detail';
-import Token from "./Video/Struct/Token";
+import Token from "./Struct/Token";
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);

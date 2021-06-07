@@ -2,9 +2,10 @@ import { MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router"
 import flexColumn from '../Style/flexColumn';
 import Editor from "./Editor";
-import Token from "./Struct/Token";
-import Video from "./Entity/Video/Video";
-import VideoDuration from "./Struct/VideoDuration";
+import Token from "../Struct/Token";
+import Video from "../Entity/Video/Video";
+import VideoDuration from "../Struct/VideoDuration";
+import VideoUrl from "../Struct/VideoUrl";
 
 interface DetailProps {
     history: any
@@ -25,7 +26,7 @@ export default function Detail(props: DetailProps) {
     const id = parseInt(idParam ?? '')
     const [video, setVideo] = useState<Video|null>(null)
     const [downloading, setDownloading] = useState(false)
-    const videoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
+    const videoUrl: VideoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
     const [videoDuration, setVideoDuration] = useState<VideoDuration>(null)
     const { innerWidth: width } = window
     const videoWidthDividedBy16 = Math.min(Math.trunc((width - 20) / 16), 45 /* 1280/720 (16*45) */)
@@ -129,7 +130,7 @@ export default function Detail(props: DetailProps) {
                             setVideoDuration(target.duration)
                         }}
                     >
-                        <source src={videoUrl} type="video/mp4"/>
+                        <source src={videoUrl} type="video/mp4" />
                     </video> : ''}
                 </>
             )}

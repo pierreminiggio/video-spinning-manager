@@ -1,25 +1,38 @@
-import { Button, Dialog, DialogTitle, Slider, Tooltip } from "@material-ui/core";
+import {Button, Dialog, DialogTitle, Slider, Tooltip, ValueLabelProps} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from "react";
+import {ChangeEvent, ElementType, SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
+import VideoDuration from "../../Struct/VideoDuration";
+import Clip from "../../Entity/Clip";
+import NullableString from "../../Struct/NullableString";
 
 const inputStep = 0.016
 
 const tooltipIndexes = [0, 1]
 
-export default function ClipModalForm(props) {
+interface ClipModalFormProps {
+    onClose: (clip: Object|Clip) => void
+    videoDuration: VideoDuration
+    selectedValue: Clip|Object
+    open: boolean
+}
+
+export default function ClipModalForm(props: ClipModalFormProps) {
     const { onClose, videoDuration, selectedValue, open } = props;
     const [value, setValue] = useState([0, 10]);
     const [lastChangedIndex, setLastChangedIndex] = useState(0)
+    // @ts-ignore
     const selectedValueId = selectedValue?.id
-    const [error, setError] = useState(null)
+    const [error, setError] = useState<NullableString>(null)
   
     useEffect(
         () => {
             setValue([
+                // @ts-ignore
                 selectedValue?.start ? selectedValue.start : 0,
+                // @ts-ignore
                 selectedValue?.end ? selectedValue.end : 10
             ])
         },
@@ -30,16 +43,19 @@ export default function ClipModalForm(props) {
         onClose(selectedValue);
     };
 
-    const handleChange = (e, newValue) => {
+    const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
         tooltipIndexes.forEach(tooltipIndex => {
+            // @ts-ignore
             if (value[tooltipIndex] !== newValue[tooltipIndex]) {
                 setLastChangedIndex(tooltipIndex)
             }
         })
+
+        // @ts-ignore
         setValue(newValue);
     };
   
-    const handleFormSubmit = e => {
+    const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()
 
         const start = value[0]
@@ -73,6 +89,7 @@ export default function ClipModalForm(props) {
 
         const updatedClip = { start, end }
         if (selectedValueId) {
+            // @ts-ignore
             updatedClip.id = selectedValueId
         }
 
@@ -81,7 +98,7 @@ export default function ClipModalForm(props) {
     
     const commandVerb = selectedValueId ? 'Edit' : 'Add'
 
-    const getValueText = value => {
+    const getValueText = (value: number) => {
         const minutesFromSeconds = Math.floor(value / 60)
         const secondsAndMillisecondsFromValue = value % 60
         const seconds = Math.floor(secondsAndMillisecondsFromValue)
@@ -105,7 +122,7 @@ export default function ClipModalForm(props) {
        const secondsString = seconds.toString()
        display += (displayMinutes ? secondsString.padStart(2, '0') : secondsString)
        
-       const millisecondsString = (belowSeconds.toFixed(3) * 1000).toString()
+       const millisecondsString = (parseFloat(belowSeconds.toFixed(3)) * 1000).toString()
        display += '.' + millisecondsString.padStart(3, '0')
 
        display += ' s'
@@ -155,15 +172,21 @@ ClipModalForm.propTypes = {
     selectedValue: PropTypes.object.isRequired,
 };
 
-const getValueLabelComponent = {};
+const getValueLabelComponent: {[key: number]: ElementType<ValueLabelProps> | undefined} = {};
 tooltipIndexes.forEach(lastChangedIndex => {
-    getValueLabelComponent[lastChangedIndex] = (props) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
+    // @ts-ignore
+    getValueLabelComponent[lastChangedIndex] = (props: ValueLabelComponentsProps) => <ValueLabelComponent {... props} lastChangedIndex={lastChangedIndex} />
 })
 
-function ValueLabelComponent(props) {
+interface ValueLabelComponentsProps extends ValueLabelProps {
+    index: number
+    lastChangedIndex: number
+}
+
+function ValueLabelComponent(props: ValueLabelComponentsProps) {
   const { children, index, lastChangedIndex, open, value } = props;
 
-  const popperProps = {
+  const popperProps: {style?: Object} = {
   }
 
   if (index === lastChangedIndex) {

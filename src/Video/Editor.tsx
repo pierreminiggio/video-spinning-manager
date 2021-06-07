@@ -1,6 +1,6 @@
 import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
+import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import flex from "../Style/flex";
 import gap from "../Style/gap";
 import ClipModalForm from "./Clip/ClipModalForm";
@@ -8,8 +8,22 @@ import RemotionPreview from "./Preview/RemotionPreview";
 import Edit from "./Timeline/Edit";
 import Junk from "./Timeline/Junk";
 import Timeline from "./Timeline/Timeline";
+import VideoDuration from "../Struct/VideoDuration";
+import VideoUrl from "../Struct/VideoUrl";
+import NullableNumber from "../Struct/NullableNumber";
+import Clip from "../Entity/Clip";
+import RemotionClip from "../Entity/Remotion/RemotionClip";
 
-export default function Editor(props) {
+interface EditorProps {
+    contentId: NullableNumber
+    finishedVideoWidth: NullableNumber
+    finishedVideoHeight: NullableNumber
+    videoDuration: VideoDuration
+    videoUrl: VideoUrl
+    videoWidth: number
+}
+
+export default function Editor(props: EditorProps) {
     const {
         contentId,
         finishedVideoWidth,
@@ -18,8 +32,8 @@ export default function Editor(props) {
         videoUrl,
         videoWidth
     } = props
-    const [clips, setClips] = useState([])
-    const [selectedValue, setSelectedValue] = useState({})
+    const [clips, setClips] = useState<Array<Clip>>([])
+    const [selectedValue, setSelectedValue] = useState<Clip|Object>({})
     const [open, setOpen] = useState(false)
     const [dragging, setDragging] = useState(false)
 
@@ -27,34 +41,43 @@ export default function Editor(props) {
         openModal({})
     };
 
-    const openModal = (value) => {
+    const openModal = (value: Clip|Object) => {
         setSelectedValue(value)
         setOpen(true);
     }
 
-    const handleClose = clip => {
+    const handleClose = (clip: Object|Clip) => {
         setOpen(false);
 
         if (Object.keys(clip).length === 0) {
             return
         }
 
-        const newClipList = Array.from(clips)
+        const newClipList: Array<Clip> = Array.from(clips)
 
+        // @ts-ignore
         if (! clip.id) {
-            const newClipValues = {...clip}
+            const newClipValues: Clip|Object = {...clip}
             let maxId = 0
-            newClipList.forEach(newClip => {
+            newClipList.forEach((newClip: Clip) => {
                 if (newClip.id > maxId) {
                     maxId = newClip.id
                 }
             })
+
+            // @ts-ignore
             newClipValues.id = maxId + 1
+            // @ts-ignore
             newClipValues.order = clips.length + 1
+
+            // @ts-ignore
             newClipList.push(newClipValues)
         } else {
-            const clipToEdit = newClipList.filter(newClip => newClip.id === clip.id)[0]
+             // @ts-ignore
+            const clipToEdit = newClipList.filter((newClip: Clip) => newClip.id === clip.id)[0]
+             // @ts-ignore
             clipToEdit.start = clip.start
+             // @ts-ignore
             clipToEdit.end = clip.end
         }
 
@@ -73,7 +96,7 @@ export default function Editor(props) {
         return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
     })
 
-    const onClipDragStart = result => {
+    const onClipDragStart = (result: DropResult) => {
         setDragging(true)
     }
 
@@ -81,7 +104,7 @@ export default function Editor(props) {
     const junkId = 'junk'
     const editId = 'edit'
     
-    const onClipDragEnd = result => {
+    const onClipDragEnd = (result: DropResult) => {
         setDragging(false)
 
         const { destination, source, draggableId } = result
@@ -153,10 +176,10 @@ export default function Editor(props) {
     let totalClipTime = 0
 
     const fps = 60
-    const remotionClips = []
+    const remotionClips: Array<RemotionClip> = []
     orderedClips.forEach(orderedClip => {
-        const startFrame = parseInt(orderedClip.start * fps)
-        const endFrame = parseInt(orderedClip.end * fps)
+        const startFrame = Math.ceil(orderedClip.start * fps)
+        const endFrame = Math.ceil(orderedClip.end * fps)
         remotionClips.push({
             video: videoUrl,
             from: startFrame,
