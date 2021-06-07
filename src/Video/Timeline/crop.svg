@@ -1,0 +1,19 @@
+<svg
+    id="Capa_1"
+    enable-background="new 0 0 488.471 488.471"
+    height="30"
+    viewBox="0 0 488.471 488.471"
+    width="30"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        d="m122.118 0h-61.059v61.059h-61.059v61.059h61.059v305.294h274.765v-61.059h-213.706z"
+        stroke="#fff"
+        fill="#fff"
+    />
+    <path
+        d="m427.412 366.353v-305.294h-274.765v61.059h213.706v366.353h61.059v-61.059h61.059v-61.059z"
+        stroke="#fff"
+        fill="#fff"
+    />
+</svg>

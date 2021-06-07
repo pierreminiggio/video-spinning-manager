@@ -13,6 +13,7 @@ import VideoUrl from "../Struct/VideoUrl";
 import NullableNumber from "../Struct/NullableNumber";
 import Clip from "../Entity/Clip";
 import RemotionClip from "../Entity/Remotion/RemotionClip";
+import Crop from "./Timeline/Crop";
 
 interface EditorProps {
     contentId: NullableNumber
@@ -103,6 +104,7 @@ export default function Editor(props: EditorProps) {
     const timelineId = 'timeline'
     const junkId = 'junk'
     const editId = 'edit'
+    const cropId = 'crop'
     
     const onClipDragEnd = (result: DropResult) => {
         setDragging(false)
@@ -168,6 +170,8 @@ export default function Editor(props: EditorProps) {
             const clipToEdit = newClipList.filter(newClip => newClip.id === draggedClipId)[0]
             openModal(clipToEdit)
             return;
+        } else if (destinationDroppableId === cropId) {
+            // TODO
         }
         
         setClips(newClipList)
@@ -209,8 +213,9 @@ export default function Editor(props: EditorProps) {
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
-                <div style={{...flex, justifyContent: 'center', marginTop: gap / 2}}>
-                <div style={appearingStyle}><Edit editId={editId} /></div>
+                <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, gap}}>
+                    <div style={appearingStyle}><Edit editId={editId} /></div>
+                    <div style={appearingStyle}><Crop cropId={cropId} /></div>
                     <Button
                         variant="contained"
                         color="primary"
