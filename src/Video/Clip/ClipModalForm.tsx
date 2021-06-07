@@ -13,6 +13,7 @@ import ValueLabelComponentGetter from "../../Form/Slider/ValueLabelComponentGett
 const inputStep = 0.016
 
 const tooltipIndexes = [0, 1]
+const valueLabelComponentGetter = new ValueLabelComponentGetter(tooltipIndexes)
 
 interface ClipModalFormProps {
     onClose: (clip: Object|Clip) => void
@@ -103,8 +104,6 @@ export default function ClipModalForm(props: ClipModalFormProps) {
     const getValueText = (value: number) => {
         return formatTime(value)
     }
-
-    const valueLabelComponentGetter = new ValueLabelComponentGetter(tooltipIndexes)
 
     return (
       <Dialog
