@@ -35,7 +35,7 @@ export default function Editor(props: EditorProps) {
     } = props
     const [clips, setClips] = useState<Array<Clip>>([])
     const [selectedValue, setSelectedValue] = useState<Clip|Object>({})
-    const [open, setOpen] = useState(false)
+    const [formOpen, setFormOpen] = useState(false)
     const [dragging, setDragging] = useState(false)
 
     const handleFormClickOpen = () => {
@@ -44,11 +44,11 @@ export default function Editor(props: EditorProps) {
 
     const openFormModal = (value: Clip|Object) => {
         setSelectedValue(value)
-        setOpen(true);
+        setFormOpen(true);
     }
 
     const handleFormClose = (clip: Object|Clip) => {
-        setOpen(false);
+        setFormOpen(false);
 
         if (Object.keys(clip).length === 0) {
             return
@@ -205,7 +205,7 @@ export default function Editor(props: EditorProps) {
             <ClipModalForm
                 selectedValue={selectedValue}
                 videoDuration={videoDuration}
-                open={open}
+                open={formOpen}
                 onClose={handleFormClose}
             />
             <DragDropContext
