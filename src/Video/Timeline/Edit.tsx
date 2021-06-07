@@ -8,17 +8,25 @@ const Container = styled.div`
     background-color: #3F51B5;
 `
 
+interface EditListProps {
+    edit: string
+}
+
 const EditList = styled.div`
     padding: 8px;
     display: flex;
-    background-image: url(${props => props.edit});
+    background-image: url(${(props: EditListProps) => props.edit});
     background-position: center;
     background-repeat: no-repeat;
     min-width: 34px;
     min-height: 34px;
 `
 
-export default function Edit(props) {
+interface EditProps {
+    editId: string
+}
+
+export default function Edit(props: EditProps) {
     const {editId} = props
     return <Container>
         <Droppable droppableId={editId} direction="horizontal">
