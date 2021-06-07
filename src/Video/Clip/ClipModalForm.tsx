@@ -7,6 +7,7 @@ import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
+import formatTime from "../../Formatter/formatTime";
 
 const inputStep = 0.016
 
@@ -99,35 +100,7 @@ export default function ClipModalForm(props: ClipModalFormProps) {
     const commandVerb = selectedValueId ? 'Edit' : 'Add'
 
     const getValueText = (value: number) => {
-        const minutesFromSeconds = Math.floor(value / 60)
-        const secondsAndMillisecondsFromValue = value % 60
-        const seconds = Math.floor(secondsAndMillisecondsFromValue)
-        const belowSeconds = secondsAndMillisecondsFromValue - seconds
-        const hoursFromMinutes = Math.floor(minutesFromSeconds / 60)
-        const minutes = minutesFromSeconds % 60
-
-        let display = ''
-
-        const displayHours = hoursFromMinutes > 0
-        if (displayHours) {
-            display += hoursFromMinutes.toString() + 'h '
-        }
-
-       const displayMinutes = minutes > 0 || displayHours
-       if (displayMinutes) {
-           const minutesString = minutes.toString()
-           display += (displayHours ? minutesString.padStart(2, '0') : minutesString) + 'm '
-       }
-
-       const secondsString = seconds.toString()
-       display += (displayMinutes ? secondsString.padStart(2, '0') : secondsString)
-       
-       const millisecondsString = (parseFloat(belowSeconds.toFixed(3)) * 1000).toString()
-       display += '.' + millisecondsString.padStart(3, '0')
-
-       display += ' s'
-
-       return display
+        return formatTime(value)
     }
 
     return (
