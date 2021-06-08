@@ -269,7 +269,13 @@ export default function Editor(props: EditorProps) {
                         <div><Junk junkId={junkId} /></div>
                     </div>
                 </div>
-                <Timeline contentId={contentId ?? 0} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
+                <Timeline
+                    contentId={contentId ?? 0}
+                    clips={orderedClips}
+                    timelineId={timelineId}
+                    totalTime={totalClipTime}
+                    width={videoWidth}
+                />
             </DragDropContext>
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}

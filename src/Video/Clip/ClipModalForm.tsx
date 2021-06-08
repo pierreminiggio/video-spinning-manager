@@ -114,8 +114,8 @@ export default function ClipModalForm(props: ClipModalFormProps) {
     >
         <DialogTitle id="clip-form-modal" style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
-            { videoDuration === null ? <h2>Loading...</h2> : (<>
-                { error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
+            {videoDuration === null ? <h2>Loading...</h2> : (<>
+                {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
                 <Slider
                     value={value}
                     onChange={handleChange}
