@@ -10,6 +10,7 @@ import formatTime from "../../Formatter/formatTime";
 import {ReactComponent as Crop} from '../../Resources/Svg/Crop.svg'
 import {ReactComponent as Trash} from '../../Resources/Svg/Trash.svg'
 import NullableString from "../../Struct/NullableString";
+import CropFunction from "../../Struct/CropFunction";
 
 const belowSliderContainerId = 'below-slider-container'
 const movementActionContainerPrefix = 'movement-actions-'
@@ -20,7 +21,8 @@ interface CropModalFormProps {
     open: boolean
 }
 
-let deleteCrop: (index: number) => void
+let editCrop: CropFunction
+let deleteCrop: CropFunction
 
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
@@ -41,6 +43,10 @@ export default function CropModalForm(props: CropModalFormProps) {
         setError(null)
         newValue.splice(index, 1)
         setValue(newValue)
+    }
+
+    editCrop = (index: number) => {
+        alert('edit ' + index)
     }
 
     useEffect(() => {
@@ -153,6 +159,8 @@ function ValueLabelComponent(props: ValueLabelProps) {
                     children={children}
                     index={index}
                     indexes={JSON.parse(belowSliderContainer.dataset.indexes ?? '[]')}
+                    onCrop={editCrop}
+                    onDelete={deleteCrop}
                 />, actionContainer)
             }
         }
@@ -172,8 +180,10 @@ function ActionContainer(props: {
     children: ReactElement,
     index: number
     indexes: number[]
+    onCrop: CropFunction
+    onDelete: CropFunction
 }) {
-    const {children, index, indexes} = props
+    const {children, index, indexes, onCrop, onDelete} = props
 
     const childrenLeft = children.props.style.left
 
@@ -183,12 +193,12 @@ function ActionContainer(props: {
 
     const handleCropClick = (e: MouseEvent<HTMLButtonElement>) => {
         preventDefault(e)
-        alert('test crop')
+        onCrop(index)
     }
 
     const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
         preventDefault(e)
-        deleteCrop(index)
+        onDelete(index)
     }
 
     const preventDefault = (e: MouseEvent<HTMLButtonElement>) => {
