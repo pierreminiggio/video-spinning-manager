@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
-import trash from './trash.svg'
+import trash from '../../Resources/Svg/Trash.svg'
 
 const Container = styled.div`
     border: 1px solid red;

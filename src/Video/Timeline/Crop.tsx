@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
-import crop from './crop.svg'
+import crop from '../../Resources/Svg/Crop.svg'
 
 const Container = styled.div`
     border: 1px solid #3F51B5;
