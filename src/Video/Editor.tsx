@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import {CSSProperties, useEffect, useState} from "react";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import flex from "../Style/flex";
 import gap from "../Style/gap";
@@ -211,11 +211,21 @@ export default function Editor(props: EditorProps) {
     const remotionProps = {props: JSON.stringify({clips: remotionClips})}
 
     const transition = '.5s'
-    const appearingStyle = {opacity: dragging ? 1 : 0, transition}
-    const disappearingStyle = {opacity: dragging ? 0 : 1, transition}
+    const appearingStyle: CSSProperties = {
+        opacity: dragging ? 1 : 0,
+        height: dragging ? 'auto' : 0,
+        transition
+    }
+    const disappearingStyle: CSSProperties = {
+        opacity: dragging ? 0 : 1,
+        height: dragging ? 0 : 'auto',
+        transition
+    }
 
     // @ts-ignore
     const clipToCrop: Clip = selectedValue
+
+    const buttonLineStyle: CSSProperties = {...flex, justifyContent: 'center', marginTop: gap / 2, gap}
 
     return (
         <div>
@@ -235,18 +245,19 @@ export default function Editor(props: EditorProps) {
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
-                <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, gap}}>
-                    <div style={appearingStyle}><Edit editId={editId} /></div>
-                    <div style={appearingStyle}><Crop cropId={cropId} /></div>
+                <div style={{...buttonLineStyle, ...disappearingStyle}}>
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={handleFormClickOpen}
-                        style={disappearingStyle}
                     >
                         Add a clip
                     </Button>
-                    <div style={appearingStyle}><Junk junkId={junkId} /></div>
+                </div>
+                <div style={{...buttonLineStyle, ...appearingStyle}}>
+                    <div><Edit editId={editId} /></div>
+                    <div><Crop cropId={cropId} /></div>
+                    <div><Junk junkId={junkId} /></div>
                 </div>
                 <Timeline contentId={contentId ?? 0} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
             </DragDropContext>

@@ -2,11 +2,11 @@ import {Button, Dialog, DialogTitle, Slider, Tooltip, ValueLabelProps} from "@ma
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
-import {ChangeEvent, MouseEvent, useState} from "react";
+import {ChangeEvent, MouseEvent, ReactElement, useState} from "react";
 import ReactDOM from 'react-dom';
 import inputStep from "../../Domain/inputStep";
 import formatTime from "../../Formatter/formatTime";
-import {ReactComponent as Edit} from '../../Resources/Svg/Edit.svg'
+import {ReactComponent as Crop} from '../../Resources/Svg/Crop.svg'
 
 const belowSliderContainerId = 'below-slider-container'
 const movementActionContainerPrefix = 'movement-actions-'
@@ -101,7 +101,7 @@ function ValueLabelComponent(props: ValueLabelProps) {
     </Tooltip>
 }
 
-function ActionContainer(props: {children: any}) {
+function ActionContainer(props: {children: ReactElement}) {
     const {children} = props
 
     const childrenLeft = children.props.style.left
@@ -131,7 +131,7 @@ function ActionContainer(props: {children: any}) {
             onClick={handleClick}
             onMouseDown={preventDefault}
         >
-            <Edit fill={'#3F51B5'} width={svgSize} height={svgSize}/>
+            <Crop fill={'#3F51B5'} width={svgSize} height={svgSize}/>
         </Button>
     </div>
 }
