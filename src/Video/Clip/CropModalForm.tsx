@@ -28,7 +28,6 @@ export default function CropModalForm(props: CropModalFormProps) {
     const defaultValue: number[] = [0]
     const [value, setValue] = useState<number[]>(defaultValue)
     const [error, setError] = useState<NullableString>(null)
-    const [lastChangedIndex, setLastChangedIndex] = useState<number|null>(null)
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
     const valueIndexes = Array.from(Array(value.length).keys())
 
@@ -81,13 +80,6 @@ export default function CropModalForm(props: CropModalFormProps) {
 
     const handleSliderChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
         setError(null)
-        valueIndexes.forEach(valueIndex => {
-            // @ts-ignore
-            if (value[valueIndex] !== newValue[valueIndex]) {
-                setLastChangedIndex(valueIndex)
-            }
-        })
-
         setValue(typeof newValue === 'number' ? [newValue] : newValue);
     };
 
