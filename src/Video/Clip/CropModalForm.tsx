@@ -3,9 +3,13 @@ import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
 import {ChangeEvent, MouseEvent, useState} from "react";
+import ReactDOM from 'react-dom';
 import inputStep from "../../Domain/inputStep";
 import formatTime from "../../Formatter/formatTime";
 import {ReactComponent as Edit} from '../../Resources/Svg/Edit.svg'
+
+const belowSliderContainerId = 'below-slider-container'
+const movementActionContainerPrefix = 'movement-actions-'
 
 interface CropModalFormProps {
     clip: Clip
@@ -59,15 +63,51 @@ export default function CropModalForm(props: CropModalFormProps) {
                     min={0}
                     max={clipLength}
                     step={inputStep}
-                    style={{marginBottom: '50px'}}
                 />
+                <div id={belowSliderContainerId} style={{marginBottom: 20}}>
+                    {valueIndexes.map(valueIndex => <div
+                        id={movementActionContainerPrefix + valueIndex}
+                        style={{position: 'relative'}}
+                    />)}
+                </div>
             </div>
         </Dialog>
     );
 }
 
-function ValueLabelComponent(props: ValueLabelProps) {
-    const { children, open, value } = props;
+interface ValueLabelComponentProps extends ValueLabelProps {
+    index: number
+}
+
+function ValueLabelComponent(props: ValueLabelComponentProps) {
+    const { children, index, open, value } = props;
+
+    const actionContainer = document.getElementById(movementActionContainerPrefix + index)
+
+    if (actionContainer !== null) {
+        ReactDOM.render(<ActionContainer
+            children={children}
+        />, actionContainer)
+    }
+
+    return (
+        <>
+            <Tooltip
+                open={open}
+                enterTouchDelay={0}
+                placement="top"
+                title={value}
+            >
+                {children}
+            </Tooltip>
+        </>
+
+    )
+}
+
+function ActionContainer(props: {children: any}) {
+    const {children} = props
+
     const childrenLeft = children.props.style.left
 
     const svgSize = 20
@@ -84,32 +124,18 @@ function ValueLabelComponent(props: ValueLabelProps) {
         e.stopPropagation()
     }
 
-    return (
-        <>
-            <div
-                style={{position: 'absolute', left}}
-            >
-                <Button
-                    style={{
-                        padding: padding,
-                        minWidth: 'auto',
-                        marginTop: 8
-                    }}
-                    onClick={handleClick}
-                    onMouseDown={preventDefault}
-                >
-                    <Edit fill={'#3F51B5'} width={svgSize} height={svgSize}/>
-                </Button>
-            </div>
-            <Tooltip
-                open={open}
-                enterTouchDelay={0}
-                placement="top"
-                title={value}
-            >
-                {children}
-            </Tooltip>
-        </>
-
-    )
+    return <div
+        style={{position: 'absolute', left}}
+    >
+        <Button
+            style={{
+                padding: padding,
+                minWidth: 'auto',
+            }}
+            onClick={handleClick}
+            onMouseDown={preventDefault}
+        >
+            <Edit fill={'#3F51B5'} width={svgSize} height={svgSize}/>
+        </Button>
+    </div>
 }
