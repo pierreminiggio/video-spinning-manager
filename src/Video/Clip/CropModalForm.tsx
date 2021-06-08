@@ -2,9 +2,10 @@ import {Button, Dialog, DialogTitle, Slider, Tooltip, ValueLabelProps} from "@ma
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
-import {ChangeEvent, CSSProperties, useState} from "react";
+import {ChangeEvent, MouseEvent, useState} from "react";
 import inputStep from "../../Domain/inputStep";
 import formatTime from "../../Formatter/formatTime";
+import {ReactComponent as Edit} from '../../Resources/Svg/Edit.svg'
 
 interface CropModalFormProps {
     clip: Clip
@@ -24,7 +25,6 @@ export default function CropModalForm(props: CropModalFormProps) {
     };
 
     const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
-
         valueIndexes.forEach(valueIndex => {
             // @ts-ignore
             if (value[valueIndex] !== newValue[valueIndex]) {
@@ -59,6 +59,7 @@ export default function CropModalForm(props: CropModalFormProps) {
                     min={0}
                     max={clipLength}
                     step={inputStep}
+                    style={{marginBottom: '50px'}}
                 />
             </div>
         </Dialog>
@@ -67,15 +68,37 @@ export default function CropModalForm(props: CropModalFormProps) {
 
 function ValueLabelComponent(props: ValueLabelProps) {
     const { children, open, value } = props;
+    const childrenLeft = children.props.style.left
 
-    const left = children.props.style.left
+    const svgSize = 20
+    const padding = 10
+    const left = 'calc(' + childrenLeft + ' - ' + (svgSize / 2 + padding).toString() + 'px)'
+
+    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+        preventDefault(e)
+        alert('test')
+    }
+
+    const preventDefault = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+    }
+
     return (
         <>
             <div
                 style={{position: 'absolute', left}}
             >
-                <Button>
-                    Edit
+                <Button
+                    style={{
+                        padding: padding,
+                        minWidth: 'auto',
+                        marginTop: 8
+                    }}
+                    onClick={handleClick}
+                    onMouseDown={preventDefault}
+                >
+                    <Edit fill={'#3F51B5'} width={svgSize} height={svgSize}/>
                 </Button>
             </div>
             <Tooltip
@@ -89,8 +112,4 @@ function ValueLabelComponent(props: ValueLabelProps) {
         </>
 
     )
-
-    /*return (
-
-    );*/
 }
