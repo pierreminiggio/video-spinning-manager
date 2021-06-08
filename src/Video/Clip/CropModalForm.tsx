@@ -55,6 +55,8 @@ export default function CropModalForm(props: CropModalFormProps) {
 
         setError(null)
 
+        // TODO CHECK CLIO DEFAULT VALUE
+
         setValue(defaultValue)
 
     }, [clip, open])
