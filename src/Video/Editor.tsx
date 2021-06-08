@@ -211,11 +211,15 @@ export default function Editor(props: EditorProps) {
     const remotionProps = {props: JSON.stringify({clips: remotionClips})}
 
 
+    const appearingTransition = '.3s linear .3s'
+    const disappearingTransition = '.3s'
     const appearingStyle: CSSProperties = {
-        opacity: dragging ? 1 : 0
+        opacity: dragging ? 1 : 0,
+        transition: dragging ? appearingTransition : disappearingTransition
     }
     const disappearingStyle: CSSProperties = {
-        opacity: dragging ? 0 : 1
+        opacity: dragging ? 0 : 1,
+        transition: dragging ? disappearingTransition : appearingTransition
     }
 
     // @ts-ignore
