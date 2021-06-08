@@ -210,22 +210,25 @@ export default function Editor(props: EditorProps) {
 
     const remotionProps = {props: JSON.stringify({clips: remotionClips})}
 
-    const transition = '.5s'
+
     const appearingStyle: CSSProperties = {
-        opacity: dragging ? 1 : 0,
-        height: dragging ? 'auto' : 0,
-        transition
+        opacity: dragging ? 1 : 0
     }
     const disappearingStyle: CSSProperties = {
-        opacity: dragging ? 0 : 1,
-        height: dragging ? 0 : 'auto',
-        transition
+        opacity: dragging ? 0 : 1
     }
 
     // @ts-ignore
     const clipToCrop: Clip = selectedValue
 
-    const buttonLineStyle: CSSProperties = {...flex, justifyContent: 'center', marginTop: gap / 2, gap}
+    const buttonLineStyle: CSSProperties = {
+        ...flex,
+        justifyContent: 'center',
+        marginTop: gap / 2,
+        gap,
+        position: 'absolute',
+        width: '100%'
+    }
 
     return (
         <div>
@@ -245,19 +248,22 @@ export default function Editor(props: EditorProps) {
                 onDragUpdate={() => null}
                 onDragEnd={onClipDragEnd}
             >
-                <div style={{...buttonLineStyle, ...disappearingStyle}}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleFormClickOpen}
-                    >
-                        Add a clip
-                    </Button>
-                </div>
-                <div style={{...buttonLineStyle, ...appearingStyle}}>
-                    <div><Edit editId={editId} /></div>
-                    <div><Crop cropId={cropId} /></div>
-                    <div><Junk junkId={junkId} /></div>
+                <div style={{position: 'relative', height: 80}}>
+                    <div style={{...buttonLineStyle, ...disappearingStyle}}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleFormClickOpen}
+                            style={{zIndex: 1}}
+                        >
+                            Add a clip
+                        </Button>
+                    </div>
+                    <div style={{...buttonLineStyle, ...appearingStyle}}>
+                        <div><Edit editId={editId} /></div>
+                        <div><Crop cropId={cropId} /></div>
+                        <div><Junk junkId={junkId} /></div>
+                    </div>
                 </div>
                 <Timeline contentId={contentId ?? 0} clips={orderedClips} timelineId={timelineId} totalTime={totalClipTime} width={videoWidth} />
             </DragDropContext>
