@@ -64,7 +64,7 @@ export default function CropModalForm(props: CropModalFormProps) {
                     max={clipLength}
                     step={inputStep}
                 />
-                <div id={belowSliderContainerId} style={{marginBottom: 20}}>
+                <div id={belowSliderContainerId} style={{marginBottom: gap / 2}}>
                     {valueIndexes.map(valueIndex => <div
                         id={movementActionContainerPrefix + valueIndex}
                         style={{position: 'relative'}}
@@ -79,8 +79,9 @@ interface ValueLabelComponentProps extends ValueLabelProps {
     index: number
 }
 
-function ValueLabelComponent(props: ValueLabelComponentProps) {
-    const { children, index, open, value } = props;
+function ValueLabelComponent(props: ValueLabelProps) {
+    const valueLabelProps = props as ValueLabelComponentProps
+    const { children, index, open, value } = valueLabelProps;
 
     const actionContainer = document.getElementById(movementActionContainerPrefix + index)
 
@@ -90,19 +91,14 @@ function ValueLabelComponent(props: ValueLabelComponentProps) {
         />, actionContainer)
     }
 
-    return (
-        <>
-            <Tooltip
-                open={open}
-                enterTouchDelay={0}
-                placement="top"
-                title={value}
-            >
-                {children}
-            </Tooltip>
-        </>
-
-    )
+    return <Tooltip
+        open={open}
+        enterTouchDelay={0}
+        placement="top"
+        title={value}
+    >
+        {children}
+    </Tooltip>
 }
 
 function ActionContainer(props: {children: any}) {
