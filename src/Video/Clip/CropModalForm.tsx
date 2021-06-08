@@ -23,10 +23,14 @@ interface CropModalFormProps {
 let editCrop: CropFunction
 let deleteCrop: CropFunction
 
+type Crops = {[key: number]: number}
+
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
     const defaultValue: number[] = [0]
     const [value, setValue] = useState<number[]>(defaultValue)
+    const defaultCrops: Crops = {0: 0}
+    const [crops, setCrops] = useState<Crops>(defaultCrops)
     const [error, setError] = useState<NullableString>(null)
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
     const valueIndexes = Array.from(Array(value.length).keys())
@@ -41,6 +45,21 @@ export default function CropModalForm(props: CropModalFormProps) {
         setError(null)
         newValue.splice(index, 1)
         setValue(newValue)
+
+        const newCrops = {...crops}
+        delete newCrops[index]
+
+        const newCropsKeys = Object.keys(newCrops)
+
+        for (const newCropKeyString of newCropsKeys) {
+            const newCropKey = parseInt(newCropKeyString)
+            if (newCropKey >= index) {
+                newCrops[newCropKey - 1] = newCrops[newCropKey]
+                delete newCrops[newCropKey]
+            }
+        }
+
+        setCrops(newCrops)
     }
 
     editCrop = (index: number) => {
@@ -57,6 +76,7 @@ export default function CropModalForm(props: CropModalFormProps) {
         // TODO CHECK CLIP DEFAULT VALUE
 
         setValue(defaultValue)
+        setCrops(defaultCrops)
 
     }, [clip, open])
 
@@ -72,6 +92,11 @@ export default function CropModalForm(props: CropModalFormProps) {
         const newValue = [...value]
         newValue.push(value.length === 0 ? 0 : clipLength)
         setValue(newValue)
+
+        const newCropId = newValue.length - 1
+        const newCrops = {...crops}
+        newCrops[newCropId] = 0
+        setCrops(newCrops)
     }
 
     const handleClose = () => {
