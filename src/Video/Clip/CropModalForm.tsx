@@ -3,7 +3,7 @@ import { Alert } from "@material-ui/lab";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
-import {ChangeEvent, CSSProperties, MouseEvent, ReactElement, useState} from "react";
+import {ChangeEvent, CSSProperties, MouseEvent, ReactElement, useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 import inputStep from "../../Domain/inputStep";
 import formatTime from "../../Formatter/formatTime";
@@ -24,7 +24,8 @@ let deleteCrop: (index: number) => void
 
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
-    const [value, setValue] = useState<number[]>([])
+    const defaultValue: number[] = [0]
+    const [value, setValue] = useState<number[]>(defaultValue)
     const [error, setError] = useState<NullableString>(null)
     const [lastChangedIndex, setLastChangedIndex] = useState<number|null>(null)
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
@@ -32,14 +33,31 @@ export default function CropModalForm(props: CropModalFormProps) {
 
     deleteCrop = (index: number) => {
         const newValue = [...value]
+        if (newValue.length === 1) {
+            setError('You have to have at least 1 crop point')
+            return
+        }
+
+        setError(null)
         newValue.splice(index, 1)
         setValue(newValue)
     }
 
-    const createPointIfItCan = (e: MouseEvent<HTMLButtonElement>) => {
+    useEffect(() => {
+        if (! open) {
+            return
+        }
+
+        setError(null)
+
+        setValue(defaultValue)
+
+    }, [clip, open])
+
+    const handleCreationButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (value.includes(clipLength)) {
-            setError('Please move your last point slightly to the right')
+            setError('Please move your last crop point slightly to the right')
             return
         }
 
@@ -54,7 +72,8 @@ export default function CropModalForm(props: CropModalFormProps) {
         onClose(clip);
     };
 
-    const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+    const handleSliderChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
+        setError(null)
         valueIndexes.forEach(valueIndex => {
             // @ts-ignore
             if (value[valueIndex] !== newValue[valueIndex]) {
@@ -83,13 +102,13 @@ export default function CropModalForm(props: CropModalFormProps) {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={createPointIfItCan}
+                    onClick={handleCreationButtonClick}
                 >
                     Add
                 </Button>
                 <Slider
                     value={value}
-                    onChange={handleChange}
+                    onChange={handleSliderChange}
                     valueLabelDisplay="on"
                     getAriaValueText={getValueText}
                     valueLabelFormat={value => getValueText(value)}
@@ -100,7 +119,11 @@ export default function CropModalForm(props: CropModalFormProps) {
                     step={inputStep}
                     style={{marginTop: gap}}
                 />
-                <div id={belowSliderContainerId} style={{marginBottom: 1.5 * gap}}>
+                <div
+                    id={belowSliderContainerId}
+                    style={{marginBottom: 1.5 * gap}}
+                    data-indexes={JSON.stringify(valueIndexes)}
+                >
                     {valueIndexes.map(valueIndex => <div
                         id={movementActionContainerPrefix + valueIndex}
                         key={valueIndex}
@@ -120,14 +143,20 @@ function ValueLabelComponent(props: ValueLabelProps) {
     const valueLabelProps = props as ValueLabelComponentProps
     const { children, index, open, value } = valueLabelProps;
 
-    const actionContainer = document.getElementById(movementActionContainerPrefix + index)
+    useEffect(() => {
+        const belowSliderContainer = document.getElementById(belowSliderContainerId)
+        if (belowSliderContainer !== null) {
+            const actionContainer = document.getElementById(movementActionContainerPrefix + index)
 
-    if (actionContainer !== null) {
-        ReactDOM.render(<ActionContainer
-            children={children}
-            index={index}
-        />, actionContainer)
-    }
+            if (actionContainer !== null) {
+                ReactDOM.render(<ActionContainer
+                    children={children}
+                    index={index}
+                    indexes={JSON.parse(belowSliderContainer.dataset.indexes ?? '[]')}
+                />, actionContainer)
+            }
+        }
+    }, [children, index])
 
     return <Tooltip
         open={open}
@@ -139,8 +168,12 @@ function ValueLabelComponent(props: ValueLabelProps) {
     </Tooltip>
 }
 
-function ActionContainer(props: {children: ReactElement, index: number}) {
-    const {children, index} = props
+function ActionContainer(props: {
+    children: ReactElement,
+    index: number
+    indexes: number[]
+}) {
+    const {children, index, indexes} = props
 
     const childrenLeft = children.props.style.left
 
@@ -179,12 +212,12 @@ function ActionContainer(props: {children: ReactElement, index: number}) {
         >
             <Crop fill="#3F51B5" width={svgSize} height={svgSize}/>
         </Button>
-        <Button
+        {indexes.length > 1 ? <Button
             style={buttonStyle}
             onClick={handleDeleteClick}
             onMouseDown={preventDefault}
         >
             <Trash fill="#FF0000" width={svgSize} height={svgSize}/>
-        </Button>
+        </Button> : ''}
     </div>
 }
