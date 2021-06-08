@@ -20,6 +20,8 @@ interface CropModalFormProps {
     open: boolean
 }
 
+let deleteCrop: (index: number) => void
+
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
     const [value, setValue] = useState<number[]>([])
@@ -27,6 +29,12 @@ export default function CropModalForm(props: CropModalFormProps) {
     const [lastChangedIndex, setLastChangedIndex] = useState<number|null>(null)
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
     const valueIndexes = Array.from(Array(value.length).keys())
+
+    deleteCrop = (index: number) => {
+        const newValue = [...value]
+        newValue.splice(index, 1)
+        setValue(newValue)
+    }
 
     const createPointIfItCan = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -117,6 +125,7 @@ function ValueLabelComponent(props: ValueLabelProps) {
     if (actionContainer !== null) {
         ReactDOM.render(<ActionContainer
             children={children}
+            index={index}
         />, actionContainer)
     }
 
@@ -130,8 +139,8 @@ function ValueLabelComponent(props: ValueLabelProps) {
     </Tooltip>
 }
 
-function ActionContainer(props: {children: ReactElement}) {
-    const {children} = props
+function ActionContainer(props: {children: ReactElement, index: number}) {
+    const {children, index} = props
 
     const childrenLeft = children.props.style.left
 
@@ -146,7 +155,7 @@ function ActionContainer(props: {children: ReactElement}) {
 
     const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
         preventDefault(e)
-        alert('test delete')
+        deleteCrop(index)
     }
 
     const preventDefault = (e: MouseEvent<HTMLButtonElement>) => {
@@ -168,14 +177,14 @@ function ActionContainer(props: {children: ReactElement}) {
             onClick={handleCropClick}
             onMouseDown={preventDefault}
         >
-            <Crop fill={'#3F51B5'} width={svgSize} height={svgSize}/>
+            <Crop fill="#3F51B5" width={svgSize} height={svgSize}/>
         </Button>
         <Button
             style={buttonStyle}
             onClick={handleDeleteClick}
             onMouseDown={preventDefault}
         >
-            <Trash fill={'#FF0000'} width={svgSize} height={svgSize}/>
+            <Trash fill="#FF0000" width={svgSize} height={svgSize}/>
         </Button>
     </div>
 }

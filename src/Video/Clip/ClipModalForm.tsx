@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTitle, Slider, Tooltip, ValueLabelProps} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, Slider} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
