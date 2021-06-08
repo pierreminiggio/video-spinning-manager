@@ -55,7 +55,7 @@ export default function CropModalForm(props: CropModalFormProps) {
 
         setError(null)
 
-        // TODO CHECK CLIO DEFAULT VALUE
+        // TODO CHECK CLIP DEFAULT VALUE
 
         setValue(defaultValue)
 
@@ -70,7 +70,7 @@ export default function CropModalForm(props: CropModalFormProps) {
 
         setError(null)
 
-        const newValue = [... value]
+        const newValue = [...value]
         newValue.push(value.length === 0 ? 0 : clipLength)
         setValue(newValue)
     }
