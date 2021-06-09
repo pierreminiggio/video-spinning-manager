@@ -53,7 +53,7 @@ export default function EditForm(props: EditFormProps) {
     >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>Edit Crop</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
-                <InputLabel id={selectLabel}>Age</InputLabel>
+                <InputLabel id={selectLabel}>Transition</InputLabel>
                 <Select
                   labelId={selectLabel}
                   value={editedCrop.crop.transition}
