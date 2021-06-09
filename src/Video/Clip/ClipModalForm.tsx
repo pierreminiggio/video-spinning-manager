@@ -104,15 +104,17 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         return formatTime(value)
     }
 
+    const dialogLabel = 'clip-form-modal'
+
     return (
       <Dialog
         onClose={handleClose}
-        aria-labelledby="clip-form-modal"
+        aria-labelledby={dialogLabel}
         open={open}
         fullWidth
         maxWidth="md"
     >
-        <DialogTitle id="clip-form-modal" style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
+        <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
             {videoDuration === null ? <h2>Loading...</h2> : (<>
                 {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}

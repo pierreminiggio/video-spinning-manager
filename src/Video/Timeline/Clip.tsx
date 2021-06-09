@@ -1,4 +1,4 @@
-import styled, {StyledFunction} from 'styled-components';
+import styled from 'styled-components';
 import {Draggable} from 'react-beautiful-dnd'
 
 interface ContainerProps {

@@ -49,7 +49,7 @@ export default function Editor(props: EditorProps) {
         setFormOpen(true);
     }
 
-     const openCropModal = (value: Clip) => {
+    const openCropModal = (value: Clip) => {
         setSelectedValue(value)
         setCropOpen(true);
     }

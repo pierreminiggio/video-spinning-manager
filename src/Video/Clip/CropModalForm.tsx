@@ -10,6 +10,11 @@ import formatTime from "../../Formatter/formatTime";
 import NullableString from "../../Struct/NullableString";
 import CropFunction from "../../Struct/CropFunction";
 import ActionContainer from "./Crop/ActionContainer";
+import Transition from "../../Entity/Video/Clip/Crop/Transition";
+import EditForm from "./Crop/EditForm";
+import Crop from "../../Entity/Video/Clip/Crop/Crop";
+import CropWithIndex from "../../Entity/Video/Clip/Crop/CropWithIndex";
+import Crops from "../../Entity/Video/Clip/Crop/Crops";
 
 const belowSliderContainerId = 'below-slider-container'
 const movementActionContainerPrefix = 'movement-actions-'
@@ -23,18 +28,6 @@ interface CropModalFormProps {
 let editCrop: CropFunction
 let deleteCrop: CropFunction
 
-enum Transition {
-    Raw = 'none',
-    Smooth = 'smooth'
-}
-
-interface Crop {
-    offset: number
-    transition: Transition
-}
-
-type Crops = {[key: number]: Crop}
-
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
     const defaultValue: number[] = [0]
@@ -43,6 +36,10 @@ export default function CropModalForm(props: CropModalFormProps) {
     const defaultCrops: Crops = {0: defaultCrop}
     const [crops, setCrops] = useState<Crops>(defaultCrops)
     const [error, setError] = useState<NullableString>(null)
+
+    const [cropEditOpen, setCropEditOpen] = useState(false)
+    const [cropEditValue, setCropEditValue] = useState<CropWithIndex>({index: 0, crop: defaultCrop})
+
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
     const valueIndexes = Array.from(Array(value.length).keys())
 
@@ -74,7 +71,7 @@ export default function CropModalForm(props: CropModalFormProps) {
     }
 
     editCrop = (index: number) => {
-        alert('edit ' + index)
+        openEditModal({index, crop: crops[index]})
     }
 
     useEffect(() => {
@@ -123,15 +120,34 @@ export default function CropModalForm(props: CropModalFormProps) {
         return formatTime(value)
     }
 
-    return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="crop-clip-form-modal"
-        open={open}
-        fullWidth
-        maxWidth="md"
-    >
-        <DialogTitle id="crop-clip-form-modal" style={{textAlign: 'center'}}>Crop clip</DialogTitle>
+    const openEditModal = (value: CropWithIndex) => {
+        setCropEditValue(value)
+        setCropEditOpen(true);
+    }
+
+    const handleCropEditFormClose = (value: CropWithIndex) => {
+        setCropEditOpen(false)
+        const newCrops = {...crops}
+        newCrops[value.index] = value.crop
+        setCrops(newCrops)
+    }
+
+    const dialogLabel = 'crop-clip-form-modal'
+
+    return <>
+        <EditForm
+            crop={cropEditValue}
+            open={cropEditOpen}
+            onClose={handleCropEditFormClose}
+        />
+        <Dialog
+            onClose={handleClose}
+            aria-labelledby={dialogLabel}
+            open={open}
+            fullWidth
+            maxWidth="md"
+        >
+            <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>Crop clip</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
                 <Button
@@ -144,7 +160,7 @@ export default function CropModalForm(props: CropModalFormProps) {
                 <Slider
                     value={value}
                     onChange={handleSliderChange}
-                    valueLabelDisplay="on"
+                    valueLabelDisplay={cropEditOpen ? 'off' : 'on'}
                     getAriaValueText={getValueText}
                     valueLabelFormat={value => getValueText(value)}
                     ValueLabelComponent={ValueLabelComponent}
@@ -167,7 +183,7 @@ export default function CropModalForm(props: CropModalFormProps) {
                 </div>
             </div>
         </Dialog>
-    );
+    </>;
 }
 
 interface ValueLabelComponentProps extends ValueLabelProps {
