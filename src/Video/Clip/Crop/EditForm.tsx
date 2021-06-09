@@ -51,7 +51,7 @@ export default function EditForm(props: EditFormProps) {
         fullWidth
         maxWidth="md"
     >
-        <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>Edit Crop</DialogTitle>
+        <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>Edit crop</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 <InputLabel id={selectLabel}>Transition</InputLabel>
                 <Select
