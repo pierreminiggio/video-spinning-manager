@@ -59,7 +59,7 @@ export default function EditForm(props: EditFormProps) {
                   value={editedCrop.crop.transition}
                   onChange={handleTransitionChange}
                 >
-                    {Object.values(Transition).map((transition, transitionIndex) => <MenuItem
+                    {Object.values(Transition).map((transition: Transition, transitionIndex: number) => <MenuItem
                         key={transitionIndex}
                         value={transition}
                     >
