@@ -23,13 +23,24 @@ interface CropModalFormProps {
 let editCrop: CropFunction
 let deleteCrop: CropFunction
 
-type Crops = {[key: number]: number}
+enum Transition {
+    Raw = 'none',
+    Smooth = 'smooth'
+}
+
+interface Crop {
+    offset: number
+    transition: Transition
+}
+
+type Crops = {[key: number]: Crop}
 
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, onClose, open } = props;
     const defaultValue: number[] = [0]
     const [value, setValue] = useState<number[]>(defaultValue)
-    const defaultCrops: Crops = {0: 0}
+    const defaultCrop: Crop = {offset: 0, transition: Transition.Raw}
+    const defaultCrops: Crops = {0: defaultCrop}
     const [crops, setCrops] = useState<Crops>(defaultCrops)
     const [error, setError] = useState<NullableString>(null)
     const clipLength = parseFloat((clip.end - clip.start).toFixed(3))
@@ -95,7 +106,7 @@ export default function CropModalForm(props: CropModalFormProps) {
 
         const newCropId = newValue.length - 1
         const newCrops = {...crops}
-        newCrops[newCropId] = 0
+        newCrops[newCropId] = defaultCrop
         setCrops(newCrops)
     }
 
