@@ -4,6 +4,7 @@ import gap from "../../../Style/gap";
 import CropWithIndex from "../../../Entity/Video/Clip/Crop/CropWithIndex";
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 import Transition from "../../../Entity/Video/Clip/Crop/Transition";
+import DraggableSelection from "./DraggableSelection";
 
 interface EditFormProps {
     crop: CropWithIndex
@@ -66,6 +67,7 @@ export default function EditForm(props: EditFormProps) {
                         {capitalize(transition)}
                     </MenuItem>)}
                 </Select>
+                <DraggableSelection />
                 crop: {JSON.stringify(crop)}
                 <br/>edited: {JSON.stringify(editedCrop)}
             </div>
