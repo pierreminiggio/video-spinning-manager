@@ -2,7 +2,7 @@ import {capitalize, Dialog, DialogTitle, InputLabel, MenuItem, Select} from "@ma
 import flexColumn from "../../../Style/flexColumn";
 import gap from "../../../Style/gap";
 import CropWithIndex from "../../../Entity/Video/Clip/Crop/CropWithIndex";
-import {ChangeEvent, ReactNode, useEffect, useState} from "react";
+import {ChangeEvent, ReactNode, useCallback, useEffect, useState} from "react";
 import Transition from "../../../Entity/Video/Clip/Crop/Transition";
 import DraggableSelection from "./DraggableSelection";
 
@@ -15,6 +15,8 @@ interface EditFormProps {
 export default function EditForm(props: EditFormProps) {
     const { crop, onClose, open } = props;
     const [editedCrop, setEditedCrop] = useState<CropWithIndex>({...crop})
+    const [draggableWidth, setDraggableWidth] = useState<number|null>(null)
+    const [draggableContainer, setDraggableContainer] = useState<HTMLDivElement|null>(null);
 
     useEffect(() => {
         if (! open) {
@@ -37,9 +39,28 @@ export default function EditForm(props: EditFormProps) {
         setEditedCrop(newEditedCrop)
     }
 
+    const handleSelectionChange = (newSelection: number) => {
+        const newEditedCrop = {...editedCrop}
+        newEditedCrop.crop.offset = newSelection
+        setEditedCrop(newEditedCrop)
+    }
+
     const handleClose = () => {
         onClose(crop)
     }
+
+    const onDraggableContainerRefChange = useCallback(node => {
+        setDraggableContainer(node);
+    }, []);
+
+    useEffect(() => {
+
+        if (draggableContainer === null) {
+            return
+        }
+
+        setDraggableWidth(draggableContainer.offsetWidth)
+    }, [draggableContainer])
 
     const dialogLabel = 'edit-crop-clip-form-modal'
     const selectLabel = 'transition-select-label'
@@ -67,7 +88,16 @@ export default function EditForm(props: EditFormProps) {
                         {capitalize(transition)}
                     </MenuItem>)}
                 </Select>
-                <DraggableSelection />
+                <div
+                    ref={onDraggableContainerRefChange}
+                    style={{width: '100%'}}
+                >
+                    {draggableWidth !== null ? <DraggableSelection
+                        draggableWidth={draggableWidth}
+                        onSelectionChange={handleSelectionChange}
+                    /> : ''}
+                </div>
+
                 crop: {JSON.stringify(crop)}
                 <br/>edited: {JSON.stringify(editedCrop)}
             </div>

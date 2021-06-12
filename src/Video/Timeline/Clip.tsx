@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {Draggable} from 'react-beautiful-dnd'
+import getThumbnailUrlByContentIdAndTime from "../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime";
 
 interface ContainerProps {
     width: number
@@ -60,7 +61,7 @@ export default function Clip(props: ClipProps) {
                         style={{
                             height: '100%'
                         }}
-                        src={process.env.REACT_APP_SPINNER_API_URL + '/thumbnail/' + contentId + '?s=' + time}
+                        src={getThumbnailUrlByContentIdAndTime(contentId, parseInt(time))}
                         alt={'Clip thumbnail for clip ' + clipId}
                     />
                 ))}
