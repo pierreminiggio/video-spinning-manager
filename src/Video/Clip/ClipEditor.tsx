@@ -222,7 +222,8 @@ export default function ClipEditor(props: ClipEditorProps) {
             finishedVideoWidth={finishedVideoWidth}
             open={cropOpen}
             onClose={handleCropClose}
-        /><DragDropContext
+        />
+        <DragDropContext
             onDragStart={onClipDragStart}
             onDragUpdate={() => null}
             onDragEnd={onClipDragEnd}
