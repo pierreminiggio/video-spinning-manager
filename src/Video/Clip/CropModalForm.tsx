@@ -3,7 +3,7 @@ import { Alert } from "@material-ui/lab";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
-import {ChangeEvent, MouseEvent, useEffect, useState} from "react";
+import {ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 import inputStep from "../../Domain/inputStep";
 import formatTime from "../../Formatter/formatTime";
@@ -16,6 +16,7 @@ import Crop from "../../Entity/Video/Clip/Crop/Crop";
 import CropWithIndex from "../../Entity/Video/Clip/Crop/CropWithIndex";
 import Crops from "../../Entity/Video/Clip/Crop/Crops";
 import getThumbnailUrlByContentIdAndTime from "../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime";
+import Moves from "../../Entity/Moves";
 
 const belowSliderContainerId = 'below-slider-container'
 const movementActionContainerPrefix = 'movement-actions-'
@@ -85,7 +86,26 @@ export default function CropModalForm(props: CropModalFormProps) {
 
         setError(null)
 
-        // TODO CHECK CLIP DEFAULT VALUE
+        const clipMoves = clip.moves
+        if (clipMoves) {
+            const timeStrings = Object.keys(clipMoves)
+            const newValue: number[] = []
+            const newCrops: Crops = {}
+
+            for (const timeStringIndex in timeStrings) {
+                const timeIndex = parseInt(timeStringIndex)
+                const timeString = timeStrings[timeIndex]
+                const time = parseFloat(timeString)
+                newValue.push(time)
+                const newCrop: Crop = clipMoves[timeString]
+                newCrops[timeIndex] = newCrop
+            }
+
+            setValue(newValue)
+            setCrops(newCrops)
+
+            return
+        }
 
         setValue(defaultValue)
         setCrops(defaultCrops)
@@ -136,6 +156,18 @@ export default function CropModalForm(props: CropModalFormProps) {
         setCrops(newCrops)
     }
 
+    const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
+        e.preventDefault()
+        const newClip = {...clip}
+        const newClipMoves: Moves = {}
+        valueIndexes.forEach((valueIndex: number) => {
+            const time = value[valueIndex].toString()
+            newClipMoves[time] = crops[valueIndex]
+        })
+        newClip.moves = newClipMoves
+        onClose(newClip);
+    };
+
     const dialogLabel = 'crop-clip-form-modal'
 
     return <>
@@ -182,7 +214,7 @@ export default function CropModalForm(props: CropModalFormProps) {
                 />
                 <div
                     id={belowSliderContainerId}
-                    style={{marginBottom: 1.5 * gap}}
+                    style={{marginBottom: 2 * gap}}
                     data-indexes={JSON.stringify(valueIndexes)}
                 >
                     {valueIndexes.map(valueIndex => <div
@@ -191,6 +223,13 @@ export default function CropModalForm(props: CropModalFormProps) {
                         style={{position: 'relative'}}
                     />)}
                 </div>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleFormSubmit}
+                >
+                    Crop
+                </Button>
             </div>
         </Dialog>
     </>;

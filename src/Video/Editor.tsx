@@ -77,15 +77,17 @@ export default function Editor(props: EditorProps) {
             newClipValues.id = maxId + 1
             // @ts-ignore
             newClipValues.order = clips.length + 1
+            // @ts-ignore
+            newClipValues.moves = {}
 
             // @ts-ignore
             newClipList.push(newClipValues)
         } else {
-             // @ts-ignore
+            // @ts-ignore
             const clipToEdit = newClipList.filter((newClip: Clip) => newClip.id === clip.id)[0]
-             // @ts-ignore
+            // @ts-ignore
             clipToEdit.start = clip.start
-             // @ts-ignore
+            // @ts-ignore
             clipToEdit.end = clip.end
         }
 
@@ -94,9 +96,10 @@ export default function Editor(props: EditorProps) {
 
     const handleCropClose = (clip: Clip) => {
         setCropOpen(false);
-        console.log('crop close')
-        console.log(clip)
-        //setClips(newClipList);
+        const newClipList: Array<Clip> = Array.from(clips)
+        const clipToEdit = newClipList.filter((newClip: Clip) => newClip.id === clip.id)[0]
+        clipToEdit.moves = clip.moves
+        setClips(newClipList);
     };
     
     const orderedClips = [...clips]
