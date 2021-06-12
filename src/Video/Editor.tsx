@@ -17,7 +17,7 @@ import Crop from "./Timeline/Crop";
 import CropModalForm from "./Clip/CropModalForm";
 
 interface EditorProps {
-    contentId: NullableNumber
+    contentId: number
     finishedVideoWidth: NullableNumber
     finishedVideoHeight: NullableNumber
     videoDuration: VideoDuration
@@ -244,6 +244,7 @@ export default function Editor(props: EditorProps) {
             />
             <CropModalForm
                 clip={clipToCrop}
+                contentId={contentId}
                 open={cropOpen}
                 onClose={handleCropClose}
             />

@@ -15,12 +15,14 @@ import EditForm from "./Crop/EditForm";
 import Crop from "../../Entity/Video/Clip/Crop/Crop";
 import CropWithIndex from "../../Entity/Video/Clip/Crop/CropWithIndex";
 import Crops from "../../Entity/Video/Clip/Crop/Crops";
+import getThumbnailUrlByContentIdAndTime from "../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime";
 
 const belowSliderContainerId = 'below-slider-container'
 const movementActionContainerPrefix = 'movement-actions-'
 
 interface CropModalFormProps {
     clip: Clip
+    contentId: number
     onClose: (clip: Clip) => void
     open: boolean
 }
@@ -29,7 +31,7 @@ let editCrop: CropFunction
 let deleteCrop: CropFunction
 
 export default function CropModalForm(props: CropModalFormProps) {
-    const { clip, onClose, open } = props;
+    const { clip, contentId, onClose, open } = props;
     const defaultValue: number[] = [0]
     const [value, setValue] = useState<number[]>(defaultValue)
     const defaultCrop: Crop = {offset: 0, transition: Transition.Raw}
@@ -136,6 +138,10 @@ export default function CropModalForm(props: CropModalFormProps) {
 
     return <>
         <EditForm
+            backgroundUrl={getThumbnailUrlByContentIdAndTime(
+                contentId,
+                clip.start + Math.floor(value[cropEditValue.index])
+            )}
             crop={cropEditValue}
             open={cropEditOpen}
             onClose={handleCropEditFormClose}

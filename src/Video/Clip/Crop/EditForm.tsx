@@ -7,13 +7,14 @@ import Transition from "../../../Entity/Video/Clip/Crop/Transition";
 import DraggableSelection from "./DraggableSelection";
 
 interface EditFormProps {
+    backgroundUrl: string
     crop: CropWithIndex
     onClose: (value: CropWithIndex) => void
     open: boolean
 }
 
 export default function EditForm(props: EditFormProps) {
-    const { crop, onClose, open } = props;
+    const { backgroundUrl, crop, onClose, open } = props;
     const [editedCrop, setEditedCrop] = useState<CropWithIndex>({...crop})
     const [draggableWidth, setDraggableWidth] = useState<number|null>(null)
     const [draggableContainer, setDraggableContainer] = useState<HTMLDivElement|null>(null);
@@ -93,6 +94,7 @@ export default function EditForm(props: EditFormProps) {
                     style={{width: '100%'}}
                 >
                     {draggableWidth !== null ? <DraggableSelection
+                        backgroundUrl={backgroundUrl}
                         draggableWidth={draggableWidth}
                         onSelectionChange={handleSelectionChange}
                     /> : ''}

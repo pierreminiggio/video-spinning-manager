@@ -2,13 +2,14 @@ import Draggable, {DraggableEvent} from 'react-draggable';
 import {useEffect} from "react";
 
 interface DraggableSelectionProps {
+    backgroundUrl: string
     draggableWidth: number
     onSelectionChange: (newSelection: number) => void
 }
 
 function DraggableSelection(props: DraggableSelectionProps) {
-    const { draggableWidth, onSelectionChange } = props
-    const backgroundUrl = 'https://api.spinner.ggio.fr/thumbnail/115?s=10'
+    const { backgroundUrl, draggableWidth, onSelectionChange } = props
+    console.log(backgroundUrl)
 
     useEffect(() => {
         const img = new Image();
