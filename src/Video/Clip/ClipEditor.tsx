@@ -22,7 +22,6 @@ interface ClipEditorProps {
     totalClipTime: number
     videoDuration: VideoDuration
     videoWidth: number
-
 }
 
 export default function ClipEditor(props: ClipEditorProps) {
