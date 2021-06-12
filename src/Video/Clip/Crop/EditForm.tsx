@@ -1,8 +1,8 @@
-import {capitalize, Dialog, DialogTitle, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {Button, capitalize, Dialog, DialogTitle, InputLabel, MenuItem, Select} from "@material-ui/core";
 import flexColumn from "../../../Style/flexColumn";
 import gap from "../../../Style/gap";
 import CropWithIndex from "../../../Entity/Video/Clip/Crop/CropWithIndex";
-import {ChangeEvent, ReactNode, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, ReactNode, SyntheticEvent, useCallback, useEffect, useState} from "react";
 import Transition from "../../../Entity/Video/Clip/Crop/Transition";
 import DraggableSelection from "./DraggableSelection";
 
@@ -17,7 +17,7 @@ interface EditFormProps {
 
 export default function EditForm(props: EditFormProps) {
     const { backgroundUrl, crop, finishedVideoHeight, finishedVideoWidth, onClose, open } = props;
-    const [editedCrop, setEditedCrop] = useState<CropWithIndex>({...crop})
+    const [editedCrop, setEditedCrop] = useState<CropWithIndex>({index: crop.index, crop: {...crop.crop}})
     const [draggableWidth, setDraggableWidth] = useState<number|null>(null)
     const [draggableContainer, setDraggableContainer] = useState<HTMLDivElement|null>(null);
 
@@ -30,7 +30,7 @@ export default function EditForm(props: EditFormProps) {
             index: crop.index,
             crop: {...crop.crop}
         })
-    }, [open, crop])
+    }, [open, crop.index, crop.crop])
 
     const handleTransitionChange = (
         e: ChangeEvent<{name?: string|undefined; value: unknown}>,
@@ -65,6 +65,11 @@ export default function EditForm(props: EditFormProps) {
         setDraggableWidth(draggableContainer.offsetWidth)
     }, [draggableContainer])
 
+    const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
+        e.preventDefault()
+        onClose(editedCrop);
+    };
+
     const dialogLabel = 'edit-crop-clip-form-modal'
     const selectLabel = 'transition-select-label'
 
@@ -97,12 +102,20 @@ export default function EditForm(props: EditFormProps) {
                 >
                     {draggableWidth !== null ? <DraggableSelection
                         backgroundUrl={backgroundUrl}
+                        draggableWidth={draggableWidth}
                         finishedVideoHeight={finishedVideoHeight}
                         finishedVideoWidth={finishedVideoWidth}
-                        draggableWidth={draggableWidth}
+                        initialOffset={crop.crop.offset}
                         onSelectionChange={handleSelectionChange}
                     /> : ''}
                 </div>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleFormSubmit}
+                >
+                    Crop
+                </Button>
             </div>
         </Dialog>
     );

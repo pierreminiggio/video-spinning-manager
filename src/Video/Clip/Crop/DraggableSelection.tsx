@@ -6,6 +6,7 @@ interface DraggableSelectionProps {
     draggableWidth: number
     finishedVideoHeight: number
     finishedVideoWidth: number
+    initialOffset: number
     onSelectionChange: (newSelection: number) => void
 }
 
@@ -16,19 +17,17 @@ const coveredThumbnailStyle: CSSProperties ={
 }
 
 function DraggableSelection(props: DraggableSelectionProps) {
-    const { backgroundUrl, draggableWidth, finishedVideoHeight, finishedVideoWidth, onSelectionChange } = props
-    const [offset, setOffset] = useState<number>(0)
+    const {
+        backgroundUrl,
+        draggableWidth,
+        finishedVideoHeight,
+        finishedVideoWidth,
+        initialOffset,
+        onSelectionChange
+    } = props
+    const [offset, setOffset] = useState<number>(initialOffset)
     const draggableHeight = draggableWidth * 9 / 16
     const selectionWidth = draggableHeight / (finishedVideoHeight / finishedVideoWidth)
-    console.log(offset)
-
-    useEffect(() => {
-        const img = new Image();
-        img.src = backgroundUrl;
-        img.onload = function(e: any) {
-            console.log(e.target.naturalWidth, e.target.naturalHeight);
-        }
-    }, [backgroundUrl])
 
     const handleDrag = (e: DraggableEvent) => {
         const target = e.target as HTMLDivElement
@@ -52,7 +51,8 @@ function DraggableSelection(props: DraggableSelectionProps) {
         setOffset(newOffset)
     }
 
-    useEffect(() => onSelectionChange(offset), [offset])
+    const handleDragEnd = () => onSelectionChange(offset)
+    useEffect(() => setOffset(initialOffset), [initialOffset])
 
     const offsetLength = offset / 100 * draggableWidth
 
@@ -81,10 +81,11 @@ function DraggableSelection(props: DraggableSelectionProps) {
             />
             <Draggable
                 axis="x"
-                defaultPosition={{x: 0, y: 0}}
+                defaultPosition={{x: offsetLength, y: 0}}
                 bounds="parent"
                 scale={1}
                 onDrag={handleDrag}
+                onStop={handleDragEnd}
             >
                 <div
                     style={{

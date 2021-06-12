@@ -94,6 +94,8 @@ export default function Editor(props: EditorProps) {
 
     const handleCropClose = (clip: Clip) => {
         setCropOpen(false);
+        console.log('crop close')
+        console.log(clip)
         //setClips(newClipList);
     };
     
