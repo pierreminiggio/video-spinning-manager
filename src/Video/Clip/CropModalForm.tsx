@@ -89,22 +89,24 @@ export default function CropModalForm(props: CropModalFormProps) {
         const clipMoves = clip.moves
         if (clipMoves) {
             const timeStrings = Object.keys(clipMoves)
-            const newValue: number[] = []
-            const newCrops: Crops = {}
+            if (timeStrings.length) {
+                const newValue: number[] = []
+                const newCrops: Crops = {}
 
-            for (const timeStringIndex in timeStrings) {
-                const timeIndex = parseInt(timeStringIndex)
-                const timeString = timeStrings[timeIndex]
-                const time = parseFloat(timeString)
-                newValue.push(time)
-                const newCrop: Crop = clipMoves[timeString]
-                newCrops[timeIndex] = newCrop
+                for (const timeStringIndex in timeStrings) {
+                    const timeIndex = parseInt(timeStringIndex)
+                    const timeString = timeStrings[timeIndex]
+                    const time = parseFloat(timeString)
+                    newValue.push(time)
+                    const newCrop: Crop = clipMoves[timeString]
+                    newCrops[timeIndex] = newCrop
+                }
+
+                setValue(newValue)
+                setCrops(newCrops)
+
+                return
             }
-
-            setValue(newValue)
-            setCrops(newCrops)
-
-            return
         }
 
         setValue(defaultValue)

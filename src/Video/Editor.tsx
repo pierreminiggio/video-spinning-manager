@@ -15,6 +15,7 @@ import Clip from "../Entity/Clip";
 import RemotionClip from "../Entity/Remotion/RemotionClip";
 import Crop from "./Timeline/Crop";
 import CropModalForm from "./Clip/CropModalForm";
+import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 
 interface EditorProps {
     contentId: number
@@ -203,18 +204,32 @@ export default function Editor(props: EditorProps) {
     orderedClips.forEach(orderedClip => {
         const startFrame = Math.ceil(orderedClip.start * fps)
         const endFrame = Math.ceil(orderedClip.end * fps)
-        remotionClips.push({
+        const remotionClipMoves: {[key: string]: CropEntity} = {}
+        const orderedClipMoves = orderedClip.moves
+
+        if (orderedClipMoves) {
+            const timeStrings = Object.keys(orderedClipMoves)
+            for (const timeStringKey in timeStrings) {
+                const timeString = timeStrings[timeStringKey]
+                const frame = (parseFloat(timeString) * fps).toFixed(0)
+                const move: CropEntity = orderedClipMoves[timeString]
+                remotionClipMoves[frame] = move
+            }
+        }
+
+        const remotionClip = {
             video: videoUrl,
             from: startFrame,
-            durationInFrames: endFrame - startFrame
-        })
+            durationInFrames: endFrame - startFrame,
+            moves: remotionClipMoves
+        }
+        remotionClips.push(remotionClip)
         totalClipTime += orderedClip.end - orderedClip.start
     })
 
-    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * 60)
+    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps)
 
     const remotionProps = {props: JSON.stringify({clips: remotionClips})}
-
 
     const appearingTransition = '.3s linear .3s'
     const disappearingTransition = '.3s'
