@@ -1,4 +1,4 @@
-import {CSSProperties, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import RemotionPreview from "./Preview/RemotionPreview";
 import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
