@@ -18,8 +18,8 @@ import CropModalForm from "./Clip/CropModalForm";
 
 interface EditorProps {
     contentId: number
-    finishedVideoWidth: NullableNumber
     finishedVideoHeight: NullableNumber
+    finishedVideoWidth: NullableNumber
     videoDuration: VideoDuration
     videoUrl: VideoUrl
     videoWidth: number
@@ -28,8 +28,8 @@ interface EditorProps {
 export default function Editor(props: EditorProps) {
     const {
         contentId,
-        finishedVideoWidth,
         finishedVideoHeight,
+        finishedVideoWidth,
         videoDuration,
         videoUrl,
         videoWidth
@@ -245,6 +245,8 @@ export default function Editor(props: EditorProps) {
             <CropModalForm
                 clip={clipToCrop}
                 contentId={contentId}
+                finishedVideoHeight={finishedVideoHeight ?? 0}
+                finishedVideoWidth={finishedVideoWidth ?? 0}
                 open={cropOpen}
                 onClose={handleCropClose}
             />

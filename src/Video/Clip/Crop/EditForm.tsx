@@ -9,12 +9,14 @@ import DraggableSelection from "./DraggableSelection";
 interface EditFormProps {
     backgroundUrl: string
     crop: CropWithIndex
+    finishedVideoHeight: number
+    finishedVideoWidth: number
     onClose: (value: CropWithIndex) => void
     open: boolean
 }
 
 export default function EditForm(props: EditFormProps) {
-    const { backgroundUrl, crop, onClose, open } = props;
+    const { backgroundUrl, crop, finishedVideoHeight, finishedVideoWidth, onClose, open } = props;
     const [editedCrop, setEditedCrop] = useState<CropWithIndex>({...crop})
     const [draggableWidth, setDraggableWidth] = useState<number|null>(null)
     const [draggableContainer, setDraggableContainer] = useState<HTMLDivElement|null>(null);
@@ -95,13 +97,12 @@ export default function EditForm(props: EditFormProps) {
                 >
                     {draggableWidth !== null ? <DraggableSelection
                         backgroundUrl={backgroundUrl}
+                        finishedVideoHeight={finishedVideoHeight}
+                        finishedVideoWidth={finishedVideoWidth}
                         draggableWidth={draggableWidth}
                         onSelectionChange={handleSelectionChange}
                     /> : ''}
                 </div>
-
-                crop: {JSON.stringify(crop)}
-                <br/>edited: {JSON.stringify(editedCrop)}
             </div>
         </Dialog>
     );

@@ -23,6 +23,8 @@ const movementActionContainerPrefix = 'movement-actions-'
 interface CropModalFormProps {
     clip: Clip
     contentId: number
+    finishedVideoHeight: number
+    finishedVideoWidth: number
     onClose: (clip: Clip) => void
     open: boolean
 }
@@ -31,7 +33,7 @@ let editCrop: CropFunction
 let deleteCrop: CropFunction
 
 export default function CropModalForm(props: CropModalFormProps) {
-    const { clip, contentId, onClose, open } = props;
+    const { clip, contentId, finishedVideoHeight, finishedVideoWidth, onClose, open } = props;
     const defaultValue: number[] = [0]
     const [value, setValue] = useState<number[]>(defaultValue)
     const defaultCrop: Crop = {offset: 0, transition: Transition.Raw}
@@ -143,6 +145,8 @@ export default function CropModalForm(props: CropModalFormProps) {
                 clip.start + Math.floor(value[cropEditValue.index])
             )}
             crop={cropEditValue}
+            finishedVideoHeight={finishedVideoHeight}
+            finishedVideoWidth={finishedVideoWidth}
             open={cropEditOpen}
             onClose={handleCropEditFormClose}
         />

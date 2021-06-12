@@ -1,15 +1,26 @@
 import Draggable, {DraggableEvent} from 'react-draggable';
-import {useEffect} from "react";
+import {CSSProperties, useEffect, useState} from "react";
 
 interface DraggableSelectionProps {
     backgroundUrl: string
     draggableWidth: number
+    finishedVideoHeight: number
+    finishedVideoWidth: number
     onSelectionChange: (newSelection: number) => void
 }
 
+const coveredThumbnailStyle: CSSProperties ={
+    position: 'absolute',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.8)'
+}
+
 function DraggableSelection(props: DraggableSelectionProps) {
-    const { backgroundUrl, draggableWidth, onSelectionChange } = props
-    console.log(backgroundUrl)
+    const { backgroundUrl, draggableWidth, finishedVideoHeight, finishedVideoWidth, onSelectionChange } = props
+    const [offset, setOffset] = useState<number>(0)
+    const draggableHeight = draggableWidth * 9 / 16
+    const selectionWidth = draggableHeight / (finishedVideoHeight / finishedVideoWidth)
+    console.log(offset)
 
     useEffect(() => {
         const img = new Image();
@@ -19,7 +30,7 @@ function DraggableSelection(props: DraggableSelectionProps) {
         }
     }, [backgroundUrl])
 
-    const handleStop = (e: DraggableEvent) => {
+    const handleDrag = (e: DraggableEvent) => {
         const target = e.target as HTMLDivElement
 
         if (target === null) {
@@ -37,27 +48,53 @@ function DraggableSelection(props: DraggableSelectionProps) {
         const offset = parseFloat(
             style.split('transform: translate(', 2)[1].split('px', 2)[0]
         )
-        onSelectionChange(100 * offset / containerWidth)
+        const newOffset = 100 * offset / containerWidth
+        setOffset(newOffset)
     }
+
+    useEffect(() => onSelectionChange(offset), [offset])
+
+    const offsetLength = offset / 100 * draggableWidth
 
     return (
         <div
             style={{
                 width: '100%',
-                height: draggableWidth * 9 / 16,
+                height: draggableHeight,
                 position: 'relative',
                 background: 'url(' + backgroundUrl + ')',
                 backgroundSize: 'cover'
             }}
         >
+            <div
+                style={{
+                    ...coveredThumbnailStyle,
+                    width: offsetLength,
+                }}
+            />
+            <div
+                style={{
+                    ...coveredThumbnailStyle,
+                    width: draggableWidth - (offsetLength + selectionWidth),
+                    right: 0
+                }}
+            />
             <Draggable
                 axis="x"
                 defaultPosition={{x: 0, y: 0}}
                 bounds="parent"
                 scale={1}
-                onStop={handleStop}
+                onDrag={handleDrag}
             >
-                <div style={{backgroundColor: 'red', width: 50, height: '100%'}}>Yeay it works !!!</div>
+                <div
+                    style={{
+                        border: '3px dashed grey',
+                        width: selectionWidth,
+                        height: '100%',
+                        boxSizing: 'border-box',
+                        backgroundColor: 'none'
+                    }}
+                />
             </Draggable>
         </div>
     );
