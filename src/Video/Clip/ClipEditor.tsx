@@ -3,7 +3,7 @@ import Junk from "../Timeline/Junk";
 import Crop from "../Timeline/Crop";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
-import Timeline from "../Timeline/Timeline";
+import ClipTimeline from "../Timeline/ClipTimeline";
 import {CSSProperties, useState} from "react";
 import Clip from "../../Entity/Clip";
 import ClipModalForm from "./ClipModalForm";
@@ -245,7 +245,7 @@ export default function ClipEditor(props: ClipEditorProps) {
                     <div><Junk junkId={junkId} /></div>
                 </div>
             </div>
-            <Timeline
+            <ClipTimeline
                 contentId={contentId ?? 0}
                 clips={orderedClips}
                 timelineId={timelineId}

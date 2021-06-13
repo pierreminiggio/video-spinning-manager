@@ -3,26 +3,8 @@ import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 import {default as ClipEntity} from '../../Entity/Clip'
 import TimecodesLine from './TimecodesLine'
-
-interface ContainerProps {
-    hasClips: boolean
-    width: number
-}
-
-const Container = styled.div`${(props: ContainerProps) => props.hasClips ? `
-    margin: 8px;
-    border: 1px #303F9F solid;
-    border-radius: 2px;
-    background-color: #303F9F;
-` : ``}
-    width: ${props => props.width}px;
-`
-
-const ClipList = styled.div`
-    padding: 8px;
-    display: flex;
-    gap: 10px;
-`
+import TimelineContainer from "./TimelineContainer";
+import TimelineClipList from "./TimelineClipList";
 
 interface TimelineProps {
     contentId: number
@@ -32,14 +14,14 @@ interface TimelineProps {
     width: number
 }
 
-export default function Timeline(props: TimelineProps) {
+export default function ClipTimeline(props: TimelineProps) {
     const {contentId, clips, timelineId, totalTime, width} = props
     const hasClips = clips.length > 0
 
-    return <Container hasClips={hasClips} width={width}>
+    return <TimelineContainer hasClips={hasClips} width={width}>
         {hasClips ? <TimecodesLine totalTime={totalTime} /> : ''}
         <Droppable droppableId={timelineId} direction="horizontal">
-            {provided => <ClipList
+            {provided => <TimelineClipList
                 ref={provided.innerRef}
                 {...provided.droppableProps}
             >
@@ -52,7 +34,7 @@ export default function Timeline(props: TimelineProps) {
                     width={Math.floor(100 * (clip.end - clip.start) / totalTime)}
                 />)}
                 {provided.placeholder}
-            </ClipList>}
+            </TimelineClipList>}
         </Droppable>
-    </Container>
+    </TimelineContainer>
 }
