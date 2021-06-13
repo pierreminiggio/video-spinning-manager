@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
-import flex from '../../Style/flex'
 import {default as ClipEntity} from '../../Entity/Clip'
-import formatTime from "../../Formatter/formatTime";
+import TimecodesLine from './TimecodesLine'
 
 interface ContainerProps {
     hasClips: boolean
@@ -25,10 +24,6 @@ const ClipList = styled.div`
     gap: 10px;
 `
 
-const TimeCode = styled.div`
-    padding: 3px 6px;
-`
-
 interface TimelineProps {
     contentId: number
     clips: Array<ClipEntity>
@@ -42,22 +37,11 @@ export default function Timeline(props: TimelineProps) {
     const hasClips = clips.length > 0
 
     return <Container hasClips={hasClips} width={width}>
-        {hasClips ? <div style={{
-            ...flex,
-            justifyContent: 'space-between',
-            width: '100%',
-            backgroundColor: '#101F7F',
-            color: 'white'
-        }}>
-            <TimeCode>0s</TimeCode>
-            <TimeCode>{formatTime(Math.round(totalTime / 2), false)}</TimeCode>
-            <TimeCode>{formatTime(Math.round(totalTime), false)}</TimeCode>
-        </div> : ''}
+        {hasClips ? <TimecodesLine totalTime={totalTime} /> : ''}
         <Droppable droppableId={timelineId} direction="horizontal">
             {provided => <ClipList
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                
             >
                 {clips.map(clip => <Clip
                     key={clip.id}
