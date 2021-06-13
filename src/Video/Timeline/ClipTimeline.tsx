@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 import {default as ClipEntity} from '../../Entity/Clip'
