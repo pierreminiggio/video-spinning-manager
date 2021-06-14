@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 interface TimelineContainerProps {
-    hasClips: boolean
+    display: boolean
     width: number
 }
 
-const TimelineContainer = styled.div`${(props: TimelineContainerProps) => props.hasClips ? `
+const TimelineContainer = styled.div`${(props: TimelineContainerProps) => props.display ? `
     margin: 8px;
     border: 1px #303F9F solid;
     border-radius: 2px;

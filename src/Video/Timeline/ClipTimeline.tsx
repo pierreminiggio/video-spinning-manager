@@ -17,7 +17,7 @@ export default function ClipTimeline(props: TimelineProps) {
     const {contentId, clips, timelineId, totalTime, width} = props
     const hasClips = clips.length > 0
 
-    return <TimelineContainer hasClips={hasClips} width={width}>
+    return <TimelineContainer display={hasClips} width={width}>
         {hasClips ? <TimecodesLine totalTime={totalTime} /> : ''}
         <Droppable droppableId={timelineId} direction="horizontal">
             {provided => <TimelineClipList
