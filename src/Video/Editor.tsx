@@ -8,6 +8,7 @@ import {default as RemotionClip} from '../../node_modules/@pierreminiggio/spinni
 import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 import ClipEditor from './Clip/ClipEditor'
 import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
+import Text from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
 
 interface EditorProps {
     contentId: number
@@ -71,9 +72,24 @@ export default function Editor(props: EditorProps) {
         totalClipTime += orderedClip.end - orderedClip.start
     })
 
-    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps)
-    const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: []}
+    const remotionTexts: Array<Text> = []
+    remotionTexts.push({
+        content: 'test text',
+        from: 0,
+        durationInFrames: 300,
+        height: 7,
+        color: '#fff',
+        backgroundColor: 'rgb(255,165,0)',
+        backgroundColorOpacity: .7,
+        leftOffset: 20,
+        rightOffset: 20,
+        topOffset: 40
+    })
+
+    const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: remotionTexts}
     const remotionProps = {props: JSON.stringify(clipMakerProps)}
+
+    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps)
 
     return (
         <div>
