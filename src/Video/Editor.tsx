@@ -4,9 +4,10 @@ import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
 import NullableNumber from "../Struct/NullableNumber";
 import Clip from "../Entity/Clip";
-import RemotionClip from "../Entity/Remotion/RemotionClip";
+import {default as RemotionClip} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Clip.js';
 import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 import ClipEditor from './Clip/ClipEditor'
+import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
 
 interface EditorProps {
     contentId: number
@@ -60,8 +61,8 @@ export default function Editor(props: EditorProps) {
             }
         }
 
-        const remotionClip = {
-            video: videoUrl,
+        const remotionClip: RemotionClip = {
+            video: videoUrl ?? '',
             from: startFrame,
             durationInFrames: endFrame - startFrame,
             moves: remotionClipMoves
@@ -71,7 +72,8 @@ export default function Editor(props: EditorProps) {
     })
 
     const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps)
-    const remotionProps = {props: JSON.stringify({clips: remotionClips})}
+    const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: []}
+    const remotionProps = {props: JSON.stringify(clipMakerProps)}
 
     return (
         <div>
