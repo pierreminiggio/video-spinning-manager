@@ -225,7 +225,6 @@ export default function ClipEditor(props: ClipEditorProps) {
         />
         <DragDropContext
             onDragStart={onClipDragStart}
-            onDragUpdate={() => null}
             onDragEnd={onClipDragEnd}
         >
             <div style={{position: 'relative', height: 80}}>
