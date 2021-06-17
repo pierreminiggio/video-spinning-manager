@@ -9,6 +9,7 @@ import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 import ClipEditor from './Clip/ClipEditor'
 import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
 import Text from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
+import TextEditor from "./Text/TextEditor";
 
 interface EditorProps {
     contentId: number
@@ -104,6 +105,7 @@ export default function Editor(props: EditorProps) {
                 videoDuration={videoDuration}
                 videoWidth={videoWidth}
             />
+            <TextEditor />
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}
                 compositionWidth={finishedVideoWidth ?? 0}
