@@ -226,7 +226,6 @@ export default function ClipEditor(props: ClipEditorProps) {
                     </>
                 }
             />
-
             <ClipTimeline
                 contentId={contentId ?? 0}
                 clips={orderedClips}
