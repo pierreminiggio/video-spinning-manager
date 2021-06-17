@@ -4,13 +4,12 @@ import Crop from "../Timeline/Clip/Crop";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
 import ClipTimeline from "../Timeline/Clip/ClipTimeline";
-import {CSSProperties, useState} from "react";
+import {useState} from "react";
 import Clip from "../../Entity/Clip";
 import ClipModalForm from "./ClipModalForm";
 import CropModalForm from "./CropModalForm";
-import flex from "../../Style/flex";
-import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
+import DraggingActionsContainer from "../Timeline/DraggingActionsContainer";
 
 interface ClipEditorProps {
     clips: Array<Clip>
@@ -185,28 +184,8 @@ export default function ClipEditor(props: ClipEditorProps) {
         setClips(newClipList)
     }
 
-    const appearingTransition = '.3s linear .3s'
-    const disappearingTransition = '.3s'
-    const appearingStyle: CSSProperties = {
-        opacity: dragging ? 1 : 0,
-        transition: dragging ? appearingTransition : disappearingTransition
-    }
-    const disappearingStyle: CSSProperties = {
-        opacity: dragging ? 0 : 1,
-        transition: dragging ? disappearingTransition : appearingTransition
-    }
-
     // @ts-ignore
     const clipToCrop: Clip = selectedValue
-
-    const buttonLineStyle: CSSProperties = {
-        ...flex,
-        justifyContent: 'center',
-        marginTop: gap / 2,
-        gap,
-        position: 'absolute',
-        width: '100%'
-    }
 
     return <>
         <ClipModalForm
@@ -227,8 +206,9 @@ export default function ClipEditor(props: ClipEditorProps) {
             onDragStart={onClipDragStart}
             onDragEnd={onClipDragEnd}
         >
-            <div style={{position: 'relative', height: 80}}>
-                <div style={{...buttonLineStyle, ...disappearingStyle}}>
+            <DraggingActionsContainer
+                dragging={dragging}
+                actions={
                     <Button
                         variant="contained"
                         color="primary"
@@ -237,13 +217,16 @@ export default function ClipEditor(props: ClipEditorProps) {
                     >
                         Add a clip
                     </Button>
-                </div>
-                <div style={{...buttonLineStyle, ...appearingStyle}}>
-                    <div><Edit editId={editId} /></div>
-                    <div><Crop cropId={cropId} /></div>
-                    <div><Junk junkId={junkId} /></div>
-                </div>
-            </div>
+                }
+                draggingActions={
+                    <>
+                        <div><Edit editId={editId} /></div>
+                        <div><Crop cropId={cropId} /></div>
+                        <div><Junk junkId={junkId} /></div>
+                    </>
+                }
+            />
+
             <ClipTimeline
                 contentId={contentId ?? 0}
                 clips={orderedClips}
