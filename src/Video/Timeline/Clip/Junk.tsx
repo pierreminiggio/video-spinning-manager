@@ -1,5 +1,5 @@
-import trash from '../../Resources/Svg/Trash.svg'
-import DroppableButtonContainer from "./DroppableButtonContainer";
+import trash from '../../../Resources/Svg/Trash.svg'
+import DroppableButtonContainer from "../DroppableButtonContainer";
 
 export default function Junk({junkId}: {junkId: string}) {
     return <DroppableButtonContainer

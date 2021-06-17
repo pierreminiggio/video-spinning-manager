@@ -1,9 +1,9 @@
 import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
-import {default as ClipEntity} from '../../Entity/Clip'
-import TimecodesLine from './TimecodesLine'
-import TimelineContainer from "./TimelineContainer";
-import TimelineClipList from "./TimelineClipList";
+import {default as ClipEntity} from '../../../Entity/Clip'
+import TimecodesLine from '../TimecodesLine'
+import TimelineContainer from "../TimelineContainer";
+import TimelineClipList from "../TimelineClipList";
 
 interface TimelineProps {
     contentId: number

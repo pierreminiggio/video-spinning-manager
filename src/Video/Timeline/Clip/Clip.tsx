@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {Draggable} from 'react-beautiful-dnd'
-import getThumbnailUrlByContentIdAndTime from "../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime";
+import getThumbnailUrlByContentIdAndTime from "../../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime";
 
 interface ContainerProps {
     width: number

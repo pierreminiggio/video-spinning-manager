@@ -1,9 +1,9 @@
-import Edit from "../Timeline/Edit";
-import Junk from "../Timeline/Junk";
-import Crop from "../Timeline/Crop";
+import Edit from "../Timeline/Clip/Edit";
+import Junk from "../Timeline/Clip/Junk";
+import Crop from "../Timeline/Clip/Crop";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
-import ClipTimeline from "../Timeline/ClipTimeline";
+import ClipTimeline from "../Timeline/Clip/ClipTimeline";
 import {CSSProperties, useState} from "react";
 import Clip from "../../Entity/Clip";
 import ClipModalForm from "./ClipModalForm";
