@@ -24,16 +24,16 @@ interface ClipEditorProps {
 }
 
 export default function ClipEditor({
-        clips,
-        setClips,
-        contentId,
-        orderedClips,
-        finishedVideoHeight,
-        finishedVideoWidth,
-        totalClipTime,
-        videoDuration,
-        videoWidth
-    }: ClipEditorProps) {
+    clips,
+    setClips,
+    contentId,
+    orderedClips,
+    finishedVideoHeight,
+    finishedVideoWidth,
+    totalClipTime,
+    videoDuration,
+    videoWidth
+}: ClipEditorProps) {
     const [dragging, setDragging] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Clip|Object>({})
     const [formOpen, setFormOpen] = useState(false)
