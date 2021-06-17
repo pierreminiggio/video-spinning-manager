@@ -4,7 +4,7 @@ import Crop from "../Timeline/Clip/Crop";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
 import ClipTimeline from "../Timeline/Clip/ClipTimeline";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import Clip from "../../Entity/Clip";
 import ClipModalForm from "./ClipModalForm";
 import CropModalForm from "./CropModalForm";
@@ -13,7 +13,7 @@ import DraggingActionsContainer from "../Timeline/DraggingActionsContainer";
 
 interface ClipEditorProps {
     clips: Array<Clip>
-    setClips: any
+    setClips: Dispatch<SetStateAction<Clip[]>>
     contentId: number
     orderedClips: Array<Clip>
     finishedVideoHeight: number
