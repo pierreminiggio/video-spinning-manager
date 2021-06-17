@@ -220,9 +220,9 @@ export default function ClipEditor(props: ClipEditorProps) {
                 }
                 draggingActions={
                     <>
-                        <div><Edit editId={editId} /></div>
-                        <div><Crop cropId={cropId} /></div>
-                        <div><Junk junkId={junkId} /></div>
+                        <Edit editId={editId} />
+                        <Crop cropId={cropId} />
+                        <Junk junkId={junkId} />
                     </>
                 }
             />
