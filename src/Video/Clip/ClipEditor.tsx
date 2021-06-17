@@ -23,8 +23,7 @@ interface ClipEditorProps {
     videoWidth: number
 }
 
-export default function ClipEditor(props: ClipEditorProps) {
-    const {
+export default function ClipEditor({
         clips,
         setClips,
         contentId,
@@ -34,7 +33,7 @@ export default function ClipEditor(props: ClipEditorProps) {
         totalClipTime,
         videoDuration,
         videoWidth
-    } = props
+    }: ClipEditorProps) {
     const [dragging, setDragging] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Clip|Object>({})
     const [formOpen, setFormOpen] = useState(false)
