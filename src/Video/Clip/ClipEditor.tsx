@@ -1,6 +1,6 @@
-import Edit from "../Timeline/Clip/Edit";
-import Junk from "../Timeline/Clip/Junk";
-import Crop from "../Timeline/Clip/Crop";
+import EditButton from "../Timeline/Clip/EditButton";
+import JunkButton from "../Timeline/Clip/JunkButton";
+import CropButton from "../Timeline/Clip/CropButton";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
 import ClipTimeline from "../Timeline/Clip/ClipTimeline";
@@ -219,9 +219,9 @@ export default function ClipEditor({
                 }
                 draggingActions={
                     <>
-                        <Edit editId={editId} />
-                        <Crop cropId={cropId} />
-                        <Junk junkId={junkId} />
+                        <EditButton droppableId={editId} />
+                        <CropButton droppableId={cropId} />
+                        <JunkButton droppableId={junkId} />
                     </>
                 }
             />
