@@ -1,5 +1,5 @@
 import edit from '../../../Resources/Svg/Edit.svg'
-import DroppableButtonContainer from "../DroppableButtonContainer";
+import DroppableButtonContainer from "./DroppableButtonContainer";
 
 export default function EditButton({droppableId}: {droppableId: string}) {
     return <DroppableButtonContainer

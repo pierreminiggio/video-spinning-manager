@@ -1,6 +1,6 @@
-import EditButton from "../Timeline/Clip/EditButton";
-import JunkButton from "../Timeline/Clip/JunkButton";
-import CropButton from "../Timeline/Clip/CropButton";
+import EditButton from "../Timeline/Action/EditButton";
+import JunkButton from "../Timeline/Action/JunkButton";
+import CropButton from "../Timeline/Action/CropButton";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import {Button} from "@material-ui/core";
 import ClipTimeline from "../Timeline/Clip/ClipTimeline";
@@ -9,7 +9,7 @@ import Clip from "../../Entity/Clip";
 import ClipModalForm from "./ClipModalForm";
 import CropModalForm from "./CropModalForm";
 import VideoDuration from "../../Struct/VideoDuration";
-import DraggingActionsContainer from "../Timeline/DraggingActionsContainer";
+import DraggingActionsContainer from "../Timeline/Action/DraggingActionsContainer";
 
 interface ClipEditorProps {
     clips: Array<Clip>

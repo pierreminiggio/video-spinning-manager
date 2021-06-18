@@ -1,5 +1,5 @@
 import crop from '../../../Resources/Svg/Crop.svg'
-import DroppableButtonContainer from "../DroppableButtonContainer";
+import DroppableButtonContainer from "./DroppableButtonContainer";
 
 export default function CropButton({droppableId}: {droppableId: string}) {
     return <DroppableButtonContainer

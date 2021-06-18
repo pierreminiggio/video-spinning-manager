@@ -1,5 +1,5 @@
-import flex from "../../Style/flex";
-import gap from "../../Style/gap";
+import flex from "../../../Style/flex";
+import gap from "../../../Style/gap";
 import {CSSProperties} from "react";
 
 export default function DraggingActionsContainer({
