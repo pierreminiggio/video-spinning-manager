@@ -42,24 +42,24 @@ const text3: Text = {
 
 const texts = [text1, text2, text3]
 
-describe('Find Colliders', () => {
+describe('Find Colliders', (): void => {
     texts.forEach((text: Text, textIndex: number): void => {
-        it('should nothing colliding with text ' + (textIndex + 1) + ' because haystack is empty', () => {
+        it('should nothing colliding with text ' + (textIndex + 1) + ' because haystack is empty', (): void => {
             expect(findColliders(text, [])).toStrictEqual([])
         })
     })
 
-    it('text 2 should collide with text 1 if alone in stack', () => {
+    it('text 2 should collide with text 1 if alone in stack', (): void => {
         expect(findColliders(text2, [text1])).toStrictEqual([0])
     });
 
     [text1, text2].forEach((text: Text, textIndex: number): void => {
-        it('text 3 should not collide with text ' + (textIndex + 1) + ' if alone in stack', () => {
+        it('text 3 should not collide with text ' + (textIndex + 1) + ' if alone in stack', (): void => {
             expect(findColliders(text3, [text])).toStrictEqual([])
         })
     })
 
-    it('text 3 should not collide with texts 1 and 2', () => {
+    it('text 3 should not collide with texts 1 and 2', (): void => {
         expect(findColliders(text3, [text1, text2])).toStrictEqual([])
     })
 })
