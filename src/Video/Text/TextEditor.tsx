@@ -5,27 +5,48 @@ import TextTimeline from "../Timeline/Text/TextTimeline";
 import flex from "../../Style/flex";
 import gap from "../../Style/gap";
 import EditButtonClickHandler from "./EditButtonClickHandler";
+import TextModalForm from "./TextModalForm";
+import VideoDuration from "../../Struct/VideoDuration";
 
 interface TextEditorProps {
     texts: Array<Text>
     setTexts: Dispatch<SetStateAction<Text[]>>
     totalClipTime: number
+    videoDuration: VideoDuration
     videoWidth: number
 }
 
-export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}: TextEditorProps) {
+export default function TextEditor({texts, setTexts, totalClipTime, videoDuration, videoWidth}: TextEditorProps) {
 
-    const [dragging, setDragging] = useState(false)
+    const [editFormOpen, setEditFormOpen] = useState(false)
+    const [selectedValue, setSelectedValue] = useState<Text|null>(null)
 
     const handleFormClickOpen = () => {
-        // TODO open form
+        openEditForm(null)
     }
 
     const handleEditButtonClick: EditButtonClickHandler = (text: Text): void => {
+        openEditForm(text)
+    }
+
+    const openEditForm = (text: Text|null): void => {
+        setEditFormOpen(true)
+        setSelectedValue(text)
+    }
+
+    const handleFormClose = (text: Text|null): void => {
+        setEditFormOpen(false)
         console.log(text)
+        // TODO Save in texts
     }
 
     return <>
+        <TextModalForm
+            selectedValue={selectedValue}
+            videoDuration={videoDuration}
+            open={editFormOpen}
+            onClose={handleFormClose}
+        />
         <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, marginBottom: gap / 2, width: '100%'}}>
             <Button
                 variant="contained"

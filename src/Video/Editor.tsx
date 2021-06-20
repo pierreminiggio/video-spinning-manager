@@ -151,6 +151,7 @@ export default function Editor(props: EditorProps) {
                 texts={texts}
                 setTexts={setTexts}
                 totalClipTime={totalClipTime}
+                videoDuration={videoDuration}
                 videoWidth={videoWidth}
             /> : ''}
             {totalClipTime > 0 ? <RemotionPreview
