@@ -17,6 +17,9 @@ const textContentStyle: CSSProperties = {
     cursor: 'pointer'
 }
 
+const textPadding = 5
+const editButtonSize = 34
+
 export default function Text({text, textGap, textHeight, layer, left, width}: TextProps) {
     const color = text.color
     const backgroundColor = text.backgroundColor
@@ -35,8 +38,10 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
     >
         <div style={{
             position: 'relative',
-            width: '100%',
-            height: '100%'
+            width: 'calc(100% - ' + editButtonSize + 'px)',
+            height: '100%',
+            boxSizing: 'border-box',
+            display: 'inline-block'
         }}>
             <div style={{
                 ...textContentStyle,
@@ -50,9 +55,23 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                fontSize: (textHeight - textGap * 2) + 'px',
+                fontSize: (textHeight - textGap * 2) - textPadding * 2 + 'px',
+                padding: textPadding,
                 lineHeight: 1
             }}>{text.content}</div>
+        </div>
+        <div style={{
+            position: 'relative',
+            width: editButtonSize,
+            height: '100%',
+            boxSizing: 'border-box',
+            display: 'inline-block'
+        }}>
+            <div style={{
+                ...textContentStyle,
+                backgroundColor,
+                opacity
+            }}/>
         </div>
     </div>
 }
