@@ -3,27 +3,38 @@ import {CSSProperties} from "react";
 
 interface TextProps {
     text: TextEntity
+    textHeight: number
+    left: number
+    top: number
     width: number
 }
 
 const textContentStyle: CSSProperties = {
-    position: "absolute",
+    position: 'absolute',
     width: '100%',
     height: '100%'
 }
 
-export default function Text({text, width}: TextProps) {
+export default function Text({text, textHeight, left, top, width}: TextProps) {
     const color = text.color
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
-    console.log(backgroundColor)
 
     return <div style={{
-        height: '1.3rem',
-        width,
-        position: 'relative'
+        position: 'absolute',
+        height: textHeight,
+        left,
+        top,
+        width
     }}>
-        <div style={{...textContentStyle, backgroundColor, opacity}}/>
-        <div style={{...textContentStyle, color, textAlign: 'center'}}>{text.content}</div>
+        <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%'
+        }}>
+            <div style={{...textContentStyle, backgroundColor, opacity}}/>
+            <div style={{...textContentStyle, color, textAlign: 'center'}}>{text.content}</div>
+        </div>
+
     </div>
 }
