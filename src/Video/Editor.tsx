@@ -122,12 +122,12 @@ export default function Editor(props: EditorProps) {
                 videoDuration={videoDuration}
                 videoWidth={videoWidth}
             />
-            <TextEditor
+            {clips.length > 0 ? <TextEditor
                 texts={texts}
                 setTexts={setTexts}
                 totalClipTime={totalClipTime}
                 videoWidth={videoWidth}
-            />
+            /> : ''}
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}
                 compositionWidth={finishedVideoWidth ?? 0}
