@@ -4,11 +4,12 @@ import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
 import NullableNumber from "../Struct/NullableNumber";
 import Clip from "../Entity/Clip";
+import Text from "../Entity/Text";
 import {default as RemotionClip} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Clip.js';
 import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 import ClipEditor from './Clip/ClipEditor'
 import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
-import Text from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
+import {default as RemotionText} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
 import TextEditor from "./Text/TextEditor";
 
 interface EditorProps {
@@ -30,6 +31,18 @@ export default function Editor(props: EditorProps) {
         videoWidth
     } = props
     const [clips, setClips] = useState<Array<Clip>>([])
+    const [texts, setTexts] = useState<Array<Text>>([{
+        content: 'test text',
+        start: 0,
+        end: 10,
+        height: 7,
+        color: '#fff',
+        backgroundColor: 'rgb(255,165,0)',
+        backgroundColorOpacity: .7,
+        leftOffset: 20,
+        rightOffset: 20,
+        topOffset: 40
+    }])
     
     const orderedClips = [...clips]
     orderedClips.sort((firstClip, secondClip) => {
@@ -73,18 +86,22 @@ export default function Editor(props: EditorProps) {
         totalClipTime += orderedClip.end - orderedClip.start
     })
 
-    const remotionTexts: Array<Text> = []
-    remotionTexts.push({
-        content: 'test text',
-        from: 0,
-        durationInFrames: 300,
-        height: 7,
-        color: '#fff',
-        backgroundColor: 'rgb(255,165,0)',
-        backgroundColorOpacity: .7,
-        leftOffset: 20,
-        rightOffset: 20,
-        topOffset: 40
+    const remotionTexts: Array<RemotionText> = []
+    texts.forEach((text: Text): void => {
+        const startFrame = Math.ceil(text.start * fps)
+        const endFrame = Math.ceil(text.end * fps)
+        remotionTexts.push({
+            content: text.content,
+            from: startFrame,
+            durationInFrames: endFrame - startFrame,
+            height: text.height,
+            color: text.color,
+            backgroundColor: text.backgroundColor,
+            backgroundColorOpacity: text.backgroundColorOpacity,
+            leftOffset: text.leftOffset,
+            rightOffset: text.rightOffset,
+            topOffset: text.topOffset
+        })
     })
 
     const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: remotionTexts}
@@ -105,7 +122,9 @@ export default function Editor(props: EditorProps) {
                 videoDuration={videoDuration}
                 videoWidth={videoWidth}
             />
-            <TextEditor />
+            <TextEditor
+                totalClipTime={totalClipTime}
+            />
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}
                 compositionWidth={finishedVideoWidth ?? 0}
