@@ -3,19 +3,21 @@ import {CSSProperties} from "react";
 
 interface TextProps {
     text: TextEntity
+    textGap: number
     textHeight: number
+    layer: number
     left: number
-    top: number
     width: number
 }
 
 const textContentStyle: CSSProperties = {
     position: 'absolute',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    cursor: 'pointer'
 }
 
-export default function Text({text, textHeight, left, top, width}: TextProps) {
+export default function Text({text, textGap, textHeight, layer, left, width}: TextProps) {
     const color = text.color
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
@@ -23,17 +25,32 @@ export default function Text({text, textHeight, left, top, width}: TextProps) {
     return <div style={{
         position: 'absolute',
         height: textHeight,
-        left,
-        top,
-        width
+        left: left + '%',
+        top: textHeight * (layer - 1),
+        width: width + '%',
+        paddingTop: textGap,
+        paddingLeft: textGap,
+        paddingRight: textGap,
+        boxSizing: 'border-box'
     }}>
         <div style={{
             position: 'relative',
             width: '100%',
             height: '100%'
         }}>
-            <div style={{...textContentStyle, backgroundColor, opacity}}/>
-            <div style={{...textContentStyle, color, textAlign: 'center'}}>{text.content}</div>
+            <div style={{
+                ...textContentStyle,
+                backgroundColor,
+                opacity
+            }}/>
+            <div style={{
+                ...textContentStyle,
+                color,
+                textAlign: 'center',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+            }}>{text.content}</div>
         </div>
 
     </div>
