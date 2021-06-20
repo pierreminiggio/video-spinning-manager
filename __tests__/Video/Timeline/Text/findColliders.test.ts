@@ -40,7 +40,20 @@ const text3: Text = {
     topOffset: 40
 }
 
-const texts = [text1, text2, text3]
+const text4: Text = {
+    content: 'test text 4',
+    start: 5,
+    end: 10,
+    height: 7,
+    color: '#fff',
+    backgroundColor: 'rgb(255,165,0)',
+    backgroundColorOpacity: .7,
+    leftOffset: 20,
+    rightOffset: 20,
+    topOffset: 40
+}
+
+const texts = [text1, text2, text3, text4]
 
 describe('Find Colliders', (): void => {
     texts.forEach((text: Text, textIndex: number): void => {
@@ -75,5 +88,9 @@ describe('Find Colliders', (): void => {
 
     it('text 3 should not collide with texts 1 and 2', (): void => {
         expect(findColliders(text3, [text1, text2])).toStrictEqual([])
+    })
+
+    it('text 4 should not collide with texts 1 and 2', (): void => {
+        expect(findColliders(text4, [text1, text2])).toStrictEqual([])
     })
 })

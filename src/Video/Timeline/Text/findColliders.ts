@@ -10,12 +10,12 @@ export default function findColliders(needle: Text, haystack: Array<Text>): numb
     const colliderIndexes: number[] = []
 
     haystack.forEach((text: Text, textIndex: number): void => {
-        if (needle.start >= text.start && needle.start <= text.end) {
+        if (needle.start >= text.start && needle.start < text.end) {
             pushIndexIfNotPresent(colliderIndexes, textIndex)
             return
         }
 
-        if (text.start >= needle.start && text.start <= needle.end) {
+        if (text.start >= needle.start && text.start < needle.end) {
             pushIndexIfNotPresent(colliderIndexes, textIndex)
             return
         }

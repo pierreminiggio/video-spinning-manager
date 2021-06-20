@@ -55,7 +55,7 @@ export default function Editor(props: EditorProps) {
         topOffset: 70
     }, {
         content: 'test text 3',
-        start: 6,
+        start: 5,
         end: 10,
         height: 7,
         color: '#fff',

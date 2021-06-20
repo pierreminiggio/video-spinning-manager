@@ -29,9 +29,7 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
             left: left + '%',
             top: textHeight * (layer - 1),
             width: width + '%',
-            paddingTop: textGap,
-            paddingLeft: textGap,
-            paddingRight: textGap,
+            padding: textGap,
             boxSizing: 'border-box'
         }}
     >
@@ -51,7 +49,9 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
                 textAlign: 'center',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                fontSize: (textHeight - textGap * 2) + 'px',
+                lineHeight: 1
             }}>{text.content}</div>
         </div>
     </div>

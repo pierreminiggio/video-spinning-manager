@@ -11,7 +11,7 @@ interface TimelineProps {
     width: number
 }
 
-const textHeight = 30
+const textHeight = 40
 const textGap = 5
 
 export default function TextTimeline(props: TimelineProps) {
@@ -47,7 +47,7 @@ export default function TextTimeline(props: TimelineProps) {
         <div
             style={{
                 position: 'relative',
-                height: textHeight * layers + textGap
+                height: textHeight * layers
             }}
         >
             {texts.map((text: TextEntity, textIndex: number) => <Text
