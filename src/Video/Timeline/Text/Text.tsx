@@ -22,17 +22,19 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
 
-    return <div style={{
-        position: 'absolute',
-        height: textHeight,
-        left: left + '%',
-        top: textHeight * (layer - 1),
-        width: width + '%',
-        paddingTop: textGap,
-        paddingLeft: textGap,
-        paddingRight: textGap,
-        boxSizing: 'border-box'
-    }}>
+    return <div
+        style={{
+            position: 'absolute',
+            height: textHeight,
+            left: left + '%',
+            top: textHeight * (layer - 1),
+            width: width + '%',
+            paddingTop: textGap,
+            paddingLeft: textGap,
+            paddingRight: textGap,
+            boxSizing: 'border-box'
+        }}
+    >
         <div style={{
             position: 'relative',
             width: '100%',
@@ -52,6 +54,5 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
                 textOverflow: 'ellipsis'
             }}>{text.content}</div>
         </div>
-
     </div>
 }
