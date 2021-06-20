@@ -4,6 +4,7 @@ import Text from "../../Entity/Text";
 import TextTimeline from "../Timeline/Text/TextTimeline";
 import flex from "../../Style/flex";
 import gap from "../../Style/gap";
+import EditButtonClickHandler from "./EditButtonClickHandler";
 
 interface TextEditorProps {
     texts: Array<Text>
@@ -18,6 +19,10 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}:
 
     const handleFormClickOpen = () => {
         // TODO open form
+    }
+
+    const handleEditButtonClick: EditButtonClickHandler = (text: Text): void => {
+        console.log(text)
     }
 
     return <>
@@ -35,6 +40,7 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}:
             texts={texts}
             totalTime={totalClipTime}
             width={videoWidth}
+            onEditButtonClickHandler={handleEditButtonClick}
         />
     </>
 }

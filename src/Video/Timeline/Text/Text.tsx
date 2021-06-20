@@ -1,6 +1,7 @@
 import {default as TextEntity} from '../../../Entity/Text'
 import {CSSProperties} from "react";
 import Edit from '../../../Resources/Svg/Edit.svg'
+import EditButtonClickHandler from "../../Text/EditButtonClickHandler";
 
 interface TextProps {
     text: TextEntity
@@ -9,6 +10,7 @@ interface TextProps {
     layer: number
     left: number
     width: number
+    onEditButtonClickHandler: EditButtonClickHandler
 }
 
 const textContentStyle: CSSProperties = {
@@ -21,7 +23,7 @@ const textContentStyle: CSSProperties = {
 const textPadding = 5
 const editButtonPadding = 3
 
-export default function Text({text, textGap, textHeight, layer, left, width}: TextProps) {
+export default function Text({text, textGap, textHeight, layer, left, width, onEditButtonClickHandler}: TextProps) {
     const color = text.color
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
@@ -38,6 +40,7 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
             padding: textGap,
             boxSizing: 'border-box'
         }}
+        onClick={event => onEditButtonClickHandler(text)}
     >
         <div style={{
             position: 'relative',
@@ -78,7 +81,11 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
             <div style={{
                 ...textContentStyle,
                 backgroundImage: 'url(' + Edit + ')',
-                backgroundSize: (editButtonWidth - editButtonPadding * 2) + 'px ' + (editButtonHeight - editButtonPadding * 2) + 'px',
+                backgroundSize: (
+                    editButtonWidth - editButtonPadding * 2
+                ) + 'px ' + (
+                    editButtonHeight - editButtonPadding * 2
+                ) + 'px',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center'
             }} />

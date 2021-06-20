@@ -4,18 +4,20 @@ import TimelineContainer from "../TimelineContainer";
 import Text from "./Text";
 import getWidthForTimeline from "../getWidthForTimeline";
 import findColliders from "./findColliders";
+import EditButtonClickHandler from "../../Text/EditButtonClickHandler";
 
 interface TimelineProps {
     texts: Array<TextEntity>
     totalTime: number
     width: number
+    onEditButtonClickHandler: EditButtonClickHandler
 }
 
 const textHeight = 40
 const textGap = 5
 
 export default function TextTimeline(props: TimelineProps) {
-    const {texts, totalTime, width} = props
+    const {texts, totalTime, width, onEditButtonClickHandler} = props
     const hasTexts = texts.length > 0
 
     let layers = 1
@@ -58,6 +60,7 @@ export default function TextTimeline(props: TimelineProps) {
                 layer={textLayers[textIndex]}
                 left={Math.floor(100 * (text.start) / totalTime)}
                 width={getWidthForTimeline(text, totalTime)}
+                onEditButtonClickHandler={onEditButtonClickHandler}
             />)}
         </div>
     </TimelineContainer>
