@@ -1,15 +1,20 @@
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import EditButton from "../Timeline/Action/EditButton";
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import DraggingActionsContainer from "../Timeline/Action/DraggingActionsContainer";
 import {Button} from "@material-ui/core";
 import JunkButton from "../Timeline/Action/JunkButton";
+import Text from "../../Entity/Text";
+import TextTimeline from "../Timeline/Text/TextTimeline";
 
 interface TextEditorProps {
+    texts: Array<Text>
+    setTexts: Dispatch<SetStateAction<Text[]>>
     totalClipTime: number
+    videoWidth: number
 }
 
-export default function TextEditor({totalClipTime}: TextEditorProps) {
+export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}: TextEditorProps) {
 
     const [dragging, setDragging] = useState(false)
 
@@ -73,12 +78,11 @@ export default function TextEditor({totalClipTime}: TextEditorProps) {
                 </>
             }
         />
-        { /*<TextTimeline
-            contentId={contentId ?? 0}
-            texts={orderedTexts}
+        <TextTimeline
+            texts={texts}
             timelineId={timelineId}
             totalTime={totalClipTime}
             width={videoWidth}
-        /> */ }
+        />
     </DragDropContext>
 }

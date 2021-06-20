@@ -123,7 +123,10 @@ export default function Editor(props: EditorProps) {
                 videoWidth={videoWidth}
             />
             <TextEditor
+                texts={texts}
+                setTexts={setTexts}
                 totalClipTime={totalClipTime}
+                videoWidth={videoWidth}
             />
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}
