@@ -19,12 +19,14 @@ const textContentStyle: CSSProperties = {
 }
 
 const textPadding = 5
-const editButtonSize = 34
+const editButtonPadding = 3
 
 export default function Text({text, textGap, textHeight, layer, left, width}: TextProps) {
     const color = text.color
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
+    const editButtonWidth = textHeight - textPadding * 2
+    const editButtonHeight = editButtonWidth
 
     return <div
         style={{
@@ -39,7 +41,7 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
     >
         <div style={{
             position: 'relative',
-            width: 'calc(100% - ' + editButtonSize + 'px)',
+            width: 'calc(100% - ' + editButtonWidth + 'px)',
             height: '100%',
             boxSizing: 'border-box',
             display: 'inline-block'
@@ -63,7 +65,7 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
         </div>
         <div style={{
             position: 'relative',
-            width: editButtonSize,
+            width: editButtonWidth,
             height: '100%',
             boxSizing: 'border-box',
             display: 'inline-block'
@@ -72,9 +74,14 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
                 ...textContentStyle,
                 backgroundColor,
                 opacity,
-            }}>
-                <img src={Edit} alt="edit text " />
-            </div>
+            }} />
+            <div style={{
+                ...textContentStyle,
+                backgroundImage: 'url(' + Edit + ')',
+                backgroundSize: (editButtonWidth - editButtonPadding * 2) + 'px ' + (editButtonHeight - editButtonPadding * 2) + 'px',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center'
+            }} />
         </div>
     </div>
 }
