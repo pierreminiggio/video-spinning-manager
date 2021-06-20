@@ -34,7 +34,7 @@ export default function Editor(props: EditorProps) {
     const [texts, setTexts] = useState<Array<Text>>([{
         content: 'test text',
         start: 0,
-        end: 10,
+        end: 5,
         height: 7,
         color: '#fff',
         backgroundColor: 'rgb(255,165,0)',
@@ -45,7 +45,7 @@ export default function Editor(props: EditorProps) {
     }, {
         content: 'test text 2',
         start: 3,
-        end: 10,
+        end: 5,
         height: 7,
         color: '#fff',
         backgroundColor: 'rgb(255,165,0)',
@@ -55,8 +55,8 @@ export default function Editor(props: EditorProps) {
         topOffset: 70
     }, {
         content: 'test text 3',
-        start: 11,
-        end: 20,
+        start: 6,
+        end: 10,
         height: 7,
         color: '#fff',
         backgroundColor: 'rgb(255,165,0)',
