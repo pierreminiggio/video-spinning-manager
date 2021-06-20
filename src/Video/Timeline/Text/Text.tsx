@@ -1,5 +1,6 @@
 import {default as TextEntity} from '../../../Entity/Text'
 import {CSSProperties} from "react";
+import Edit from '../../../Resources/Svg/Edit.svg'
 
 interface TextProps {
     text: TextEntity
@@ -70,8 +71,10 @@ export default function Text({text, textGap, textHeight, layer, left, width}: Te
             <div style={{
                 ...textContentStyle,
                 backgroundColor,
-                opacity
-            }}/>
+                opacity,
+            }}>
+                <img src={Edit} alt="edit text " />
+            </div>
         </div>
     </div>
 }

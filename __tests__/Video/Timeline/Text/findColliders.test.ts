@@ -2,6 +2,7 @@ import findColliders from '../../../../src/Video/Timeline/Text/findColliders'
 import Text from '../../../../src/Entity/Text'
 
 const text1: Text = {
+    id: 1,
     content: 'test text',
     start: 0,
     end: 5,
@@ -15,6 +16,7 @@ const text1: Text = {
 }
 
 const text2: Text = {
+    id: 2,
     content: 'test text 2',
     start: 3,
     end: 5,
@@ -28,6 +30,7 @@ const text2: Text = {
 }
 
 const text3: Text = {
+    id: 3,
     content: 'test text 3',
     start: 6,
     end: 10,
@@ -41,6 +44,7 @@ const text3: Text = {
 }
 
 const text4: Text = {
+    id: 4,
     content: 'test text 4',
     start: 5,
     end: 10,
