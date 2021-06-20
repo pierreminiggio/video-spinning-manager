@@ -4,6 +4,7 @@ import {default as ClipEntity} from '../../../Entity/Clip'
 import TimecodesLine from '../TimecodesLine'
 import TimelineContainer from "../TimelineContainer";
 import TimelineClipList from "../TimelineClipList";
+import getWidthForTimeline from "../getWidthForTimeline";
 
 interface TimelineProps {
     contentId: number
@@ -24,13 +25,13 @@ export default function ClipTimeline(props: TimelineProps) {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
             >
-                {clips.map(clip => <Clip
+                {clips.map((clip: ClipEntity) => <Clip
                     key={clip.id}
                     contentId={contentId}
                     clip={clip}
                     index={clip.order}
                     timelineWidth={width}
-                    width={Math.floor(100 * (clip.end - clip.start) / totalTime)}
+                    width={getWidthForTimeline(clip, totalTime)}
                 />)}
                 {provided.placeholder}
             </TimelineClipList>}

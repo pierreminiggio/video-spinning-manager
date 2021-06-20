@@ -1,7 +1,7 @@
-export default interface Text {
+import TimeableEntity from "./TimeableEntity";
+
+export default interface Text extends TimeableEntity {
     content: string;
-    start: number;
-    end: number;
     height: number;
     color: string;
     backgroundColor: string;

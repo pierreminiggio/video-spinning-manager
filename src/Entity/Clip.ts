@@ -1,9 +1,8 @@
 import Moves from "./Moves";
+import TimeableEntity from "./TimeableEntity";
 
-export default interface Clip {
+export default interface Clip extends TimeableEntity {
     id: number
-    start: number
-    end: number
     order: number
     moves: Moves
 }

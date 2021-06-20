@@ -5,7 +5,7 @@ import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
 import {ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
-import inputStep from "../../Domain/inputStep";
+import inputStep from "../../Style/inputStep";
 import formatTime from "../../Formatter/formatTime";
 import NullableString from "../../Struct/NullableString";
 import CropFunction from "../../Struct/CropFunction";
