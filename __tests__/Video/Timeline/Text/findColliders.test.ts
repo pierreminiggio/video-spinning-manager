@@ -49,6 +49,10 @@ describe('Find Colliders', (): void => {
         })
     })
 
+    it('text 1 should collide with text 2 if alone in stack', (): void => {
+        expect(findColliders(text1, [text2])).toStrictEqual([0])
+    })
+
     it('text 2 should collide with text 1 if alone in stack', (): void => {
         expect(findColliders(text2, [text1])).toStrictEqual([0])
     });
@@ -57,6 +61,16 @@ describe('Find Colliders', (): void => {
         it('text 3 should not collide with text ' + (textIndex + 1) + ' if alone in stack', (): void => {
             expect(findColliders(text3, [text])).toStrictEqual([])
         })
+    })
+
+    it('text 2 should collide with text 1 even with text 3 in stack', (): void => {
+        expect(findColliders(text2, [text1, text3])).toStrictEqual([0])
+        expect(findColliders(text2, [text3, text1])).toStrictEqual([1])
+    })
+
+    it('text 1 should collide with text 2 even with text 3 in stack', (): void => {
+        expect(findColliders(text1, [text2, text3])).toStrictEqual([0])
+        expect(findColliders(text1, [text3, text2])).toStrictEqual([1])
     })
 
     it('text 3 should not collide with texts 1 and 2', (): void => {

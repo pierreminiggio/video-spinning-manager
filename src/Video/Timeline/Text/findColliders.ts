@@ -14,6 +14,11 @@ export default function findColliders(needle: Text, haystack: Array<Text>): numb
             pushIndexIfNotPresent(colliderIndexes, textIndex)
             return
         }
+
+        if (text.start >= needle.start && text.start <= needle.end) {
+            pushIndexIfNotPresent(colliderIndexes, textIndex)
+            return
+        }
     })
 
     return colliderIndexes
