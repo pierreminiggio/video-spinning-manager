@@ -42,6 +42,28 @@ export default function Editor(props: EditorProps) {
         leftOffset: 20,
         rightOffset: 20,
         topOffset: 40
+    }, {
+        content: 'test text 2',
+        start: 3,
+        end: 10,
+        height: 7,
+        color: '#fff',
+        backgroundColor: 'rgb(255,165,0)',
+        backgroundColorOpacity: .7,
+        leftOffset: 20,
+        rightOffset: 20,
+        topOffset: 70
+    }, {
+        content: 'test text 3',
+        start: 11,
+        end: 20,
+        height: 7,
+        color: '#fff',
+        backgroundColor: 'rgb(255,165,0)',
+        backgroundColorOpacity: .7,
+        leftOffset: 20,
+        rightOffset: 20,
+        topOffset: 40
     }])
     
     const orderedClips = [...clips]

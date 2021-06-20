@@ -3,6 +3,7 @@ import TimecodesLine from '../TimecodesLine'
 import TimelineContainer from "../TimelineContainer";
 import Text from "./Text";
 import getWidthForTimeline from "../getWidthForTimeline";
+import findColliders from "./findColliders";
 
 interface TimelineProps {
     texts: Array<TextEntity>
@@ -23,7 +24,10 @@ export default function TextTimeline(props: TimelineProps) {
 
     texts.forEach((text: TextEntity) => {
         layers = 1
-        const layer = 1
+        let layer = 1
+
+        const colliderIndexes = findColliders(text, checkedTexts)
+
         textLayers.push(layer)
         checkedTexts.push(text)
     })
