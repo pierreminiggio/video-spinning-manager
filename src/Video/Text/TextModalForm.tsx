@@ -87,7 +87,7 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
 
 
         timelineRangeSliderIndexes.forEach(tooltipIndex => {
-            if (tooltipIndex !== newValue[tooltipIndex]) {
+            if (editedText[timeIndexes[tooltipIndex]] !== newValue[tooltipIndex]) {
                 setLastChangedIndex(tooltipIndex)
             }
 
