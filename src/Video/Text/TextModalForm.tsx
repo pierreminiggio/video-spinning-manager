@@ -1,5 +1,5 @@
-import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
-import {SyntheticEvent, useEffect, useState} from "react";
+import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from "@material-ui/core";
+import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
@@ -87,10 +87,25 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         newEditedText[field] = newColor
         setEditedText(newEditedText)
     }
+
+    const handleBackgroundColorOpacityChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        if (editedText === null) {
+            return
+        }
+
+        if (Array.isArray(newValue)) {
+            return
+        }
+
+        const newEditedText: Text = {...editedText}
+        newEditedText.backgroundColorOpacity = newValue
+        setEditedText(newEditedText)
+    }
     
     const commandVerb = selectedValue && selectedValue.id ? 'Edit' : 'Add'
 
     const dialogLabel = 'text-form-modal'
+    const backgroundOpacityLabel = 'background-opacity'
 
     return (
       <Dialog
@@ -104,14 +119,26 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         <div style={{padding: gap / 2, ...flexColumn}}>
             {videoDuration === null || editedText === null ? <h2>Loading...</h2> : (<>
                 <ColorInput
-                    label={'Couleur Texte'}
+                    label={'Text color'}
                     value={editedText.color}
                     onChange={handleTextColorChange}
                 />
                 <ColorInput
-                    label={'Couleur de fond'}
+                    label={'Background color'}
                     value={editedText.backgroundColor}
                     onChange={handleBackgroundColorChange}
+                />
+                <Typography id={backgroundOpacityLabel}>
+                    Background opacity
+                </Typography>
+                <Slider
+                    value={editedText.backgroundColorOpacity}
+                    onChange={handleBackgroundColorOpacityChange}
+                    valueLabelDisplay="on"
+                    aria-labelledby={backgroundOpacityLabel}
+                    min={0}
+                    max={1}
+                    step={.1}
                 />
                 <Button
                     variant="contained"
