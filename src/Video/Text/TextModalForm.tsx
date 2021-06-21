@@ -19,6 +19,11 @@ enum ColorKey {
     BACKGROUND_COLOR = 'backgroundColor',
 }
 
+enum NumberKey {
+    HEIGHT = 'height',
+    BACKGROUND_COLOR_OPACITY = 'backgroundColorOpacity',
+}
+
 enum TimeKey {
     START = 'start',
     END = 'end'
@@ -98,12 +103,30 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         onClose(editedText);
     }
 
+    const handleTextHeightChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        setNewNumberInText(newValue, NumberKey.HEIGHT)
+    }
+
     const handleTextColorChange = (newValue: string): void => {
         setNewColorInText(newValue, ColorKey.COLOR)
     }
 
     const handleBackgroundColorChange = (newValue: string): void => {
         setNewColorInText(newValue, ColorKey.BACKGROUND_COLOR)
+    }
+
+    const setNewNumberInText = (newValue: number | number[], field: NumberKey): void => {
+        if (editedText === null) {
+            return
+        }
+
+        if (Array.isArray(newValue)) {
+            return
+        }
+
+        const newEditedText: Text = {...editedText}
+        newEditedText[field] = newValue
+        setEditedText(newEditedText)
     }
 
     const setNewColorInText = (newColor: string, field: ColorKey): void => {
@@ -121,22 +144,13 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
     }
 
     const handleBackgroundColorOpacityChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
-        if (editedText === null) {
-            return
-        }
-
-        if (Array.isArray(newValue)) {
-            return
-        }
-
-        const newEditedText: Text = {...editedText}
-        newEditedText.backgroundColorOpacity = newValue
-        setEditedText(newEditedText)
+        setNewNumberInText(newValue, NumberKey.BACKGROUND_COLOR_OPACITY)
     }
     
     const commandVerb = selectedValue && selectedValue.id ? 'Edit' : 'Add'
 
     const dialogLabel = 'text-form-modal'
+    const fontHeightLabel = 'font-height'
     const backgroundOpacityLabel = 'background-opacity'
     const timesLabel = 'text-times'
 
@@ -151,6 +165,18 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
+                    <Typography id={fontHeightLabel}>
+                        Text Height
+                    </Typography>
+                    <Slider
+                        value={editedText.height}
+                        onChange={handleTextHeightChange}
+                        valueLabelDisplay="on"
+                        aria-labelledby={fontHeightLabel}
+                        min={0}
+                        max={100}
+                        step={1}
+                    />
                     <ColorInput
                         label={'Text color'}
                         value={editedText.color}
