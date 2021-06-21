@@ -4,12 +4,18 @@ import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
 import Text from "../../Entity/Text";
+import ColorInput from "../../Form/ColorInput";
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void
     videoDuration: VideoDuration
     selectedValue: Text|null
     open: boolean
+}
+
+enum ColorKey {
+    COLOR = 'color',
+    BACKGROUND_COLOR = 'backgroundColor',
 }
 
 export default function TextModalForm({onClose, videoDuration, selectedValue, open}: TextModalFormProps) {
@@ -59,6 +65,28 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         // TODO return new values
         onClose(selectedValue);
     };
+
+    const handleTextColorChange = (newValue: string): void => {
+        setNewColorInText(newValue, ColorKey.COLOR)
+    }
+
+    const handleBackgroundColorChange = (newValue: string): void => {
+        setNewColorInText(newValue, ColorKey.BACKGROUND_COLOR)
+    }
+
+    const setNewColorInText = (newColor: string, field: ColorKey): void => {
+        if (editedText === null) {
+            return
+        }
+
+        if (! /^#[0-9A-F]{6}$/i.test(newColor)) {
+            return
+        }
+
+        const newEditedText: Text = {...editedText}
+        newEditedText[field] = newColor
+        setEditedText(newEditedText)
+    }
     
     const commandVerb = selectedValue && selectedValue.id ? 'Edit' : 'Add'
 
@@ -75,14 +103,15 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
             {videoDuration === null || editedText === null ? <h2>Loading...</h2> : (<>
-                <TextField
-                    label="Couleur Texte"
-                    type="text"
+                <ColorInput
+                    label={'Couleur Texte'}
                     value={editedText.color}
+                    onChange={handleTextColorChange}
                 />
-                <TextField
-                    type="color"
-                    value={editedText.color}
+                <ColorInput
+                    label={'Couleur de fond'}
+                    value={editedText.backgroundColor}
+                    onChange={handleBackgroundColorChange}
                 />
                 <Button
                     variant="contained"
