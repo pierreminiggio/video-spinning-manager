@@ -39,19 +39,22 @@ export default function ClipModalForm(props: ClipModalFormProps) {
 
     const handleClose = () => {
         onClose(selectedValue);
-    };
+    }
 
     const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+
+        if (! Array.isArray(newValue)) {
+            return
+        }
+
         timelineRangeSliderIndexes.forEach(tooltipIndex => {
-            // @ts-ignore
             if (value[tooltipIndex] !== newValue[tooltipIndex]) {
                 setLastChangedIndex(tooltipIndex)
             }
         })
 
-        // @ts-ignore
         setValue(newValue);
-    };
+    }
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()

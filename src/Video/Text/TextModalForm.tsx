@@ -5,10 +5,11 @@ import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
 import Text from "../../Entity/Text";
 import ColorInput from "../../Form/ColorInput";
+import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void
-    videoDuration: VideoDuration
+    totalClipTime: VideoDuration
     selectedValue: Text|null
     open: boolean
 }
@@ -18,13 +19,23 @@ enum ColorKey {
     BACKGROUND_COLOR = 'backgroundColor',
 }
 
-export default function TextModalForm({onClose, videoDuration, selectedValue, open}: TextModalFormProps) {
+enum TimeKey {
+    START = 'start',
+    END = 'end'
+}
+
+const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
+    0: TimeKey.START,
+    1: TimeKey.END
+}
+
+export default function TextModalForm({onClose, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
     const defaultEditedText: Text = {
         id: 0,
         content: 'Your text',
         start: 0,
-        end: videoDuration ?? 1,
+        end: totalClipTime ?? 1,
         height: 7,
         color: '#ffffff',
         backgroundColor: '#ffa500',
@@ -33,6 +44,8 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         rightOffset: 20,
         topOffset: 40,
     }
+
+    const [lastChangedIndex, setLastChangedIndex] = useState(0)
 
     console.log('--- edited text ---')
     console.log(editedText)
@@ -58,13 +71,37 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
 
     const handleClose = () => {
         onClose(selectedValue);
-    };
+    }
+
+    const handleTextTimeChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+
+        if (editedText === null) {
+            return
+        }
+
+        if (! Array.isArray(newValue)) {
+            return
+        }
+
+        const newEditedText = {...editedText}
+
+
+        timelineRangeSliderIndexes.forEach(tooltipIndex => {
+            if (tooltipIndex !== newValue[tooltipIndex]) {
+                setLastChangedIndex(tooltipIndex)
+            }
+
+            newEditedText[timeIndexes[tooltipIndex]] = newValue[tooltipIndex]
+        })
+
+        setEditedText(newEditedText)
+    }
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()
         // TODO return new values
         onClose(selectedValue);
-    };
+    }
 
     const handleTextColorChange = (newValue: string): void => {
         setNewColorInText(newValue, ColorKey.COLOR)
@@ -117,7 +154,7 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
     >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
-            {videoDuration === null || editedText === null ? <h2>Loading...</h2> : (<>
+            {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
                 <ColorInput
                     label={'Text color'}
                     value={editedText.color}
@@ -139,6 +176,12 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
                     min={0}
                     max={1}
                     step={.1}
+                />
+                <TimelineRangeSlider
+                    value={[editedText.start, editedText.end]}
+                    onChange={handleTextTimeChange}
+                    maxDuration={totalClipTime}
+                    lastChangedIndex={lastChangedIndex}
                 />
                 <Button
                     variant="contained"

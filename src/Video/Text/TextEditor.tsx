@@ -12,11 +12,10 @@ interface TextEditorProps {
     texts: Array<Text>
     setTexts: Dispatch<SetStateAction<Text[]>>
     totalClipTime: number
-    videoDuration: VideoDuration
     videoWidth: number
 }
 
-export default function TextEditor({texts, setTexts, totalClipTime, videoDuration, videoWidth}: TextEditorProps) {
+export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}: TextEditorProps) {
 
     const [editFormOpen, setEditFormOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Text|null>(null)
@@ -43,7 +42,7 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoDuratio
     return <>
         <TextModalForm
             selectedValue={selectedValue}
-            videoDuration={videoDuration}
+            totalClipTime={totalClipTime}
             open={editFormOpen}
             onClose={handleFormClose}
         />
