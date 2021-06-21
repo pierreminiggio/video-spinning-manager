@@ -8,11 +8,7 @@ import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
 import formatTime from "../../Formatter/formatTime";
-import ValueLabelComponentGetter from "../../Form/Slider/ValueLabelComponentGetter";
-import inputStep from "../../Style/inputStep";
-
-const tooltipIndexes = [0, 1]
-const valueLabelComponentGetter = new ValueLabelComponentGetter(tooltipIndexes)
+import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
 
 interface ClipModalFormProps {
     onClose: (clip: Object|Clip) => void
@@ -45,8 +41,8 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         onClose(selectedValue);
     };
 
-    const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]) => {
-        tooltipIndexes.forEach(tooltipIndex => {
+    const handleChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        timelineRangeSliderIndexes.forEach(tooltipIndex => {
             // @ts-ignore
             if (value[tooltipIndex] !== newValue[tooltipIndex]) {
                 setLastChangedIndex(tooltipIndex)
@@ -118,16 +114,11 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         <div style={{padding: gap / 2, ...flexColumn}}>
             {videoDuration === null ? <h2>Loading...</h2> : (<>
                 {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
-                <Slider
+                <TimelineRangeSlider
                     value={value}
                     onChange={handleChange}
-                    valueLabelDisplay="on"
-                    getAriaValueText={getValueText}
-                    valueLabelFormat={value => getValueText(value)}
-                    ValueLabelComponent={valueLabelComponentGetter.get[lastChangedIndex]}
-                    min={0}
-                    max={videoDuration}
-                    step={inputStep}
+                    maxDuration={videoDuration}
+                    lastChangedIndex={lastChangedIndex}
                 />
                 <Button
                     variant="contained"
