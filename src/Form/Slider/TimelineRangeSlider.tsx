@@ -9,6 +9,7 @@ interface TimelineRangeSliderProps {
     onChange: (event: ChangeEvent<{}>, newValue: number | number[]) => void
     maxDuration: number
     lastChangedIndex: number
+    ariaLabelledby?: string|undefined
 }
 
 export const timelineRangeSliderIndexes = [0, 1]
@@ -18,7 +19,7 @@ const getValueText = (value: number) => {
     return formatTime(value)
 }
 
-export function TimelineRangeSlider({value, onChange, maxDuration, lastChangedIndex}: TimelineRangeSliderProps) {
+export function TimelineRangeSlider({value, onChange, maxDuration, lastChangedIndex, ariaLabelledby}: TimelineRangeSliderProps) {
 
     return <Slider
         value={value}
@@ -30,5 +31,6 @@ export function TimelineRangeSlider({value, onChange, maxDuration, lastChangedIn
         min={0}
         max={maxDuration}
         step={inputStep}
+        aria-labelledby={ariaLabelledby}
     />
 }

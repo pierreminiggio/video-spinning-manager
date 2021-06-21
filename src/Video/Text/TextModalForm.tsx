@@ -143,6 +143,7 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
 
     const dialogLabel = 'text-form-modal'
     const backgroundOpacityLabel = 'background-opacity'
+    const timesLabel = 'text-times'
 
     return (
         <Dialog
@@ -165,7 +166,7 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
                         value={editedText.backgroundColor}
                         onChange={handleBackgroundColorChange}
                     />
-                    <Typography id={backgroundOpacityLabel}>
+                    <Typography id={backgroundOpacityLabel} style={{marginTop: gap / 2}}>
                         Background opacity
                     </Typography>
                     <Slider
@@ -177,11 +178,15 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
                         max={1}
                         step={.1}
                     />
+                    <Typography id={timesLabel} style={{marginTop: gap / 2}}>
+                        Times
+                    </Typography>
                     <TimelineRangeSlider
                         value={[editedText.start, editedText.end]}
                         onChange={handleTextTimeChange}
                         maxDuration={totalClipTime}
                         lastChangedIndex={lastChangedIndex}
+                        ariaLabelledby={timesLabel}
                     />
                     <Button
                         variant="contained"
