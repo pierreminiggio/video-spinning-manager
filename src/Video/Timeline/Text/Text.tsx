@@ -23,6 +23,7 @@ const textContentStyle: CSSProperties = {
 const textPadding = 5
 const editButtonPadding = 3
 const displayTextWidthBreakpoint = 20
+const subColor = '#999999'
 
 export default function Text({text, textGap, textHeight, layer, left, width, onEditButtonClickHandler}: TextProps) {
     const isBigEnough = width > displayTextWidthBreakpoint
@@ -53,6 +54,10 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
         }}>
             <div style={{
                 ...textContentStyle,
+                backgroundColor: subColor
+            }}/>
+            <div style={{
+                ...textContentStyle,
                 backgroundColor,
                 opacity
             }}/>
@@ -75,6 +80,10 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
             boxSizing: 'border-box',
             display: 'inline-block'
         }}>
+            <div style={{
+                ...textContentStyle,
+                backgroundColor: subColor
+            }} />
             <div style={{
                 ...textContentStyle,
                 backgroundColor,
