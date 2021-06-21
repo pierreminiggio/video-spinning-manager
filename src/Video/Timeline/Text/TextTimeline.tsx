@@ -37,6 +37,15 @@ export default function TextTimeline(props: TimelineProps) {
             if (unavailableLayers[unavailableLayers.length - 1] === layers) {
                 layers += 1
                 layer = layers
+            } else {
+                for (let newLayer = 1; newLayer <= layers; newLayer++) {
+                    if (unavailableLayers.includes(newLayer)) {
+                        continue
+                    }
+
+                    layer = newLayer
+                }
+
             }
         }
 

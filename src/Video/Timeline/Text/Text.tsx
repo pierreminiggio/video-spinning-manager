@@ -22,12 +22,14 @@ const textContentStyle: CSSProperties = {
 
 const textPadding = 5
 const editButtonPadding = 3
+const displayTextWidthBreakpoint = 20
 
 export default function Text({text, textGap, textHeight, layer, left, width, onEditButtonClickHandler}: TextProps) {
+    const isBigEnough = width > displayTextWidthBreakpoint
     const color = text.color
     const backgroundColor = text.backgroundColor
     const opacity = text.backgroundColorOpacity
-    const editButtonWidth = textHeight - textPadding * 2
+    const editButtonWidth = isBigEnough ? textHeight - textPadding * 2 : textHeight
     const editButtonHeight = editButtonWidth
 
     return <div
@@ -37,12 +39,12 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
             left: left + '%',
             top: textHeight * (layer - 1),
             width: width + '%',
-            padding: textGap,
+            padding: isBigEnough ? textGap : undefined,
             boxSizing: 'border-box'
         }}
         onClick={event => onEditButtonClickHandler(text)}
     >
-        <div style={{
+        {isBigEnough ? <div style={{
             position: 'relative',
             width: 'calc(100% - ' + editButtonWidth + 'px)',
             height: '100%',
@@ -65,10 +67,10 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
                 padding: textPadding,
                 lineHeight: 1
             }}>{text.content}</div>
-        </div>
+        </div> : ''}
         <div style={{
             position: 'relative',
-            width: editButtonWidth,
+            width: isBigEnough ? editButtonWidth : width,
             height: '100%',
             boxSizing: 'border-box',
             display: 'inline-block'
@@ -82,9 +84,9 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
                 ...textContentStyle,
                 backgroundImage: 'url(' + Edit + ')',
                 backgroundSize: (
-                    editButtonWidth - editButtonPadding * 2
+                    isBigEnough ? editButtonWidth - editButtonPadding * 2 : width
                 ) + 'px ' + (
-                    editButtonHeight - editButtonPadding * 2
+                    isBigEnough ? editButtonHeight - editButtonPadding * 2 : width
                 ) + 'px',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center'
