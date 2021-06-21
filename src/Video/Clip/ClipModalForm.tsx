@@ -106,33 +106,33 @@ export default function ClipModalForm(props: ClipModalFormProps) {
     const dialogLabel = 'clip-form-modal'
 
     return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby={dialogLabel}
-        open={open}
-        fullWidth
-        maxWidth="md"
-    >
-        <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
-        <div style={{padding: gap / 2, ...flexColumn}}>
-            {videoDuration === null ? <h2>Loading...</h2> : (<>
-                {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
-                <TimelineRangeSlider
-                    value={value}
-                    onChange={handleChange}
-                    maxDuration={videoDuration}
-                    lastChangedIndex={lastChangedIndex}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleFormSubmit}
-                >
-                    {commandVerb}
-                </Button>
-            </>)}
-        </div>
-      </Dialog>
+        <Dialog
+            onClose={handleClose}
+            aria-labelledby={dialogLabel}
+            open={open}
+            fullWidth
+            maxWidth="md"
+        >
+            <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} clip</DialogTitle>
+            <div style={{padding: gap / 2, ...flexColumn}}>
+                {videoDuration === null ? <h2>Loading...</h2> : (<>
+                    {error ? <Alert variant="filled" severity="error">{error}</Alert> : ''}
+                    <TimelineRangeSlider
+                        value={value}
+                        onChange={handleChange}
+                        maxDuration={videoDuration}
+                        lastChangedIndex={lastChangedIndex}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleFormSubmit}
+                    >
+                        {commandVerb}
+                    </Button>
+                </>)}
+            </div>
+        </Dialog>
     );
 }
 

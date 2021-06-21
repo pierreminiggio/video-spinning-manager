@@ -145,53 +145,53 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
     const backgroundOpacityLabel = 'background-opacity'
 
     return (
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby={dialogLabel}
-        open={open}
-        fullWidth
-        maxWidth="md"
-    >
+        <Dialog
+            onClose={handleClose}
+            aria-labelledby={dialogLabel}
+            open={open}
+            fullWidth
+            maxWidth="md"
+        >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
-        <div style={{padding: gap / 2, ...flexColumn}}>
-            {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
-                <ColorInput
-                    label={'Text color'}
-                    value={editedText.color}
-                    onChange={handleTextColorChange}
-                />
-                <ColorInput
-                    label={'Background color'}
-                    value={editedText.backgroundColor}
-                    onChange={handleBackgroundColorChange}
-                />
-                <Typography id={backgroundOpacityLabel}>
-                    Background opacity
-                </Typography>
-                <Slider
-                    value={editedText.backgroundColorOpacity}
-                    onChange={handleBackgroundColorOpacityChange}
-                    valueLabelDisplay="on"
-                    aria-labelledby={backgroundOpacityLabel}
-                    min={0}
-                    max={1}
-                    step={.1}
-                />
-                <TimelineRangeSlider
-                    value={[editedText.start, editedText.end]}
-                    onChange={handleTextTimeChange}
-                    maxDuration={totalClipTime}
-                    lastChangedIndex={lastChangedIndex}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleFormSubmit}
-                >
-                    {commandVerb}
-                </Button>
-            </>)}
-        </div>
-      </Dialog>
+            <div style={{padding: gap / 2, ...flexColumn}}>
+                {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
+                    <ColorInput
+                        label={'Text color'}
+                        value={editedText.color}
+                        onChange={handleTextColorChange}
+                    />
+                    <ColorInput
+                        label={'Background color'}
+                        value={editedText.backgroundColor}
+                        onChange={handleBackgroundColorChange}
+                    />
+                    <Typography id={backgroundOpacityLabel}>
+                        Background opacity
+                    </Typography>
+                    <Slider
+                        value={editedText.backgroundColorOpacity}
+                        onChange={handleBackgroundColorOpacityChange}
+                        valueLabelDisplay="on"
+                        aria-labelledby={backgroundOpacityLabel}
+                        min={0}
+                        max={1}
+                        step={.1}
+                    />
+                    <TimelineRangeSlider
+                        value={[editedText.start, editedText.end]}
+                        onChange={handleTextTimeChange}
+                        maxDuration={totalClipTime}
+                        lastChangedIndex={lastChangedIndex}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleFormSubmit}
+                    >
+                        {commandVerb}
+                    </Button>
+                </>)}
+            </div>
+        </Dialog>
     );
 }
