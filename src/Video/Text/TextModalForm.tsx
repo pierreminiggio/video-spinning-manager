@@ -13,12 +13,40 @@ interface TextModalFormProps {
 }
 
 export default function TextModalForm({onClose, videoDuration, selectedValue, open}: TextModalFormProps) {
-  
+    const [editedText, setEditedText] = useState<Text|null>(null)
+    const defaultEditedText: Text = {
+        id: 0,
+        content: 'Your text',
+        start: 0,
+        end: videoDuration ?? 1,
+        height: 7,
+        color: '#FFF',
+        backgroundColor: '#FFA500',
+        backgroundColorOpacity: .7,
+        leftOffset: 20,
+        rightOffset: 20,
+        topOffset: 40,
+    }
+    console.log('--- edited text ---')
+    console.log(editedText)
+    console.log('---')
+
     useEffect(
         () => {
-            // TODO Set values based on text
+            if (! open) {
+                return
+            }
+
+            if (selectedValue !== null) {
+                const newEditedText = {...selectedValue}
+                setEditedText(newEditedText)
+
+                return
+            }
+
+            setEditedText(defaultEditedText)
         },
-        [selectedValue]
+        [selectedValue, open]
     )
 
     const handleClose = () => {
