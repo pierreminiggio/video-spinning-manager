@@ -7,6 +7,7 @@ import gap from "../../Style/gap";
 import EditButtonClickHandler from "./EditButtonClickHandler";
 import TextModalForm from "./TextModalForm";
 import VideoDuration from "../../Struct/VideoDuration";
+import findMaxId from "../../Math/findMaxId";
 
 interface TextEditorProps {
     texts: Array<Text>
@@ -35,8 +36,33 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}:
 
     const handleFormClose = (text: Text|null): void => {
         setEditFormOpen(false)
-        console.log(text)
-        // TODO Save in texts
+
+        if (text === null) {
+            return
+        }
+
+        const newTexts = [...texts]
+
+        if (text.id === 0) {
+            const newText = {...text}
+            const maxId = findMaxId(newTexts)
+            newText.id = maxId + 1
+            newTexts.push(newText)
+        } else {
+            const textToEdit = newTexts.filter((newText: Text) => newText.id === text.id)[0]
+            textToEdit.content = text.content
+            textToEdit.start = text.start
+            textToEdit.end = text.end
+            textToEdit.height = text.height
+            textToEdit.color = text.color
+            textToEdit.backgroundColor = text.backgroundColor
+            textToEdit.backgroundColorOpacity = text.backgroundColorOpacity
+            textToEdit.leftOffset = text.leftOffset
+            textToEdit.rightOffset = text.rightOffset
+            textToEdit.topOffset = text.topOffset
+        }
+
+        setTexts(newTexts)
     }
 
     return <>

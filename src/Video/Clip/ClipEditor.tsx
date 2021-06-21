@@ -10,6 +10,7 @@ import ClipModalForm from "./ClipModalForm";
 import CropModalForm from "./CropModalForm";
 import VideoDuration from "../../Struct/VideoDuration";
 import DraggingActionsContainer from "../Timeline/Action/DraggingActionsContainer";
+import findMaxId from "../../Math/findMaxId";
 
 interface ClipEditorProps {
     clips: Array<Clip>
@@ -65,12 +66,7 @@ export default function ClipEditor({
         // @ts-ignore
         if (! clip.id) {
             const newClipValues: Clip|Object = {...clip}
-            let maxId = 0
-            newClipList.forEach((newClip: Clip) => {
-                if (newClip.id > maxId) {
-                    maxId = newClip.id
-                }
-            })
+            const maxId = findMaxId(newClipList)
 
             // @ts-ignore
             newClipValues.id = maxId + 1

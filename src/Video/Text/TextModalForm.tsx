@@ -47,10 +47,6 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
 
     const [lastChangedIndex, setLastChangedIndex] = useState(0)
 
-    console.log('--- edited text ---')
-    console.log(editedText)
-    console.log('---')
-
     useEffect(
         () => {
             if (! open) {
@@ -99,8 +95,7 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()
-        // TODO return new values
-        onClose(selectedValue);
+        onClose(editedText);
     }
 
     const handleTextColorChange = (newValue: string): void => {
