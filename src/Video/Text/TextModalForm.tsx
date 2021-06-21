@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, Slider, TextareaAutosize, TextField, Typography} from "@material-ui/core";
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
@@ -19,6 +19,10 @@ enum ColorKey {
     BACKGROUND_COLOR = 'backgroundColor',
 }
 
+enum StringKey {
+    CONTENT = 'content'
+}
+
 enum NumberKey {
     HEIGHT = 'height',
     BACKGROUND_COLOR_OPACITY = 'backgroundColorOpacity',
@@ -34,11 +38,13 @@ const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
     1: TimeKey.END
 }
 
+const defaultText = 'Your text'
+
 export default function TextModalForm({onClose, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
     const defaultEditedText: Text = {
         id: 0,
-        content: 'Your text',
+        content: defaultText,
         start: 0,
         end: totalClipTime ?? 1,
         height: 7,
@@ -103,6 +109,10 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         onClose(editedText);
     }
 
+    const handleTextContentChange = (newValue: string): void => {
+        setNewStringInText(newValue, StringKey.CONTENT)
+    }
+
     const handleTextHeightChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
         setNewNumberInText(newValue, NumberKey.HEIGHT)
     }
@@ -130,16 +140,21 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
     }
 
     const setNewColorInText = (newColor: string, field: ColorKey): void => {
-        if (editedText === null) {
-            return
-        }
 
         if (! /^#[0-9A-F]{6}$/i.test(newColor)) {
             return
         }
 
+        setNewStringInText(newColor, field)
+    }
+
+    const setNewStringInText = (newValue: string, field: ColorKey|StringKey): void => {
+        if (editedText === null) {
+            return
+        }
+
         const newEditedText: Text = {...editedText}
-        newEditedText[field] = newColor
+        newEditedText[field] = newValue
         setEditedText(newEditedText)
     }
 
@@ -165,7 +180,12 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
-                    <Typography id={fontHeightLabel}>
+                    <TextField
+                        value={editedText.content}
+                        onChange={e => handleTextContentChange(e.target.value)}
+                        label="Text Content"
+                    />
+                    <Typography id={fontHeightLabel} style={{marginTop: gap / 2}}>
                         Text Height
                     </Typography>
                     <Slider
