@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTitle} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
 import {SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
@@ -20,13 +20,14 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
         start: 0,
         end: videoDuration ?? 1,
         height: 7,
-        color: '#FFF',
-        backgroundColor: '#FFA500',
+        color: '#ffffff',
+        backgroundColor: '#ffa500',
         backgroundColorOpacity: .7,
         leftOffset: 20,
         rightOffset: 20,
         topOffset: 40,
     }
+
     console.log('--- edited text ---')
     console.log(editedText)
     console.log('---')
@@ -73,7 +74,16 @@ export default function TextModalForm({onClose, videoDuration, selectedValue, op
     >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
         <div style={{padding: gap / 2, ...flexColumn}}>
-            {videoDuration === null ? <h2>Loading...</h2> : (<>
+            {videoDuration === null || editedText === null ? <h2>Loading...</h2> : (<>
+                <TextField
+                    label="Couleur Texte"
+                    type="text"
+                    value={editedText.color}
+                />
+                <TextField
+                    type="color"
+                    value={editedText.color}
+                />
                 <Button
                     variant="contained"
                     color="primary"
