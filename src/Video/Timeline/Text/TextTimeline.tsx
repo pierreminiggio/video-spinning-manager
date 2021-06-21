@@ -16,6 +16,8 @@ interface TimelineProps {
 const textHeight = 40
 const textGap = 5
 
+const removeDuplicates = (value: number, index: number, self: number[]): boolean => self.indexOf(value) === index
+
 export default function TextTimeline(props: TimelineProps) {
     const {texts, totalTime, width, onEditButtonClickHandler} = props
     const hasTexts = texts.length > 0
@@ -32,7 +34,7 @@ export default function TextTimeline(props: TimelineProps) {
         if (colliderIndexes.length > 0) {
             const unavailableLayers = textLayers.filter(
                 (layerValue: number, layerIndex: number): boolean => colliderIndexes.includes(layerIndex)
-            )
+            ).filter(removeDuplicates)
 
             if (unavailableLayers[unavailableLayers.length - 1] === layers) {
                 layers += 1
@@ -45,7 +47,6 @@ export default function TextTimeline(props: TimelineProps) {
 
                     layer = newLayer
                 }
-
             }
         }
 
