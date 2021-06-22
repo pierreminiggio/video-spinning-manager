@@ -180,6 +180,16 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 {totalClipTime === null || editedText === null ? <h2>Loading...</h2> : (<>
+                    <Typography id={timesLabel}>
+                        Times
+                    </Typography>
+                    <TimelineRangeSlider
+                        value={[editedText.start, editedText.end]}
+                        onChange={handleTextTimeChange}
+                        maxDuration={totalClipTime}
+                        lastChangedIndex={lastChangedIndex}
+                        ariaLabelledby={timesLabel}
+                    />
                     <TextField
                         value={editedText.content}
                         onChange={e => handleTextContentChange(e.target.value)}
@@ -218,16 +228,6 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
                         min={0}
                         max={1}
                         step={.1}
-                    />
-                    <Typography id={timesLabel} style={{marginTop: gap / 2}}>
-                        Times
-                    </Typography>
-                    <TimelineRangeSlider
-                        value={[editedText.start, editedText.end]}
-                        onChange={handleTextTimeChange}
-                        maxDuration={totalClipTime}
-                        lastChangedIndex={lastChangedIndex}
-                        ariaLabelledby={timesLabel}
                     />
                     <Button
                         variant="contained"
