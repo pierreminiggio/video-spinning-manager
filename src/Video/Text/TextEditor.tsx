@@ -65,12 +65,33 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}:
         setTexts(newTexts)
     }
 
+    const handleTextDelete = (text: Text|null): void => {
+        if (text === null) {
+            return
+        }
+
+        const newTexts = [...texts]
+        for (const newTextStringIndex in newTexts) {
+            const newTextIndex = parseInt(newTextStringIndex)
+            const newText = newTexts[newTextIndex]
+
+            if (newText.id === text.id) {
+                newTexts.splice(newTextIndex, 1)
+                break
+            }
+        }
+
+        setEditFormOpen(false)
+        setTexts(newTexts)
+    }
+
     return <>
         <TextModalForm
             selectedValue={selectedValue}
             totalClipTime={totalClipTime}
             open={editFormOpen}
             onClose={handleFormClose}
+            onDelete={handleTextDelete}
         />
         <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, marginBottom: gap / 2, width: '100%'}}>
             <Button

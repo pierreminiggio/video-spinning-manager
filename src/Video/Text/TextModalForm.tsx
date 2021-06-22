@@ -9,6 +9,7 @@ import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void
+    onDelete: (text: Text|null) => void
     totalClipTime: VideoDuration
     selectedValue: Text|null
     open: boolean
@@ -43,7 +44,7 @@ const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
 
 const defaultText = 'Your text'
 
-export default function TextModalForm({onClose, totalClipTime, selectedValue, open}: TextModalFormProps) {
+export default function TextModalForm({onClose, onDelete, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
     const defaultEditedText: Text = {
         id: 0,
@@ -290,6 +291,13 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
                     >
                         {commandVerb}
                     </Button>
+                    {selectedValue !== null ? <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={e => onDelete(selectedValue)}
+                    >
+                        Delete
+                    </Button> : ''}
                 </>)}
             </div>
         </Dialog>
