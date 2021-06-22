@@ -25,6 +25,9 @@ enum StringKey {
 
 enum NumberKey {
     HEIGHT = 'height',
+    TOP_OFFSET = 'topOffset',
+    RIGHT_OFFSET = 'rightOffset',
+    LEFT_OFFSET = 'leftOffset',
     BACKGROUND_COLOR_OPACITY = 'backgroundColorOpacity',
 }
 
@@ -117,6 +120,18 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
         setNewNumberInText(newValue, NumberKey.HEIGHT)
     }
 
+    const handleTopOffsetChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        setNewNumberInText(newValue, NumberKey.TOP_OFFSET)
+    }
+
+    const handleLeftOffsetChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        setNewNumberInText(newValue, NumberKey.LEFT_OFFSET)
+    }
+
+    const handleRightOffsetChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
+        setNewNumberInText(newValue, NumberKey.RIGHT_OFFSET)
+    }
+
     const handleTextColorChange = (newValue: string): void => {
         setNewColorInText(newValue, ColorKey.COLOR)
     }
@@ -166,6 +181,9 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
 
     const dialogLabel = 'text-form-modal'
     const fontHeightLabel = 'font-height'
+    const topOffsetLabel = 'top-offset'
+    const leftOffsetLabel = 'left-offset'
+    const rightOffsetLabel = 'right-offset'
     const backgroundOpacityLabel = 'background-opacity'
     const timesLabel = 'text-times'
 
@@ -196,13 +214,49 @@ export default function TextModalForm({onClose, totalClipTime, selectedValue, op
                         label="Text Content"
                     />
                     <Typography id={fontHeightLabel} style={{marginTop: gap / 2}}>
-                        Text Height
+                        Text height
                     </Typography>
                     <Slider
                         value={editedText.height}
                         onChange={handleTextHeightChange}
                         valueLabelDisplay="on"
                         aria-labelledby={fontHeightLabel}
+                        min={0}
+                        max={100}
+                        step={1}
+                    />step={1}
+                    <Typography id={topOffsetLabel} style={{marginTop: gap / 2}}>
+                        Top offset
+                    </Typography>
+                    <Slider
+                        value={editedText.topOffset}
+                        onChange={handleTopOffsetChange}
+                        valueLabelDisplay="on"
+                        aria-labelledby={topOffsetLabel}
+                        min={0}
+                        max={100}
+                        step={1}
+                    />
+                    <Typography id={leftOffsetLabel} style={{marginTop: gap / 2}}>
+                        Left offset
+                    </Typography>
+                    <Slider
+                        value={editedText.leftOffset}
+                        onChange={handleLeftOffsetChange}
+                        valueLabelDisplay="on"
+                        aria-labelledby={leftOffsetLabel}
+                        min={0}
+                        max={100}
+                        step={1}
+                    />
+                    <Typography id={rightOffsetLabel} style={{marginTop: gap / 2}}>
+                        Right offset
+                    </Typography>
+                    <Slider
+                        value={editedText.rightOffset}
+                        onChange={handleRightOffsetChange}
+                        valueLabelDisplay="on"
+                        aria-labelledby={rightOffsetLabel}
                         min={0}
                         max={100}
                         step={1}
