@@ -31,43 +31,7 @@ export default function Editor(props: EditorProps) {
         videoWidth
     } = props
     const [clips, setClips] = useState<Array<Clip>>([])
-    const [texts, setTexts] = useState<Array<Text>>([{
-        id: 1,
-        content: 'test text',
-        start: 0,
-        end: 5,
-        height: 7,
-        color: '#ffffff',
-        backgroundColor: '#ffa500',
-        backgroundColorOpacity: .7,
-        leftOffset: 20,
-        rightOffset: 20,
-        topOffset: 40
-    }, {
-        id: 2,
-        content: 'test text 2',
-        start: 3,
-        end: 5,
-        height: 7,
-        color: '#ffffff',
-        backgroundColor: '#ffa500',
-        backgroundColorOpacity: .7,
-        leftOffset: 20,
-        rightOffset: 20,
-        topOffset: 70
-    }, {
-        id: 3,
-        content: 'test text 3',
-        start: 5,
-        end: 10,
-        height: 7,
-        color: '#ffffff',
-        backgroundColor: '#ffa500',
-        backgroundColorOpacity: .7,
-        leftOffset: 20,
-        rightOffset: 20,
-        topOffset: 40
-    }])
+    const [texts, setTexts] = useState<Array<Text>>([])
     
     const orderedClips = [...clips]
     orderedClips.sort((firstClip, secondClip) => {
