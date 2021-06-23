@@ -6,7 +6,6 @@ import flex from "../../Style/flex";
 import gap from "../../Style/gap";
 import EditButtonClickHandler from "./EditButtonClickHandler";
 import TextModalForm from "./TextModalForm";
-import VideoDuration from "../../Struct/VideoDuration";
 import findMaxId from "../../Math/findMaxId";
 
 interface TextEditorProps {
