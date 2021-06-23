@@ -21,15 +21,14 @@ interface EditorProps {
     videoWidth: number
 }
 
-export default function Editor(props: EditorProps) {
-    const {
-        contentId,
-        finishedVideoHeight,
-        finishedVideoWidth,
-        videoDuration,
-        videoUrl,
-        videoWidth
-    } = props
+export default function Editor({
+    contentId,
+    finishedVideoHeight,
+    finishedVideoWidth,
+    videoDuration,
+    videoUrl,
+    videoWidth
+}: EditorProps) {
     const [clips, setClips] = useState<Array<Clip>>([])
     const [texts, setTexts] = useState<Array<Text>>([])
     
