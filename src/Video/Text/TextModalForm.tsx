@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTitle, Slider, TextareaAutosize, TextField, Typography} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from "@material-ui/core";
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
