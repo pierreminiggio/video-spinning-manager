@@ -42,13 +42,11 @@ const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
     1: TimeKey.END
 }
 
-const defaultText = 'Your text'
-
 export default function TextModalForm({onClose, onDelete, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
     const defaultEditedText: Text = {
         id: 0,
-        content: defaultText,
+        content: '',
         start: 0,
         end: totalClipTime ?? 1,
         height: 7,
@@ -212,7 +210,8 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                     <TextField
                         value={editedText.content}
                         onChange={e => handleTextContentChange(e.target.value)}
-                        label="Text Content"
+                        label="Text content"
+                        placeholder="Your text"
                     />
                     <Typography id={fontHeightLabel} style={{marginTop: gap / 2}}>
                         Text height
