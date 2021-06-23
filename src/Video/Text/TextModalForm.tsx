@@ -225,7 +225,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                         min={0}
                         max={100}
                         step={1}
-                    />step={1}
+                    />
                     <Typography id={topOffsetLabel} style={{marginTop: gap / 2}}>
                         Top offset
                     </Typography>

@@ -2,7 +2,7 @@ import { History } from "history";
 import { MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useParams } from "react-router"
 import flexColumn from '../Style/flexColumn';
-import Editor from "./Editor";
+import {Editor, EditorOutput} from "./Editor";
 import Token from "../Struct/Token";
 import Video from "../Entity/Video/Video";
 import VideoDuration from "../Struct/VideoDuration";
@@ -115,6 +115,11 @@ export default function Detail(props: DetailProps) {
         })
     }
 
+    const handleEditorUpdate = (output: EditorOutput): void => {
+        console.log('editor output updated !')
+        console.log(output)
+    }
+
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
@@ -145,6 +150,7 @@ export default function Detail(props: DetailProps) {
             videoDuration={videoDuration}
             videoUrl={videoUrl}
             videoWidth={videoWidth}
+            onEditorUpdate={handleEditorUpdate}
         />
     </div>
 }

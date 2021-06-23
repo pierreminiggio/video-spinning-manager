@@ -19,18 +19,35 @@ interface EditorProps {
     videoDuration: VideoDuration
     videoUrl: VideoUrl
     videoWidth: number
+    onEditorUpdate: (output: EditorOutput) => void
 }
 
-export default function Editor({
+export interface EditorOutput {
+    clips: Array<Clip>
+    texts: Array<Text>
+    clipMakerProps: ClipMakerProps
+}
+
+const areEditorOutputsTheSame = (newOutput: EditorOutput, lastOutput: EditorOutput|null): boolean => {
+    if (lastOutput === null) {
+        return false
+    }
+
+    return JSON.stringify(newOutput) === JSON.stringify(lastOutput)
+}
+
+export function Editor({
     contentId,
     finishedVideoHeight,
     finishedVideoWidth,
     videoDuration,
     videoUrl,
-    videoWidth
+    videoWidth,
+    onEditorUpdate
 }: EditorProps) {
     const [clips, setClips] = useState<Array<Clip>>([])
     const [texts, setTexts] = useState<Array<Text>>([])
+    const [lastEditorOutput, setLastEditorOutput] = useState<EditorOutput|null>(null)
     
     const orderedClips = [...clips]
     orderedClips.sort((firstClip, secondClip) => {
@@ -95,7 +112,16 @@ export default function Editor({
     const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: remotionTexts}
     const remotionProps = {props: JSON.stringify(clipMakerProps)}
 
-    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps)
+    const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps);
+
+    useEffect(() => {
+        const newEditorOutput: EditorOutput = {clips, texts, clipMakerProps}
+
+        if (! areEditorOutputsTheSame(newEditorOutput, lastEditorOutput)) {
+            onEditorUpdate(newEditorOutput)
+            setLastEditorOutput(newEditorOutput)
+        }
+    }, [clips, texts, remotionProps])
 
     return (
         <div>
