@@ -38,7 +38,7 @@ export default function Detail(props: DetailProps) {
     const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
     const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
 
-    const updateDetails = (token: Token, id: number) => {
+    const getVideoDetails = (token: Token, id: number) => {
         if (token === null) {
             return
         }
@@ -62,7 +62,7 @@ export default function Detail(props: DetailProps) {
     }
 
     useEffect(
-        () => updateDetails(token, id),
+        () => getVideoDetails(token, id),
         [token, id]
     );
 
@@ -98,7 +98,7 @@ export default function Detail(props: DetailProps) {
                 }
             
                 setDownloading(false)
-                updateDetails(token, id)
+                getVideoDetails(token, id)
             }).catch(error => {
                 setDownloading(false)
             });
