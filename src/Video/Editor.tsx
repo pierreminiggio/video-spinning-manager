@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import RemotionPreview from "./Preview/RemotionPreview";
 import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
@@ -48,69 +48,101 @@ export function Editor({
     const [clips, setClips] = useState<Array<Clip>>([])
     const [texts, setTexts] = useState<Array<Text>>([])
     const [lastEditorOutput, setLastEditorOutput] = useState<EditorOutput|null>(null)
-    
-    const orderedClips = [...clips]
-    orderedClips.sort((firstClip, secondClip) => {
-        const firstClipOrder = firstClip.order
-        const secondClipOrder = secondClip.order
-        
-        if (firstClipOrder === secondClipOrder) {
-            return 0
-        }
-        
-        return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
-    })
 
-    let totalClipTime = 0
+    const orderedClips = useMemo<Array<Clip>>(
+        (): Array<Clip> => {
+            const orderedClips = [...clips]
+            orderedClips.sort((firstClip, secondClip) => {
+                const firstClipOrder = firstClip.order
+                const secondClipOrder = secondClip.order
+
+                if (firstClipOrder === secondClipOrder) {
+                    return 0
+                }
+
+                return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
+            })
+
+            return orderedClips
+        },
+        [clips]
+    )
 
     const fps = 60
-    const remotionClips: Array<RemotionClip> = []
-    orderedClips.forEach(orderedClip => {
-        const startFrame = Math.ceil(orderedClip.start * fps)
-        const endFrame = Math.ceil(orderedClip.end * fps)
-        const remotionClipMoves: {[key: string]: CropEntity} = {}
-        const orderedClipMoves = orderedClip.moves
 
-        if (orderedClipMoves) {
-            const timeStrings = Object.keys(orderedClipMoves)
-            for (const timeStringKey in timeStrings) {
-                const timeString = timeStrings[timeStringKey]
-                const frame = (parseFloat(timeString) * fps).toFixed(0)
-                const move: CropEntity = orderedClipMoves[timeString]
-                remotionClipMoves[frame] = move
-            }
-        }
+    const {remotionClips, totalClipTime} = useMemo<{
+        remotionClips: Array<RemotionClip>
+        totalClipTime: number
+    }>(
+        () => {
+            let totalClipTime = 0
+            const remotionClips: Array<RemotionClip> = []
+            orderedClips.forEach(orderedClip => {
+                const startFrame = Math.ceil(orderedClip.start * fps)
+                const endFrame = Math.ceil(orderedClip.end * fps)
+                const remotionClipMoves: {[key: string]: CropEntity} = {}
+                const orderedClipMoves = orderedClip.moves
 
-        const remotionClip: RemotionClip = {
-            video: videoUrl ?? '',
-            from: startFrame,
-            durationInFrames: endFrame - startFrame,
-            moves: remotionClipMoves
-        }
-        remotionClips.push(remotionClip)
-        totalClipTime += orderedClip.end - orderedClip.start
-    })
+                if (orderedClipMoves) {
+                    const timeStrings = Object.keys(orderedClipMoves)
+                    for (const timeStringKey in timeStrings) {
+                        const timeString = timeStrings[timeStringKey]
+                        const frame = (parseFloat(timeString) * fps).toFixed(0)
+                        const move: CropEntity = orderedClipMoves[timeString]
+                        remotionClipMoves[frame] = move
+                    }
+                }
 
-    const remotionTexts: Array<RemotionText> = []
-    texts.forEach((text: Text): void => {
-        const startFrame = Math.ceil(text.start * fps)
-        const endFrame = Math.ceil(text.end * fps)
-        remotionTexts.push({
-            content: text.content,
-            from: startFrame,
-            durationInFrames: endFrame - startFrame,
-            height: text.height,
-            color: text.color,
-            backgroundColor: text.backgroundColor,
-            backgroundColorOpacity: text.backgroundColorOpacity,
-            leftOffset: text.leftOffset,
-            rightOffset: text.rightOffset,
-            topOffset: text.topOffset
-        })
-    })
+                const remotionClip: RemotionClip = {
+                    video: videoUrl ?? '',
+                    from: startFrame,
+                    durationInFrames: endFrame - startFrame,
+                    moves: remotionClipMoves
+                }
+                remotionClips.push(remotionClip)
+                totalClipTime += orderedClip.end - orderedClip.start
+            })
 
-    const clipMakerProps: ClipMakerProps = {clips: remotionClips, texts: remotionTexts}
-    const remotionProps = {props: JSON.stringify(clipMakerProps)}
+            return {remotionClips, totalClipTime}
+        },
+        [orderedClips, fps, videoUrl]
+    )
+
+
+    const remotionTexts = useMemo<Array<RemotionText>>(
+        (): Array<RemotionText> => {
+            const remotionTexts: Array<RemotionText> = []
+            texts.forEach((text: Text): void => {
+                const startFrame = Math.ceil(text.start * fps)
+                const endFrame = Math.ceil(text.end * fps)
+                remotionTexts.push({
+                    content: text.content,
+                    from: startFrame,
+                    durationInFrames: endFrame - startFrame,
+                    height: text.height,
+                    color: text.color,
+                    backgroundColor: text.backgroundColor,
+                    backgroundColorOpacity: text.backgroundColorOpacity,
+                    leftOffset: text.leftOffset,
+                    rightOffset: text.rightOffset,
+                    topOffset: text.topOffset
+                })
+            })
+
+            return remotionTexts
+        },
+        [texts, fps]
+    )
+
+    const clipMakerProps = useMemo<ClipMakerProps>(
+        (): ClipMakerProps => ({clips: remotionClips, texts: remotionTexts}),
+        [remotionClips, remotionTexts]
+    )
+
+    const remotionProps = useMemo<{props: string}>(
+        (): {props: string} => ({props: JSON.stringify(clipMakerProps)}),
+        [clipMakerProps]
+    )
 
     const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps);
 
