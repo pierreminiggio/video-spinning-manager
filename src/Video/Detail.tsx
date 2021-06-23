@@ -38,7 +38,7 @@ export default function Detail(props: DetailProps) {
     const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
     const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
 
-    const getVideoDetails = (token: Token, id: number) => {
+    const getVideoDetails = (token: Token, id: number): void => {
         if (token === null) {
             return
         }
