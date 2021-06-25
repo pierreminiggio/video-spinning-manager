@@ -14,6 +14,8 @@ import TextEditor from "./Text/TextEditor";
 
 interface EditorProps {
     contentId: number
+    defaultClips?: Array<Clip>
+    defaultTexts?: Array<Text>
     finishedVideoHeight: NullableNumber
     finishedVideoWidth: NullableNumber
     videoDuration: VideoDuration
@@ -35,6 +37,8 @@ const areEditorOutputsTheSame = (output1: EditorOutput, output2: EditorOutput): 
 
 export function Editor({
     contentId,
+    defaultClips = [],
+    defaultTexts = [],
     finishedVideoHeight,
     finishedVideoWidth,
     videoDuration,
@@ -45,6 +49,14 @@ export function Editor({
     const [clips, setClips] = useState<Array<Clip>>([])
     const [texts, setTexts] = useState<Array<Text>>([])
     const [lastEditorOutput, setLastEditorOutput] = useState<EditorOutput|null>(null)
+    
+    useFetch(() => {
+        setClips(defaultClips)
+    }, [defaultClips])
+    
+    useFetch(() => {
+        setTexts(defaultTexts)
+    }, [defaultTexts])
 
     const orderedClips = useMemo<Array<Clip>>(
         (): Array<Clip> => {
