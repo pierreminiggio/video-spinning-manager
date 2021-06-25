@@ -22,6 +22,7 @@ interface EditorProps {
     videoUrl: VideoUrl
     videoWidth: number
     onEditorUpdate: (output: EditorOutput) => void
+    previewOnly: boolean
 }
 
 export interface EditorOutput {
@@ -44,7 +45,8 @@ export function Editor({
     videoDuration,
     videoUrl,
     videoWidth,
-    onEditorUpdate
+    onEditorUpdate,
+    previewOnly
 }: EditorProps) {
     const [clips, setClips] = useState<Array<Clip>>([])
     const [texts, setTexts] = useState<Array<Text>>([])
@@ -182,23 +184,25 @@ export function Editor({
 
     return (
         <div>
-            <ClipEditor
-                clips={clips}
-                setClips={setClips}
-                contentId={contentId}
-                orderedClips={orderedClips}
-                finishedVideoHeight={finishedVideoHeight ?? 0}
-                finishedVideoWidth={finishedVideoWidth ?? 0}
-                totalClipTime={totalClipTime}
-                videoDuration={videoDuration}
-                videoWidth={videoWidth}
-            />
-            {clips.length > 0 ? <TextEditor
-                texts={texts}
-                setTexts={setTexts}
-                totalClipTime={totalClipTime}
-                videoWidth={videoWidth}
-            /> : ''}
+            {previewOnly === false ? <>
+                <ClipEditor
+                    clips={clips}
+                    setClips={setClips}
+                    contentId={contentId}
+                    orderedClips={orderedClips}
+                    finishedVideoHeight={finishedVideoHeight ?? 0}
+                    finishedVideoWidth={finishedVideoWidth ?? 0}
+                    totalClipTime={totalClipTime}
+                    videoDuration={videoDuration}
+                    videoWidth={videoWidth}
+                />
+                {clips.length > 0 ? <TextEditor
+                    texts={texts}
+                    setTexts={setTexts}
+                    totalClipTime={totalClipTime}
+                    videoWidth={videoWidth}
+                /> : ''}
+            </> : '' }
             {totalClipTime > 0 ? <RemotionPreview
                 compositionHeight={finishedVideoHeight ?? 0}
                 compositionWidth={finishedVideoWidth ?? 0}

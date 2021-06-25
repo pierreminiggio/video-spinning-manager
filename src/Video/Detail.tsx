@@ -149,9 +149,9 @@ export default function Detail(props: DetailProps) {
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
-            {video === null ? <h1>Loading...</h1> : (
-                <>
-                    <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
+            {video === null ? <h1>Loading...</h1> : <>
+                <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
+                {video.finishedAt === null ? <>
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
@@ -166,8 +166,8 @@ export default function Detail(props: DetailProps) {
                     >
                         <source src={videoUrl} type="video/mp4" />
                     </video> : ''}
-                </>
-            )}
+                </> : ''}
+            </>}
         </div>
         {video === null ? <h1>Loading...</h1> : <>
             <Editor
@@ -180,6 +180,7 @@ export default function Detail(props: DetailProps) {
                 videoUrl={videoUrl}
                 videoWidth={videoWidth}
                 onEditorUpdate={handleEditorUpdate}
+                previewOnly={video.finishedAt !== null}
             />
             {video.finishedAt === null ? <div style={{...flexColumn, width: '100%', marginTop: gap}}>
                 <Button
