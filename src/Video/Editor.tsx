@@ -28,12 +28,9 @@ export interface EditorOutput {
     clipMakerProps: ClipMakerProps
 }
 
-const areEditorOutputsTheSame = (newOutput: EditorOutput, lastOutput: EditorOutput|null): boolean => {
-    if (lastOutput === null) {
-        return false
-    }
+const areEditorOutputsTheSame = (output1: EditorOutput, output2: EditorOutput): boolean => {
 
-    return JSON.stringify(newOutput) === JSON.stringify(lastOutput)
+    return JSON.stringify(output1) === JSON.stringify(output2)
 }
 
 export function Editor({
@@ -148,6 +145,12 @@ export function Editor({
 
     useEffect(() => {
         const newEditorOutput: EditorOutput = {clips, texts, clipMakerProps}
+        
+        if (lastEditorOutput === null) {
+            setLastEditorOutput(newEditorOutput)
+            
+            return
+        }
 
         if (! areEditorOutputsTheSame(newEditorOutput, lastEditorOutput)) {
             onEditorUpdate(newEditorOutput)
