@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogTitle, Slider} from "@material-ui/core";
+import {Button, Dialog, DialogTitle} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
@@ -7,7 +7,6 @@ import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
-import formatTime from "../../Formatter/formatTime";
 import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
 
 interface ClipModalFormProps {
@@ -98,10 +97,6 @@ export default function ClipModalForm(props: ClipModalFormProps) {
     };
     
     const commandVerb = selectedValueId ? 'Edit' : 'Add'
-
-    const getValueText = (value: number) => {
-        return formatTime(value)
-    }
 
     const dialogLabel = 'clip-form-modal'
 
