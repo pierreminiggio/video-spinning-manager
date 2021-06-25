@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { MouseEvent, useEffect, useState } from 'react';
+import {MouseEvent, useEffect, useMemo, useState} from 'react';
 import { useParams } from 'react-router';
 import flexColumn from './Style/flexColumn';
 import gap from './Style/gap';
@@ -22,11 +22,12 @@ function ContentToSpin(props: ContentToSpinProps) {
   const {id} = useParams<ContentToSpinParams>()
   const videoId = parseInt(id ?? '')
 
-  const defaultContent: Content = {
-    // @ts-ignore
-    content: location?.videoContent,
-    videos: []
-  }
+  const defaultContent = useMemo<Content>(() => ({
+      // @ts-ignore
+      content: location?.videoContent,
+      videos: []
+  }), [location])
+
   const [video, setVideo] = useState<Content>(defaultContent)
   const videoContent = video.content ? video.content : {}
   const videoVideos = video.videos ? video.videos : []
@@ -55,7 +56,7 @@ function ContentToSpin(props: ContentToSpinProps) {
     }).catch(error => {
       setVideo(defaultContent);
     });
-  }, [token, videoId]);
+  }, [token, videoId, defaultContent]);
 
   const createNewVideo = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
