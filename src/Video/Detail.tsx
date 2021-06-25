@@ -8,6 +8,7 @@ import Video from "../Entity/Video/Video";
 import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
 import debounce from 'lodash.debounce'
+import baseUrl from '../API/Spinner/baseUrl'
 
 interface DetailProps {
     history: History
@@ -117,13 +118,28 @@ export default function Detail(props: DetailProps) {
     }
 
     const saveEditorOutput = (output: EditorOutput): void => {
-        console.log('Will be saving this output :')
-        console.log(output)
+        fetch(
+	    baseUrl + '/editor-state/' + id,
+            {
+                method: 'post',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + token, 
+                    'Content-Type': 'application/json'
+                }),
+		body: JSON.stringify(output)
+            }
+        ).then(response => {
+            if (response.status !== 204) {
+                return
+            }
+        }).catch(error => {
+            // error
+        });
     }
 
     const debouncedSaveEditorOutput: (output: EditorOutput) => void = useCallback(
-		debounce(saveEditorOutput, 500),
-		[],
+        debounce(saveEditorOutput, 500),
+        [],
 	)
 
     const handleEditorUpdate = (output: EditorOutput): void => debouncedSaveEditorOutput(output)
