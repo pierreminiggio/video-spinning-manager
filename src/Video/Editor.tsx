@@ -50,11 +50,11 @@ export function Editor({
     const [texts, setTexts] = useState<Array<Text>>([])
     const [lastEditorOutput, setLastEditorOutput] = useState<EditorOutput|null>(null)
     
-    useFetch(() => {
+    useEffect(() => {
         setClips(defaultClips)
     }, [defaultClips])
     
-    useFetch(() => {
+    useEffect(() => {
         setTexts(defaultTexts)
     }, [defaultTexts])
 
