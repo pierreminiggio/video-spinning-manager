@@ -1,5 +1,5 @@
 import { History } from "history";
-import {MouseEvent, SyntheticEvent, useCallback, useEffect, useState} from "react";
+import {MouseEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import { useParams } from "react-router"
 import flexColumn from '../Style/flexColumn';
 import {Editor, EditorOutput} from "./Editor";
@@ -117,7 +117,7 @@ export default function Detail(props: DetailProps) {
         })
     }
 
-    const saveEditorOutput = (output: EditorOutput): void => {
+    const saveEditorOutput = useMemo<(output: EditorOutput) => void>(() => (output: EditorOutput): void => {
         fetch(
 	    baseUrl + '/editor-state/' + id,
             {
@@ -126,7 +126,7 @@ export default function Detail(props: DetailProps) {
                     'Authorization': 'Bearer ' + token, 
                     'Content-Type': 'application/json'
                 }),
-		body: JSON.stringify(output)
+		        body: JSON.stringify(output)
             }
         ).then(response => {
             if (response.status !== 204) {
@@ -135,11 +135,11 @@ export default function Detail(props: DetailProps) {
         }).catch(error => {
             // error
         });
-    }
+    }, [id, token])
 
-    const debouncedSaveEditorOutput: (output: EditorOutput) => void = useCallback(
-        debounce(saveEditorOutput, 500),
-        []
+    const debouncedSaveEditorOutput = useMemo<(output: EditorOutput) => void>(
+        () => debounce(saveEditorOutput, 500),
+        [saveEditorOutput]
     )
 	
     const handleEditorUpdate = (output: EditorOutput): void => debouncedSaveEditorOutput(output)
