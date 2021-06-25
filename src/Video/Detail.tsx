@@ -181,7 +181,7 @@ export default function Detail(props: DetailProps) {
                 videoWidth={videoWidth}
                 onEditorUpdate={handleEditorUpdate}
             />
-            <div style={{...flexColumn, width: '100%', marginTop: gap}}>
+            {video.finishedAt === null ? <div style={{...flexColumn, width: '100%', marginTop: gap}}>
                 <Button
                     variant="contained"
                     color="primary"
@@ -189,7 +189,7 @@ export default function Detail(props: DetailProps) {
                 >
                     I'm done editing
                 </Button>
-            </div>
+            </div> : ''}
         </>}
     </div>
 }
