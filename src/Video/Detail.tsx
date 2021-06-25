@@ -9,6 +9,9 @@ import VideoDuration from "../Struct/VideoDuration";
 import VideoUrl from "../Struct/VideoUrl";
 import debounce from 'lodash.debounce'
 import baseUrl from '../API/Spinner/baseUrl'
+import {Button} from "@material-ui/core";
+import flex from "../Style/flex";
+import gap from "../Style/gap";
 
 interface DetailProps {
     history: History
@@ -167,16 +170,27 @@ export default function Detail(props: DetailProps) {
                 </>
             )}
         </div>
-        {video === null ? <h1>Loading...</h1> : <Editor
-            contentId={contentId}
-	    defaultClips={video.editorState.clips}
-	    defaultTexts={video.editorState.texts}
-            finishedVideoWidth={finishedVideoWidth}
-            finishedVideoHeight={finishedVideoHeight}
-            videoDuration={videoDuration}
-            videoUrl={videoUrl}
-            videoWidth={videoWidth}
-            onEditorUpdate={handleEditorUpdate}
-        />}
+        {video === null ? <h1>Loading...</h1> : <>
+            <Editor
+                contentId={contentId}
+                defaultClips={video.editorState.clips}
+                defaultTexts={video.editorState.texts}
+                finishedVideoWidth={finishedVideoWidth}
+                finishedVideoHeight={finishedVideoHeight}
+                videoDuration={videoDuration}
+                videoUrl={videoUrl}
+                videoWidth={videoWidth}
+                onEditorUpdate={handleEditorUpdate}
+            />
+            <div style={{...flexColumn, width: '100%', marginTop: gap}}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => null}
+                >
+                    I'm done editing
+                </Button>
+            </div>
+        </>}
     </div>
 }
