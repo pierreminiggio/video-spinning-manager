@@ -52,10 +52,12 @@ export function Editor({
     
     useEffect(() => {
         setClips(defaultClips)
-    }, [defaultClips])
+        setLastEditorOutput(null)
+    }, [defaultClips, defaultTexts])
     
     useEffect(() => {
         setTexts(defaultTexts)
+        setLastEditorOutput(null)
     }, [defaultTexts])
 
     const orderedClips = useMemo<Array<Clip>>(
