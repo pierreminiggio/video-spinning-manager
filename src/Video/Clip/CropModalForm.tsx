@@ -3,7 +3,7 @@ import { Alert } from "@material-ui/lab";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import Clip from "../../Entity/Clip";
-import {ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import ReactDOM from 'react-dom';
 import inputStep from "../../Style/inputStep";
 import formatTime from "../../Formatter/formatTime";
@@ -35,10 +35,10 @@ let deleteCrop: CropFunction
 
 export default function CropModalForm(props: CropModalFormProps) {
     const { clip, contentId, finishedVideoHeight, finishedVideoWidth, onClose, open } = props;
-    const defaultValue: number[] = [0]
+    const defaultValue = useMemo<number[]>(() => [0], [])
     const [value, setValue] = useState<number[]>(defaultValue)
-    const defaultCrop: Crop = {offset: 0, transition: Transition.Raw}
-    const defaultCrops: Crops = {0: defaultCrop}
+    const defaultCrop = useMemo<Crop>(() => ({offset: 0, transition: Transition.Raw}), [])
+    const defaultCrops = useMemo<Crops>(() => ({0: defaultCrop}), [defaultCrop])
     const [crops, setCrops] = useState<Crops>(defaultCrops)
     const [error, setError] = useState<NullableString>(null)
 
@@ -112,7 +112,7 @@ export default function CropModalForm(props: CropModalFormProps) {
         setValue(defaultValue)
         setCrops(defaultCrops)
 
-    }, [clip, open])
+    }, [clip, open, defaultValue, defaultCrops])
 
     const handleCreationButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
