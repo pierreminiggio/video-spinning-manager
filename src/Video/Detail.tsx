@@ -139,9 +139,11 @@ export default function Detail(props: DetailProps) {
 
     const debouncedSaveEditorOutput: (output: EditorOutput) => void = useCallback(
         debounce(saveEditorOutput, 500),
-        [],
-	)
-
+        []
+    )
+    console.log('editor state')
+    console.log(video?.editorState)
+	
     const handleEditorUpdate = (output: EditorOutput): void => debouncedSaveEditorOutput(output)
 
     return <div style={{...flexColumn, alignItems: 'center'}}>
