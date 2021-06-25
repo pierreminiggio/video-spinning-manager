@@ -177,6 +177,6 @@ export default function Detail(props: DetailProps) {
             videoUrl={videoUrl}
             videoWidth={videoWidth}
             onEditorUpdate={handleEditorUpdate}
-        /> : ''}
+        />}
     </div>
 }
