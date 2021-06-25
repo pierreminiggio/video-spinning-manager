@@ -178,7 +178,7 @@ export function Editor({
             onEditorUpdate(newEditorOutput)
             setLastEditorOutput(newEditorOutput)
         }
-    }, [clips, texts, remotionProps, clipMakerProps, lastEditorOutput, onEditorUpdate])
+    }, [clips, texts, remotionProps, clipMakerProps, lastEditorOutput, onEditorUpdate, defaultClips, defaultTexts])
 
     return (
         <div>
