@@ -141,15 +141,13 @@ export default function Detail(props: DetailProps) {
         debounce(saveEditorOutput, 500),
         []
     )
-    console.log('editor state')
-    console.log(video?.editorState)
 	
     const handleEditorUpdate = (output: EditorOutput): void => debouncedSaveEditorOutput(output)
 
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
-            {video === null ? (<h1>Loading...</h1>) : (
+            {video === null ? <h1>Loading...</h1> : (
                 <>
                     <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
                     {video.downloaded === false ? <div>
@@ -169,16 +167,16 @@ export default function Detail(props: DetailProps) {
                 </>
             )}
         </div>
-        <Editor
+        {video === null ? <h1>Loading...</h1> : <Editor
             contentId={contentId}
-	    defaultClips={video?.editorState.clips}
-	    defaultTexts={video?.editorState.texts}
+	    defaultClips={video.editorState.clips}
+	    defaultTexts={video.editorState.texts}
             finishedVideoWidth={finishedVideoWidth}
             finishedVideoHeight={finishedVideoHeight}
             videoDuration={videoDuration}
             videoUrl={videoUrl}
             videoWidth={videoWidth}
             onEditorUpdate={handleEditorUpdate}
-        />
+        /> : ''}
     </div>
 }
