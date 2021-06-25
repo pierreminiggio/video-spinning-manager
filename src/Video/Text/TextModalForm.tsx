@@ -1,5 +1,5 @@
 import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from "@material-ui/core";
-import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
@@ -44,7 +44,8 @@ const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
 
 export default function TextModalForm({onClose, onDelete, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
-    const defaultEditedText: Text = {
+
+    const defaultEditedText = useMemo<Text>((): Text => ({
         id: 0,
         content: '',
         start: 0,
@@ -56,7 +57,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
         leftOffset: 20,
         rightOffset: 20,
         topOffset: 40,
-    }
+    }), [totalClipTime])
 
     const [lastChangedIndex, setLastChangedIndex] = useState(0)
 
@@ -75,7 +76,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
 
             setEditedText(defaultEditedText)
         },
-        [selectedValue, open]
+        [selectedValue, open, defaultEditedText]
     )
 
     const handleClose = () => {
