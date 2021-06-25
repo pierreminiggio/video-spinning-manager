@@ -121,7 +121,6 @@ export function Editor({
         [orderedClips, fps, videoUrl]
     )
 
-
     const remotionTexts = useMemo<Array<RemotionText>>(
         (): Array<RemotionText> => {
             const remotionTexts: Array<RemotionText> = []

@@ -110,7 +110,7 @@ export default function Detail(props: DetailProps) {
                 getVideoDetails(token, id)
             }).catch(error => {
                 setDownloading(false)
-            });
+            })
         },
         [video, contentId, id, token]
     );
@@ -125,6 +125,10 @@ export default function Detail(props: DetailProps) {
     }
 
     const saveEditorOutput = useMemo<(output: EditorOutput) => void>(() => (output: EditorOutput): void => {
+        if (token === null) {
+            return
+        }
+
         fetch(
 	    baseUrl + '/editor-state/' + id,
             {
@@ -141,7 +145,7 @@ export default function Detail(props: DetailProps) {
             }
         }).catch(error => {
             // error
-        });
+        })
     }, [id, token])
 
     const debouncedSaveEditorOutput = useMemo<(output: EditorOutput) => void>(
@@ -150,6 +154,44 @@ export default function Detail(props: DetailProps) {
     )
 	
     const handleEditorUpdate = (output: EditorOutput): void => debouncedSaveEditorOutput(output)
+
+    const handleFinishVideoButtonClick = (e: MouseEvent<HTMLButtonElement>): void => {
+        if (token === null) {
+            return
+        }
+
+        fetch(
+	    baseUrl + '/finish-video/' + id,
+            {
+                method: 'post',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                })
+            }
+        ).then(response => {
+            if (response.status !== 200) {
+                return
+            }
+
+            return response.json()
+        }).then(({finishedAt}: {finishedAt: string}) => {
+
+            if (video === null) {
+                return
+            }
+
+            const newVideo: Video = {
+                video: {...video.video},
+                downloaded: video.downloaded,
+                editorState: {...video.editorState}
+            }
+            newVideo.video.finishedAt = finishedAt
+            setVideo(newVideo)
+        }).catch(error => {
+            // error
+        })
+    }
 
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
@@ -191,7 +233,7 @@ export default function Detail(props: DetailProps) {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={(e) => null}
+                    onClick={handleFinishVideoButtonClick}
                 >
                     I'm done editing
                 </Button>
