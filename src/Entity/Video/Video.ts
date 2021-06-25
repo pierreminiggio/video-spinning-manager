@@ -5,5 +5,4 @@ export default interface Video {
     video: VideoGeneralInfos
     downloaded: boolean
     editorState: EditorState
-    finishedAt: string|null
 }

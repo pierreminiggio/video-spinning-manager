@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce'
 import baseUrl from '../API/Spinner/baseUrl'
 import {Button} from "@material-ui/core";
 import gap from "../Style/gap";
+import VideoGeneralInfos from "../Entity/Video/VideoGeneralInfos";
 
 interface DetailProps {
     history: History
@@ -38,9 +39,13 @@ export default function Detail(props: DetailProps) {
     const videoWidthDividedBy16 = Math.min(Math.trunc((width - 20) / 16), 45 /* 1280/720 (16*45) */)
     const videoWidth = videoWidthDividedBy16 * 16
     const videoHeight = videoWidthDividedBy16 * 9
-    const videoVideo = video && video.video ? video.video : null
+    const videoVideo = useMemo<VideoGeneralInfos|null>(
+        () => video && video.video ? video.video : null,
+        [video]
+    )
     const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
     const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
+    const previewOnly = useMemo<boolean>(() => videoVideo ? videoVideo.finishedAt !== null : false, [videoVideo])
 
     const getVideoDetails = (token: Token, id: number): void => {
         if (token === null) {
@@ -151,7 +156,7 @@ export default function Detail(props: DetailProps) {
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
             {video === null ? <h1>Loading...</h1> : <>
                 <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
-                {video.finishedAt === null ? <>
+                {! previewOnly ? <>
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
@@ -180,9 +185,9 @@ export default function Detail(props: DetailProps) {
                 videoUrl={videoUrl}
                 videoWidth={videoWidth}
                 onEditorUpdate={handleEditorUpdate}
-                previewOnly={video.finishedAt !== null}
+                previewOnly={previewOnly}
             />
-            {video.finishedAt === null ? <div style={{...flexColumn, width: '100%', marginTop: gap}}>
+            {! previewOnly ? <div style={{...flexColumn, width: '100%', marginTop: gap}}>
                 <Button
                     variant="contained"
                     color="primary"

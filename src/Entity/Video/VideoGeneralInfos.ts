@@ -3,4 +3,5 @@ export default interface VideoGeneralInfos {
     name: string
     width: number
     height: number
+    finishedAt: string|null
 }
