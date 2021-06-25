@@ -169,6 +169,8 @@ export default function Detail(props: DetailProps) {
         </div>
         <Editor
             contentId={contentId}
+	    defaultClips={video?.editorState.clips}
+	    defaultTexts={video?.editorState.texts}
             finishedVideoWidth={finishedVideoWidth}
             finishedVideoHeight={finishedVideoHeight}
             videoDuration={videoDuration}
