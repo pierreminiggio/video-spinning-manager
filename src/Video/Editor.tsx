@@ -30,7 +30,7 @@ export interface EditorOutput {
     clipMakerProps: ClipMakerProps
 }
 
-const areEditorOutputsTheSame = (output1: EditorOutput, output2: EditorOutput): boolean => {
+const areObjectsTheSame = (output1: Object, output2: Object): boolean => {
 
     return JSON.stringify(output1) === JSON.stringify(output2)
 }
@@ -161,15 +161,20 @@ export function Editor({
         const newEditorOutput: EditorOutput = {clips, texts, clipMakerProps}
         
         if (lastEditorOutput === null) {
+
+            if (
+                ! areObjectsTheSame(newEditorOutput.clips, defaultClips)
+                || ! areObjectsTheSame(newEditorOutput.texts, defaultTexts)
+            ) {
+                return
+            }
+
             setLastEditorOutput(newEditorOutput)
             
             return
         }
 
-        if (! areEditorOutputsTheSame(newEditorOutput, lastEditorOutput)) {
-            console.log('---')
-            console.log(newEditorOutput)
-            console.log(lastEditorOutput)
+        if (! areObjectsTheSame(newEditorOutput, lastEditorOutput)) {
             onEditorUpdate(newEditorOutput)
             setLastEditorOutput(newEditorOutput)
         }
