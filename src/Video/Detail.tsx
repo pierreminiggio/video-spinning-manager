@@ -10,7 +10,6 @@ import VideoUrl from "../Struct/VideoUrl";
 import debounce from 'lodash.debounce'
 import baseUrl from '../API/Spinner/baseUrl'
 import {Button} from "@material-ui/core";
-import flex from "../Style/flex";
 import gap from "../Style/gap";
 
 interface DetailProps {
