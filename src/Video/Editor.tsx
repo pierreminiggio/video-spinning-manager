@@ -165,6 +165,9 @@ export function Editor({
         }
 
         if (! areEditorOutputsTheSame(newEditorOutput, lastEditorOutput)) {
+            console.log('---')
+            console.log(newEditorOutput)
+            console.log(lastEditorOutput)
             onEditorUpdate(newEditorOutput)
             setLastEditorOutput(newEditorOutput)
         }
