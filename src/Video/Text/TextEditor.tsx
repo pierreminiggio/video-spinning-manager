@@ -7,15 +7,17 @@ import gap from "../../Style/gap";
 import EditButtonClickHandler from "./EditButtonClickHandler";
 import TextModalForm from "./TextModalForm";
 import findMaxId from "../../Math/findMaxId";
+import TextPreset from "../../Entity/TextPreset";
 
 interface TextEditorProps {
     texts: Array<Text>
     setTexts: Dispatch<SetStateAction<Text[]>>
+    textPresets: Array<TextPreset>
     totalClipTime: number
     videoWidth: number
 }
 
-export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}: TextEditorProps) {
+export default function TextEditor({texts, setTexts, textPresets, totalClipTime, videoWidth}: TextEditorProps) {
 
     const [editFormOpen, setEditFormOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Text|null>(null)
@@ -87,6 +89,7 @@ export default function TextEditor({texts, setTexts, totalClipTime, videoWidth}:
     return <>
         <TextModalForm
             selectedValue={selectedValue}
+            textPresets={textPresets}
             totalClipTime={totalClipTime}
             open={editFormOpen}
             onClose={handleFormClose}

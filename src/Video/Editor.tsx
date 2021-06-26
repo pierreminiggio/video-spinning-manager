@@ -11,6 +11,7 @@ import ClipEditor from './Clip/ClipEditor'
 import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
 import {default as RemotionText} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
 import TextEditor from "./Text/TextEditor";
+import TextPreset from "../Entity/TextPreset";
 
 interface EditorProps {
     contentId: number
@@ -18,6 +19,7 @@ interface EditorProps {
     defaultTexts?: Array<Text>
     finishedVideoHeight: NullableNumber
     finishedVideoWidth: NullableNumber
+    textPresets: Array<TextPreset>
     videoDuration: VideoDuration
     videoUrl: VideoUrl
     videoWidth: number
@@ -42,6 +44,7 @@ export function Editor({
     defaultTexts = [],
     finishedVideoHeight,
     finishedVideoWidth,
+    textPresets,
     videoDuration,
     videoUrl,
     videoWidth,
@@ -198,6 +201,7 @@ export function Editor({
                 {clips.length > 0 ? <TextEditor
                     texts={texts}
                     setTexts={setTexts}
+                    textPresets={textPresets}
                     totalClipTime={totalClipTime}
                     videoWidth={videoWidth}
                 /> : ''}

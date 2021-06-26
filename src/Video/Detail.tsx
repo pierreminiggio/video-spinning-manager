@@ -12,6 +12,7 @@ import baseUrl from '../API/Spinner/baseUrl'
 import {Button} from "@material-ui/core";
 import gap from "../Style/gap";
 import VideoGeneralInfos from "../Entity/Video/VideoGeneralInfos";
+import TextPreset from "../Entity/TextPreset";
 
 interface DetailProps {
     history: History
@@ -193,6 +194,35 @@ export default function Detail(props: DetailProps) {
         })
     }
 
+    const [textPresets, setTextPresets] = useState<Array<TextPreset>>([])
+
+    useEffect(() => {
+        if (token === null) {
+            return
+        }
+
+        fetch(
+	    baseUrl + '/text-presets',
+            {
+                method: 'get',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                })
+            }
+        ).then(response => {
+            if (response.status !== 200) {
+                return
+            }
+
+            return response.json()
+        }).then(response => {
+            setTextPresets(response)
+        }).catch(error => {
+            // error
+        })
+    }, [token])
+
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
@@ -223,6 +253,7 @@ export default function Detail(props: DetailProps) {
                 defaultTexts={video.editorState.texts}
                 finishedVideoWidth={finishedVideoWidth}
                 finishedVideoHeight={finishedVideoHeight}
+                textPresets={textPresets}
                 videoDuration={videoDuration}
                 videoUrl={videoUrl}
                 videoWidth={videoWidth}

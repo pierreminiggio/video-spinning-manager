@@ -6,10 +6,12 @@ import VideoDuration from "../../Struct/VideoDuration";
 import Text from "../../Entity/Text";
 import ColorInput from "../../Form/ColorInput";
 import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
+import TextPreset from "../../Entity/TextPreset";
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void
     onDelete: (text: Text|null) => void
+    textPresets: Array<TextPreset>
     totalClipTime: VideoDuration
     selectedValue: Text|null
     open: boolean
@@ -42,7 +44,49 @@ const timeIndexes: {[tooltipIndex: number]: TimeKey} = {
     1: TimeKey.END
 }
 
-export default function TextModalForm({onClose, onDelete, totalClipTime, selectedValue, open}: TextModalFormProps) {
+const copyPresetValuesToText = (presetValues: Partial<Text>, text: Text, totalClipTime: number): void => {
+    if (presetValues.content !== undefined) {
+        text.content = presetValues.content
+    }
+
+    if (presetValues.start !== undefined) {
+        text.start = parseFloat((totalClipTime * presetValues.start / 100).toFixed(3))
+    }
+
+    if (presetValues.end !== undefined) {
+        text.end = parseFloat((totalClipTime * presetValues.end / 100).toFixed(3))
+    }
+
+    if (presetValues.height !== undefined) {
+        text.height = presetValues.height
+    }
+
+    if (presetValues.color !== undefined) {
+        text.color = presetValues.color
+    }
+
+    if (presetValues.backgroundColor !== undefined) {
+        text.backgroundColor = presetValues.backgroundColor
+    }
+
+    if (presetValues.backgroundColorOpacity !== undefined) {
+        text.backgroundColorOpacity = presetValues.backgroundColorOpacity
+    }
+
+    if (presetValues.leftOffset !== undefined) {
+        text.leftOffset = presetValues.leftOffset
+    }
+
+    if (presetValues.rightOffset !== undefined) {
+        text.rightOffset = presetValues.rightOffset
+    }
+
+    if (presetValues.topOffset !== undefined) {
+        text.topOffset = presetValues.topOffset
+    }
+}
+
+export default function TextModalForm({onClose, onDelete, textPresets, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
 
     const defaultEditedText = useMemo<Text>((): Text => ({
@@ -176,6 +220,17 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
     const handleBackgroundColorOpacityChange = (event: ChangeEvent<{}>, newValue: number | number[]): void => {
         setNewNumberInText(newValue, NumberKey.BACKGROUND_COLOR_OPACITY)
     }
+
+    const handlePresetButtonClick = (selectedPreset: Partial<Text>): void => {
+        if (editedText === null) {
+            return
+        }
+
+        const newEditedText = {...editedText}
+        copyPresetValuesToText(selectedPreset, newEditedText, totalClipTime ?? 1)
+
+        setEditedText(newEditedText)
+    }
     
     const commandVerb = selectedValue && selectedValue.id ? 'Edit' : 'Add'
 
@@ -298,6 +353,18 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                     >
                         Delete
                     </Button> : ''}
+
+                    <h2 style={{textAlign: 'center'}}>Presets</h2>
+                    {textPresets.map((textPreset: TextPreset, textPresetIndex: number) => {
+                        return <Button
+                            key={textPresetIndex}
+                            variant="contained"
+                            color="primary"
+                            onClick={e => handlePresetButtonClick(textPreset.content)}
+                        >
+                            {textPreset.name}
+                        </Button>
+                    })}
                 </>)}
             </div>
         </Dialog>
