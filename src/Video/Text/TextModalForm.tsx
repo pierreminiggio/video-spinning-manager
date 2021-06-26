@@ -224,7 +224,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                         aria-labelledby={fontHeightLabel}
                         min={0}
                         max={100}
-                        step={1}
+                        step={.1}
                     />
                     <Typography id={topOffsetLabel} style={{marginTop: gap / 2}}>
                         Top offset
@@ -236,7 +236,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                         aria-labelledby={topOffsetLabel}
                         min={0}
                         max={100}
-                        step={1}
+                        step={.1}
                     />
                     <Typography id={leftOffsetLabel} style={{marginTop: gap / 2}}>
                         Left offset
@@ -248,7 +248,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                         aria-labelledby={leftOffsetLabel}
                         min={0}
                         max={100}
-                        step={1}
+                        step={.1}
                     />
                     <Typography id={rightOffsetLabel} style={{marginTop: gap / 2}}>
                         Right offset
@@ -260,7 +260,7 @@ export default function TextModalForm({onClose, onDelete, totalClipTime, selecte
                         aria-labelledby={rightOffsetLabel}
                         min={0}
                         max={100}
-                        step={1}
+                        step={.1}
                     />
                     <ColorInput
                         label={'Text color'}
