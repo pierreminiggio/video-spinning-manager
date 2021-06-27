@@ -186,6 +186,7 @@ export default function Detail(props: DetailProps) {
             const newVideo: Video = {
                 video: {...video.video},
                 downloaded: video.downloaded,
+                hasRenderedPreview : video.hasRenderedPreview,
                 editorState: {...video.editorState}
             }
             newVideo.video.finishedAt = finishedAt
@@ -248,20 +249,36 @@ export default function Detail(props: DetailProps) {
             </>}
         </div>
         {video === null ? <h1>Loading...</h1> : <>
-            <Editor
-                contentId={contentId}
-                defaultClips={video.editorState.clips}
-                defaultTexts={video.editorState.texts}
-                finishedVideoWidth={finishedVideoWidth}
-                finishedVideoHeight={finishedVideoHeight}
-                fps={fps ?? 60}
-                textPresets={textPresets}
-                videoDuration={videoDuration}
-                videoUrl={videoUrl}
-                videoWidth={videoWidth}
-                onEditorUpdate={handleEditorUpdate}
-                previewOnly={previewOnly}
-            />
+            {video.hasRenderedPreview ? (
+                finishedVideoWidth === null || finishedVideoHeight === null ? <h2>Loading...</h2> : (
+                    <video
+                        width={finishedVideoWidth}
+                        height={finishedVideoHeight}
+                        style={{
+                            width: videoWidth,
+                            height: Math.floor(finishedVideoHeight / (finishedVideoWidth / videoWidth))
+                        }}
+                        controls
+                    >
+                        <source src={baseUrl + '/render/' + id} type="video/mp4" />
+                    </video>
+                )
+            ) : (
+                <Editor
+                    contentId={contentId}
+                    defaultClips={video.editorState.clips}
+                    defaultTexts={video.editorState.texts}
+                    finishedVideoWidth={finishedVideoWidth}
+                    finishedVideoHeight={finishedVideoHeight}
+                    fps={fps ?? 60}
+                    textPresets={textPresets}
+                    videoDuration={videoDuration}
+                    videoUrl={videoUrl}
+                    videoWidth={videoWidth}
+                    onEditorUpdate={handleEditorUpdate}
+                    previewOnly={previewOnly}
+                />
+            )}
             {! previewOnly ? <div style={{...flexColumn, width: '100%', marginTop: gap}}>
                 <Button
                     variant="contained"
