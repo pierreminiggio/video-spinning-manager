@@ -19,6 +19,7 @@ interface EditorProps {
     defaultTexts?: Array<Text>
     finishedVideoHeight: NullableNumber
     finishedVideoWidth: NullableNumber
+    fps: number
     textPresets: Array<TextPreset>
     videoDuration: VideoDuration
     videoUrl: VideoUrl
@@ -44,6 +45,7 @@ export function Editor({
     defaultTexts = [],
     finishedVideoHeight,
     finishedVideoWidth,
+    fps,
     textPresets,
     videoDuration,
     videoUrl,
@@ -83,8 +85,6 @@ export function Editor({
         },
         [clips]
     )
-
-    const fps = 60
 
     const {remotionClips, totalClipTime} = useMemo<{
         remotionClips: Array<RemotionClip>

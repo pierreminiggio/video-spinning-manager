@@ -3,5 +3,6 @@ export default interface VideoGeneralInfos {
     name: string
     width: number
     height: number
+    fps: number
     finishedAt: string|null
 }

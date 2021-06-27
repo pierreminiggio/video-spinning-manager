@@ -46,6 +46,7 @@ export default function Detail(props: DetailProps) {
     )
     const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
     const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
+    const fps = videoVideo && videoVideo.fps ? videoVideo.fps : null
     const previewOnly = useMemo<boolean>(() => videoVideo ? videoVideo.finishedAt !== null : false, [videoVideo])
 
     const getVideoDetails = (token: Token, id: number): void => {
@@ -253,6 +254,7 @@ export default function Detail(props: DetailProps) {
                 defaultTexts={video.editorState.texts}
                 finishedVideoWidth={finishedVideoWidth}
                 finishedVideoHeight={finishedVideoHeight}
+                fps={fps ?? 60}
                 textPresets={textPresets}
                 videoDuration={videoDuration}
                 videoUrl={videoUrl}
