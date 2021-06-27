@@ -26,6 +26,7 @@ export default function NewForm(props: NewFormProps) {
     const [name, setName] = useState('')
     const [width, setWidth] = useState(1080)
     const [height, setHeight] = useState(1920)
+    const [fps, setFps] = useState(60)
     const [error, setError] = useState<NullableString>(null)
   
     const submitForm = (e: MouseEvent<HTMLButtonElement>) => {
@@ -47,7 +48,7 @@ export default function NewForm(props: NewFormProps) {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
                 }),
-                body: JSON.stringify({name, width, height})
+                body: JSON.stringify({name, width, height, fps})
             }
         ).then(response => {
             if (response.status !== 200) {
@@ -102,6 +103,12 @@ export default function NewForm(props: NewFormProps) {
                 type="number"
                 value={height}
                 onChange={e => {setHeight(parseInt(e.target.value))}}
+            />
+            <TextField
+                label="FPS"
+                type="number"
+                value={fps}
+                onChange={e => {setFps(parseInt(e.target.value))}}
             />
             <Button
                 variant="contained"
