@@ -44,7 +44,7 @@ export default function TikTokModalForm({onClose, open}: TikTokModalFormProps) {
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>Post to TikTok</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 <TextField
-                    value={legend}
+                    value={legend ?? ''}
                     onChange={e => setLegend(e.target.value.replace('\n', ' '))}
                     label="Legend"
                     placeholder="Legend"

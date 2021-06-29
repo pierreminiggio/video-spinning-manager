@@ -7,10 +7,12 @@ import TikTokModalForm from "./TikTokModalForm";
 import NullableString from "../../Struct/NullableString";
 
 interface PostingProps {
+    videoId: number
+    token: string
     socialMediaAccounts: SocialMediaAccounts
 }
 
-export default function Posting({socialMediaAccounts}: PostingProps): JSX.Element {
+export default function Posting({videoId, token, socialMediaAccounts}: PostingProps): JSX.Element {
 
     const [selectedSocialMediaType, setSelectedSocialMediaType] = useState<SocialMediaType|null>(null)
     const [selectedSocialMediaAccount, setSelectedSocialMediaAccount] = useState<SocialAccount|null>(null)
@@ -43,10 +45,18 @@ export default function Posting({socialMediaAccounts}: PostingProps): JSX.Elemen
 
     const handleTikTokFormClose = useMemo<(legend: NullableString) => void>(
         () => (legend: NullableString): void => {
-            console.log(legend)
+
+            if (legend !== null) {
+                console.log('--- submit')
+                console.log(token)
+                console.log(videoId)
+                console.log(legend)
+                console.log(selectedSocialMediaAccount)
+            }
+
             closeForm()
         },
-        [closeForm]
+        [closeForm, token, videoId, selectedSocialMediaAccount]
     )
 
     return <>

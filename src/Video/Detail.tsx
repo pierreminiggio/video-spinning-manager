@@ -13,7 +13,6 @@ import {Button} from "@material-ui/core";
 import gap from "../Style/gap";
 import VideoGeneralInfos from "../Entity/Video/VideoGeneralInfos";
 import TextPreset from "../Entity/TextPreset";
-import SocialMediaAccounts from "../Entity/Account/SocialMediaAccounts";
 import Posting from "./Posting/Posting";
 
 interface DetailProps {
@@ -290,7 +289,11 @@ export default function Detail(props: DetailProps): JSX.Element {
                 >
                     I'm done editing
                 </Button>
-            </div> : <Posting socialMediaAccounts={video.spinnedAccountSocialMediasAccounts} />}
+            </div> : <Posting
+                videoId={id}
+                token={token}
+                socialMediaAccounts={video.spinnedAccountSocialMediasAccounts}
+            />}
         </>}
     </div>
 }
