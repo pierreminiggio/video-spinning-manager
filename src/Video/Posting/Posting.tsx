@@ -4,6 +4,7 @@ import {Button, capitalize} from "@material-ui/core";
 import SocialAccount from "../../Entity/Account/SocialMediaAccount";
 import {useMemo, useState} from "react";
 import TikTokModalForm from "./TikTokModalForm";
+import NullableString from "../../Struct/NullableString";
 
 interface PostingProps {
     socialMediaAccounts: SocialMediaAccounts
@@ -40,9 +41,13 @@ export default function Posting({socialMediaAccounts}: PostingProps): JSX.Elemen
         [setSelectedSocialMediaType, setSelectedSocialMediaAccount]
     )
 
-    const handleTikTokFormClose = () => {
-        closeForm()
-    }
+    const handleTikTokFormClose = useMemo<(legend: NullableString) => void>(
+        () => (legend: NullableString): void => {
+            console.log(legend)
+            closeForm()
+        },
+        [closeForm]
+    )
 
     return <>
         <h1>Post the video to</h1>
