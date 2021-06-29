@@ -3,6 +3,7 @@ import SocialMediaType from "../../Entity/Account/SocialMediaType";
 import {Button, capitalize} from "@material-ui/core";
 import SocialAccount from "../../Entity/Account/SocialMediaAccount";
 import {useMemo, useState} from "react";
+import TikTokModalForm from "./TikTokModalForm";
 
 interface PostingProps {
     socialMediaAccounts: SocialMediaAccounts
@@ -18,9 +19,29 @@ export default function Posting({socialMediaAccounts}: PostingProps): JSX.Elemen
         [socialMediaAccounts]
     )
 
-    const handlePostClick = (socialMediaType: SocialMediaType, socialMediaAccount: SocialAccount): void => {
-        setSelectedSocialMediaType(socialMediaType)
-        setSelectedSocialMediaAccount(socialMediaAccount)
+    const handlePostClick = useMemo<(socialMediaType: SocialMediaType, socialMediaAccount: SocialAccount) => void>(
+        () => (socialMediaType: SocialMediaType, socialMediaAccount: SocialAccount): void => {
+            setSelectedSocialMediaType(socialMediaType)
+            setSelectedSocialMediaAccount(socialMediaAccount)
+        },
+        [setSelectedSocialMediaType, setSelectedSocialMediaAccount]
+    )
+
+    const tikTokModalFormOpen = useMemo<boolean>(
+        (): boolean => selectedSocialMediaType === SocialMediaType.TIKTOK,
+        [selectedSocialMediaType]
+    )
+
+    const closeForm = useMemo<() => void>(
+        () => (): void => {
+            setSelectedSocialMediaType(null)
+            setSelectedSocialMediaAccount(null)
+        },
+        [setSelectedSocialMediaType, setSelectedSocialMediaAccount]
+    )
+
+    const handleTikTokFormClose = () => {
+        closeForm()
     }
 
     return <>
@@ -39,5 +60,6 @@ export default function Posting({socialMediaAccounts}: PostingProps): JSX.Elemen
                 ))}
             </div>
         ))}
+        <TikTokModalForm onClose={handleTikTokFormClose} open={tikTokModalFormOpen} />
     </>
 }
