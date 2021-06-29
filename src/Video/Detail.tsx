@@ -13,6 +13,8 @@ import {Button} from "@material-ui/core";
 import gap from "../Style/gap";
 import VideoGeneralInfos from "../Entity/Video/VideoGeneralInfos";
 import TextPreset from "../Entity/TextPreset";
+import SocialMediaAccounts from "../Entity/Account/SocialMediaAccounts";
+import Posting from "./Posting/Posting";
 
 interface DetailProps {
     history: History
@@ -24,7 +26,7 @@ interface DetailParams {
     id: string|undefined
 }
 
-export default function Detail(props: DetailProps) {
+export default function Detail(props: DetailProps): JSX.Element {
     const history = props.history
     const location = history?.location
     // @ts-ignore
@@ -187,7 +189,8 @@ export default function Detail(props: DetailProps) {
                 video: {...video.video},
                 downloaded: video.downloaded,
                 hasRenderedPreview : video.hasRenderedPreview,
-                editorState: {...video.editorState}
+                editorState: {...video.editorState},
+                spinnedAccountSocialMediasAccounts: {...video.spinnedAccountSocialMediasAccounts}
             }
             newVideo.video.finishedAt = finishedAt
             setVideo(newVideo)
@@ -287,7 +290,7 @@ export default function Detail(props: DetailProps) {
                 >
                     I'm done editing
                 </Button>
-            </div> : ''}
+            </div> : <Posting socialMediaAccounts={video.spinnedAccountSocialMediasAccounts} />}
         </>}
     </div>
 }
