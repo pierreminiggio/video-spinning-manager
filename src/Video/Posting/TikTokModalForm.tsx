@@ -86,6 +86,7 @@ export default function TikTokModalForm({onClose, open, predictedNextPostTime}: 
                     inputProps={{maxLength: tikTokLegendMaxLength}}
                     multiline={true}
                 />
+                <div>{(legend ?? '').length}/150</div>
                 <TextField
                     id="datetime-local"
                     label="Post date (UTC)"

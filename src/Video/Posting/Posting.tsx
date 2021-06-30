@@ -5,6 +5,7 @@ import SocialAccount from "../../Entity/Account/SocialMediaAccount";
 import {useMemo, useState} from "react";
 import TikTokModalForm from "./TikTokModalForm";
 import NullableString from "../../Struct/NullableString";
+import baseUrl from "../../API/Spinner/baseUrl";
 
 interface PostingProps {
     videoId: number
@@ -43,21 +44,42 @@ export default function Posting({videoId, token, socialMediaAccounts}: PostingPr
         [setSelectedSocialMediaType, setSelectedSocialMediaAccount]
     )
 
+    const postToTikTok = useMemo<(accountId: number, legend: string, publishAt: string) => void>(() => (accountId: number, legend: string, publishAt: string): void => {
+        if (token === null) {
+            return
+        }
+
+        fetch(
+	    baseUrl + '/post-to-tiktok/' + videoId,
+            {
+                method: 'post',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }),
+		        body: JSON.stringify({
+                    accountId, legend, publishAt
+                })
+            }
+        ).then(response => {
+            if (response.status !== 204) {
+                return
+            }
+        }).catch(error => {
+            // error
+        })
+    }, [videoId, token])
+
     const handleTikTokFormClose = useMemo<(legend: NullableString, publishAt: NullableString) => void>(
         () => (legend: NullableString, publishAt: NullableString): void => {
 
-            if (legend !== null && publishAt !== null) {
-                console.log('--- submit')
-                console.log(token)
-                console.log(videoId)
-                console.log(legend)
-                console.log(publishAt)
-                console.log(selectedSocialMediaAccount)
+            if (legend !== null && publishAt !== null && selectedSocialMediaAccount !== null) {
+                postToTikTok(selectedSocialMediaAccount.id, legend, publishAt)
             }
 
             closeForm()
         },
-        [closeForm, token, videoId, selectedSocialMediaAccount]
+        [closeForm, selectedSocialMediaAccount, postToTikTok]
     )
 
     return <>
