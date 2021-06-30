@@ -43,14 +43,15 @@ export default function Posting({videoId, token, socialMediaAccounts}: PostingPr
         [setSelectedSocialMediaType, setSelectedSocialMediaAccount]
     )
 
-    const handleTikTokFormClose = useMemo<(legend: NullableString) => void>(
-        () => (legend: NullableString): void => {
+    const handleTikTokFormClose = useMemo<(legend: NullableString, publishAt: NullableString) => void>(
+        () => (legend: NullableString, publishAt: NullableString): void => {
 
-            if (legend !== null) {
+            if (legend !== null && publishAt !== null) {
                 console.log('--- submit')
                 console.log(token)
                 console.log(videoId)
                 console.log(legend)
+                console.log(publishAt)
                 console.log(selectedSocialMediaAccount)
             }
 
@@ -75,6 +76,10 @@ export default function Posting({videoId, token, socialMediaAccounts}: PostingPr
                 ))}
             </div>
         ))}
-        <TikTokModalForm onClose={handleTikTokFormClose} open={tikTokModalFormOpen} />
+        <TikTokModalForm
+            onClose={handleTikTokFormClose}
+            open={tikTokModalFormOpen}
+            predictedNextPostTime={selectedSocialMediaAccount?.predictedNextPostTime ?? null}
+        />
     </>
 }

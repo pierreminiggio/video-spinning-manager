@@ -1,19 +1,36 @@
 import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import NullableString from "../../Struct/NullableString";
 
 interface TikTokModalFormProps {
-    onClose: (legend: NullableString) => void
+    onClose: (legend: NullableString, publishAt: NullableString) => void
     open: boolean
+    predictedNextPostTime: NullableString
 }
 
 const tikTokLegendMaxLength = 150
 
-export default function TikTokModalForm({onClose, open}: TikTokModalFormProps) {
+const numberToTwoDigitString = (number: number): string => {
+    return number.toString().padStart(2, '0')
+}
+
+const formatDateForInput = (datetime: Date): string => {
+    return datetime.getUTCFullYear() +
+        '-' +
+        numberToTwoDigitString(datetime.getUTCMonth() + 1) +
+        '-' + numberToTwoDigitString(datetime.getUTCDate()) +
+        'T' +
+        numberToTwoDigitString(datetime.getUTCHours()) +
+        ':' +
+        numberToTwoDigitString(datetime.getUTCMinutes())
+}
+
+export default function TikTokModalForm({onClose, open, predictedNextPostTime}: TikTokModalFormProps) {
 
     const [legend, setLegend] = useState<NullableString>(null)
+    const [publishAt, setPublishAt] = useState<Date|undefined>()
 
     useEffect(() => {
         if (! open) {
@@ -23,12 +40,30 @@ export default function TikTokModalForm({onClose, open}: TikTokModalFormProps) {
         setLegend(null)
     }, [open])
 
+    useEffect(() => {
+        if (! open) {
+            return
+        }
+
+        setPublishAt(new Date())
+        // TODO FILL predictedNextPostTime instead if passed
+    }, [open, setPublishAt, predictedNextPostTime])
+
+    const formattedDate = useMemo<string|undefined>((): string|undefined => {
+        if (! publishAt) {
+            return
+        }
+
+        return formatDateForInput(publishAt)
+
+    }, [publishAt, formatDateForInput])
+
     const handleClose = () => {
-        onClose(null);
+        onClose(null, null);
     }
 
     const handleFormSubmit = () => {
-        onClose(legend)
+        onClose(legend, formattedDate ? formattedDate : null)
     }
 
     const dialogLabel = 'tiktok-form-modal'
@@ -50,6 +85,24 @@ export default function TikTokModalForm({onClose, open}: TikTokModalFormProps) {
                     placeholder="Legend"
                     inputProps={{maxLength: tikTokLegendMaxLength}}
                     multiline={true}
+                />
+                <TextField
+                    id="datetime-local"
+                    label="Post date (UTC)"
+                    type="datetime-local"
+                    value={formattedDate}
+                    onChange={e => {
+                        const value = e.target.value
+
+                        if (! value) {
+                            return
+                        }
+
+                        setPublishAt(new Date(value))
+                    }}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 {legend !== null ? <Button
                     variant="contained"
