@@ -11,9 +11,10 @@ interface PostingProps {
     videoId: number
     token: string
     socialMediaAccounts: SocialMediaAccounts
+    postedOnAccounts: number[]
 }
 
-export default function Posting({videoId, token, socialMediaAccounts}: PostingProps): JSX.Element {
+export default function Posting({videoId, token, socialMediaAccounts, postedOnAccounts}: PostingProps): JSX.Element {
 
     const [selectedSocialMediaType, setSelectedSocialMediaType] = useState<SocialMediaType|null>(null)
     const [selectedSocialMediaAccount, setSelectedSocialMediaAccount] = useState<SocialAccount|null>(null)
@@ -86,7 +87,9 @@ export default function Posting({videoId, token, socialMediaAccounts}: PostingPr
         <h1>Post the video to</h1>
         {socialMediaTypes.map((socialMediaType: SocialMediaType, socialMediaIndex: number) => (
             <div key={socialMediaIndex}>
-                {socialMediaAccounts[socialMediaType].map((socialMediaAccount: SocialAccount, socialMediaIndex: number) => (
+                {socialMediaAccounts[socialMediaType].map((socialMediaAccount: SocialAccount, socialMediaIndex: number) => postedOnAccounts.includes(socialMediaAccount.id) ? (
+		    <div>Posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</div>
+		) : (
                     <Button
                         key={socialMediaIndex}
                         variant="contained"
