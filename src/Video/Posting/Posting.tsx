@@ -88,7 +88,7 @@ export default function Posting({videoId, token, socialMediaAccounts, postedOnAc
         {socialMediaTypes.map((socialMediaType: SocialMediaType, socialMediaIndex: number) => (
             <div key={socialMediaIndex}>
                 {socialMediaAccounts[socialMediaType].map((socialMediaAccount: SocialAccount, socialMediaIndex: number) => postedOnAccounts.includes(socialMediaAccount.id) ? (
-		    <div>Posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</div>
+		    <div>Planified to be posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</div>
 		) : (
                     <Button
                         key={socialMediaIndex}
