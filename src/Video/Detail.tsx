@@ -294,6 +294,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                 videoId={id}
                 token={token}
                 socialMediaAccounts={video.spinnedAccountSocialMediasAccounts}
+		postedOnAccounts={video.postedOnAccounts}
             />}
         </>}
     </div>
