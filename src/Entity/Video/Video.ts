@@ -8,5 +8,5 @@ export default interface Video {
     hasRenderedPreview: boolean
     editorState: EditorState
     spinnedAccountSocialMediasAccounts: SocialMediaAccounts
-    postedOnAccounts: number[]
+    planifiedToBePostedOnAccounts: number[]
 }
