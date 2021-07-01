@@ -189,7 +189,8 @@ export default function Detail(props: DetailProps): JSX.Element {
                 downloaded: video.downloaded,
                 hasRenderedPreview : video.hasRenderedPreview,
                 editorState: {...video.editorState},
-                spinnedAccountSocialMediasAccounts: {...video.spinnedAccountSocialMediasAccounts}
+                spinnedAccountSocialMediasAccounts: {...video.spinnedAccountSocialMediasAccounts},
+		postedOnAccounts: video.postedOnAccounts
             }
             newVideo.video.finishedAt = finishedAt
             setVideo(newVideo)
