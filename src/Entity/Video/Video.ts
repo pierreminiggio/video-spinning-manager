@@ -1,6 +1,7 @@
 import VideoGeneralInfos from "./VideoGeneralInfos";
 import EditorState from "./EditorState";
 import SocialMediaAccounts from "../Account/SocialMediaAccounts";
+import AccountPost from "./Social/AccountPost";
 
 export default interface Video {
     video: VideoGeneralInfos
@@ -8,5 +9,5 @@ export default interface Video {
     hasRenderedPreview: boolean
     editorState: EditorState
     spinnedAccountSocialMediasAccounts: SocialMediaAccounts
-    planifiedToBePostedOnAccounts: number[]
+    postedOnAccounts: AccountPost[]
 }

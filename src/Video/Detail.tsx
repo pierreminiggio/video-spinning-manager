@@ -190,7 +190,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                 hasRenderedPreview : video.hasRenderedPreview,
                 editorState: {...video.editorState},
                 spinnedAccountSocialMediasAccounts: {...video.spinnedAccountSocialMediasAccounts},
-		planifiedToBePostedOnAccounts: video.planifiedToBePostedOnAccounts
+		        postedOnAccounts: video.postedOnAccounts
             }
             newVideo.video.finishedAt = finishedAt
             setVideo(newVideo)
@@ -294,7 +294,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                 videoId={id}
                 token={token}
                 socialMediaAccounts={video.spinnedAccountSocialMediasAccounts}
-		planifiedToBePostedOnAccounts={video.planifiedToBePostedOnAccounts}
+		        postedOnAccounts={video.postedOnAccounts}
             />}
         </>}
     </div>

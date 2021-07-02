@@ -6,15 +6,16 @@ import {useMemo, useState} from "react";
 import TikTokModalForm from "./TikTokModalForm";
 import NullableString from "../../Struct/NullableString";
 import baseUrl from "../../API/Spinner/baseUrl";
+import AccountPost from "../../Entity/Video/Social/AccountPost";
 
 interface PostingProps {
     videoId: number
     token: string
     socialMediaAccounts: SocialMediaAccounts
-    planifiedToBePostedOnAccounts: number[]
+    postedOnAccounts: AccountPost[]
 }
 
-export default function Posting({videoId, token, socialMediaAccounts, planifiedToBePostedOnAccounts}: PostingProps): JSX.Element {
+export default function Posting({videoId, token, socialMediaAccounts, postedOnAccounts}: PostingProps): JSX.Element {
 
     const [selectedSocialMediaType, setSelectedSocialMediaType] = useState<SocialMediaType|null>(null)
     const [selectedSocialMediaAccount, setSelectedSocialMediaAccount] = useState<SocialAccount|null>(null)
@@ -87,18 +88,27 @@ export default function Posting({videoId, token, socialMediaAccounts, planifiedT
         <h1>Post the video to</h1>
         {socialMediaTypes.map((socialMediaType: SocialMediaType, socialMediaIndex: number) => (
             <div key={socialMediaIndex}>
-                {socialMediaAccounts[socialMediaType].map((socialMediaAccount: SocialAccount, socialMediaIndex: number) => planifiedToBePostedOnAccounts.includes(socialMediaAccount.id) ? (
-		    <div>Planified to be posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</div>
-		) : (
-                    <Button
-                        key={socialMediaIndex}
-                        variant="contained"
-                        color="primary"
-                        onClick={e => handlePostClick(socialMediaType, socialMediaAccount)}
-                    >
-                        {capitalize(socialMediaType)} {socialMediaAccount.username}
-                    </Button>
-                ))}
+                {socialMediaAccounts[socialMediaType].map((socialMediaAccount: SocialAccount, socialMediaIndex: number) => {
+                    const socialMediaAccountId = socialMediaAccount.id
+                    const accountPost = postedOnAccounts.find(({accountId}) => accountId === socialMediaAccountId)
+
+                    return accountPost ? (
+                        accountPost.remoteUrl !== null ? <div>
+                            <a href={accountPost.remoteUrl} target="_blank">Posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</a>
+                        </div> : <div>
+                            Planified to be posted on {capitalize(socialMediaType)} {socialMediaAccount.username}
+                        </div>
+                    ) : (
+                                <Button
+                                    key={socialMediaIndex}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={e => handlePostClick(socialMediaType, socialMediaAccount)}
+                                >
+                                    {capitalize(socialMediaType)} {socialMediaAccount.username}
+                                </Button>
+                            )
+                })}
             </div>
         ))}
         <TikTokModalForm
