@@ -99,15 +99,15 @@ export default function Posting({videoId, token, socialMediaAccounts, postedOnAc
                             Planified to be posted on {capitalize(socialMediaType)} {socialMediaAccount.username}
                         </div>
                     ) : (
-                                <Button
-                                    key={socialMediaIndex}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={e => handlePostClick(socialMediaType, socialMediaAccount)}
-                                >
-                                    {capitalize(socialMediaType)} {socialMediaAccount.username}
-                                </Button>
-                            )
+                        <Button
+                            key={socialMediaIndex}
+                            variant="contained"
+                            color="primary"
+                            onClick={e => handlePostClick(socialMediaType, socialMediaAccount)}
+                        >
+                            {capitalize(socialMediaType)} {socialMediaAccount.username}
+                        </Button>
+                    )
                 })}
             </div>
         ))}
