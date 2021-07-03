@@ -45,8 +45,9 @@ export default function TikTokModalForm({onClose, open, predictedNextPostTime}: 
             return
         }
 
-        setPublishAt(new Date())
-        // TODO FILL predictedNextPostTime instead if passed
+        const defaultPublishAt = predictedNextPostTime ? new Date(predictedNextPostTime) : new Date()
+        
+        setPublishAt(defaultPublishAt)
     }, [open, setPublishAt, predictedNextPostTime])
 
     const formattedDate = useMemo<string|undefined>((): string|undefined => {
