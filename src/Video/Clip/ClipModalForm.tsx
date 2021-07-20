@@ -57,9 +57,9 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         setValue(newValue);
     }
 
-    const handleBoundaryChange = (newBoundaryValue: number, boundaryIndex: number): void => {
+    const handleBoundaryChange = (newBoundaryValue: string, boundaryIndex: number): void => {
         const newValue = [...value]
-        newValue[boundaryIndex] = newBoundaryValue
+        newValue[boundaryIndex] = parseFloat(newBoundaryValue.replace(',', '.'))
         setValue(newValue)
     }
   
@@ -108,11 +108,11 @@ export default function ClipModalForm(props: ClipModalFormProps) {
 
     const dialogLabel = 'clip-form-modal'
 
-    const leftPointerValue = useMemo<number>(() => {
+    const leftPointerValue = useMemo<number>((): number => {
         return value[0]
     }, [value])
 
-    const rightPointerValue = useMemo<number>(() => {
+    const rightPointerValue = useMemo<number>((): number => {
         return value[1]
     }, [value])
 
@@ -139,7 +139,7 @@ export default function ClipModalForm(props: ClipModalFormProps) {
                             value={leftPointerValue}
                             onInput={(e: FormEvent<HTMLInputElement>) => {
                                 const target = e.target as HTMLInputElement
-                                handleBoundaryChange(parseInt(target.value) ?? 0, 0)
+                                handleBoundaryChange(target.value, 0)
                             }}
                             label="Start"
                             placeholder="Start"
@@ -157,7 +157,7 @@ export default function ClipModalForm(props: ClipModalFormProps) {
                             value={rightPointerValue}
                             onInput={(e: FormEvent<HTMLInputElement>) => {
                                 const target = e.target as HTMLInputElement
-                                handleBoundaryChange(parseInt(target.value) ?? 0, 1)
+                                handleBoundaryChange(target.value, 1)
                             }}
                             label="End"
                             placeholder="End"
