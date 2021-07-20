@@ -1,13 +1,15 @@
-import {Button, Dialog, DialogTitle} from "@material-ui/core";
+import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import PropTypes from 'prop-types';
-import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";
 import VideoDuration from "../../Struct/VideoDuration";
 import Clip from "../../Entity/Clip";
 import NullableString from "../../Struct/NullableString";
 import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
+import flex from "../../Style/flex";
+import inputStep from "../../Style/inputStep";
 
 interface ClipModalFormProps {
     onClose: (clip: Object|Clip) => void
@@ -53,6 +55,12 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         })
 
         setValue(newValue);
+    }
+
+    const handleBoundaryChange = (newBoundaryValue: number, boundaryIndex: number): void => {
+        const newValue = [...value]
+        newValue[boundaryIndex] = newBoundaryValue
+        setValue(newValue)
     }
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
@@ -100,6 +108,14 @@ export default function ClipModalForm(props: ClipModalFormProps) {
 
     const dialogLabel = 'clip-form-modal'
 
+    const leftPointerValue = useMemo<number>(() => {
+        return value[0]
+    }, [value])
+
+    const rightPointerValue = useMemo<number>(() => {
+        return value[1]
+    }, [value])
+
     return (
         <Dialog
             onClose={handleClose}
@@ -118,6 +134,43 @@ export default function ClipModalForm(props: ClipModalFormProps) {
                         maxDuration={videoDuration}
                         lastChangedIndex={lastChangedIndex}
                     />
+                    <div style={{...flex}}>
+                        <TextField
+                            value={leftPointerValue}
+                            onInput={(e: FormEvent<HTMLInputElement>) => {
+                                const target = e.target as HTMLInputElement
+                                handleBoundaryChange(parseInt(target.value) ?? 0, 0)
+                            }}
+                            label="Start"
+                            placeholder="Start"
+                            type="number"
+                            style={{flexGrow: 1}}
+                            inputProps={
+                                {
+                                    min: 0,
+                                    max: rightPointerValue - inputStep,
+                                    step: inputStep
+                                }
+                            }
+                        />
+                        <TextField
+                            value={rightPointerValue}
+                            onInput={(e: FormEvent<HTMLInputElement>) => {
+                                const target = e.target as HTMLInputElement
+                                handleBoundaryChange(parseInt(target.value) ?? 0, 1)
+                            }}
+                            label="End"
+                            placeholder="End"
+                            type="number"
+                            style={{flexGrow: 1, textAlign: 'right'}}
+                            inputProps={{
+                                min: leftPointerValue + inputStep,
+                                max: videoDuration,
+                                step: inputStep,
+                                style: {textAlign: 'right'}
+                            }}
+                        />
+                    </div>
                     <Button
                         variant="contained"
                         color="primary"
@@ -130,10 +183,3 @@ export default function ClipModalForm(props: ClipModalFormProps) {
         </Dialog>
     );
 }
-
-ClipModalForm.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.object.isRequired,
-};
-
