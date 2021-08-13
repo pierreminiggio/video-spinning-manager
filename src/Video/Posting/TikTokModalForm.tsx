@@ -56,8 +56,7 @@ export default function TikTokModalForm({onClose, open, predictedNextPostTime}: 
         }
 
         return formatDateForInput(publishAt)
-
-    }, [publishAt, formatDateForInput])
+    }, [publishAt])
 
     const handleClose = () => {
         onClose(null, null);

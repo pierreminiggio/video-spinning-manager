@@ -75,7 +75,7 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
         </div> : ''}
         <div style={{
             position: 'relative',
-            width: isBigEnough ? editButtonWidth : width,
+            width: isBigEnough ? editButtonWidth : '100%',
             height: '100%',
             boxSizing: 'border-box',
             display: 'inline-block'
@@ -93,10 +93,10 @@ export default function Text({text, textGap, textHeight, layer, left, width, onE
                 ...textContentStyle,
                 backgroundImage: 'url(' + Edit + ')',
                 backgroundSize: (
-                    isBigEnough ? editButtonWidth - editButtonPadding * 2 : width
-                ) + 'px ' + (
-                    isBigEnough ? editButtonHeight - editButtonPadding * 2 : width
-                ) + 'px',
+                    isBigEnough ? (editButtonWidth - editButtonPadding * 2) + 'px ' : 'calc(100% - 2 * ' + editButtonPadding + 'px)'
+                ) + ' ' + (
+                    isBigEnough ? (editButtonHeight - editButtonPadding * 2) + 'px' : 'calc(100% - 2 * ' + editButtonPadding + 'px)'
+                ),
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center'
             }} />

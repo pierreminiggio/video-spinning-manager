@@ -1,6 +1,5 @@
 import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import PropTypes from 'prop-types';
 import {ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
 import flexColumn from "../../Style/flexColumn";
 import gap from "../../Style/gap";

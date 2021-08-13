@@ -94,7 +94,11 @@ export default function Posting({videoId, token, socialMediaAccounts, postedOnAc
 
                     return accountPost ? (
                         accountPost.remoteUrl !== null ? <div>
-                            <a href={accountPost.remoteUrl} target="_blank">Posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</a>
+                            <a
+                                href={accountPost.remoteUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >Posted on {capitalize(socialMediaType)} {socialMediaAccount.username}</a>
                         </div> : <div>
                             Planified to be posted on {capitalize(socialMediaType)} {socialMediaAccount.username}
                         </div>
