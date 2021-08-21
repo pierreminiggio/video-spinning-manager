@@ -11,8 +11,7 @@ interface RemotionPreviewProps {
     width: number
 }
 
-export default function RemotionPreview(props: RemotionPreviewProps) {
-    const { compositionWidth, compositionHeight, durationInFrames, fps, remotionProps, width } = props
+export default function RemotionPreview({ compositionWidth, compositionHeight, durationInFrames, fps, remotionProps, width }: RemotionPreviewProps) {
 
     return <Player
         component={ClipMaker}
