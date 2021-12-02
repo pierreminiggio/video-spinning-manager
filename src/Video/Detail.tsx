@@ -259,7 +259,10 @@ export default function Detail(props: DetailProps): JSX.Element {
                         height={finishedVideoHeight}
                         style={{
                             width: videoWidth,
-                            height: Math.floor(finishedVideoHeight / (finishedVideoWidth / videoWidth))
+                            height: Math.floor(finishedVideoHeight / (finishedVideoWidth / videoWidth)),
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
                         }}
                         controls
                     >
