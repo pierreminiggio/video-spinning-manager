@@ -240,6 +240,11 @@ export default function Detail(props: DetailProps): JSX.Element {
                     {videoUrl ? <video
                         width={videoWidth}
                         height={videoHeight}
+                        style={{
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}
                         controls
                         onLoadedMetadata={(e: SyntheticEvent<EventTarget>) => {
                             const target = e.target as HTMLVideoElement
@@ -259,10 +264,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                         height={finishedVideoHeight}
                         style={{
                             width: videoWidth,
-                            height: Math.floor(finishedVideoHeight / (finishedVideoWidth / videoWidth)),
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto'
+                            height: Math.floor(finishedVideoHeight / (finishedVideoWidth / videoWidth))
                         }}
                         controls
                     >
