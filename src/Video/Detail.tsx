@@ -1,19 +1,21 @@
-import { History } from "history";
-import {MouseEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
-import { useParams } from "react-router"
+import { History } from 'history';
+import {MouseEvent, SyntheticEvent, useEffect, useMemo, useState} from 'react';
+import { useParams } from 'react-router'
 import flexColumn from '../Style/flexColumn';
-import {Editor, EditorOutput} from "./Editor";
-import Token from "../Struct/Token";
-import Video from "../Entity/Video/Video";
-import VideoDuration from "../Struct/VideoDuration";
-import VideoUrl from "../Struct/VideoUrl";
+import {Editor, EditorOutput} from './Editor';
+import Token from '../Struct/Token';
+import Video from '../Entity/Video/Video';
+import VideoDuration from '../Struct/VideoDuration';
+import VideoUrl from '../Struct/VideoUrl';
 import debounce from 'lodash.debounce'
 import baseUrl from '../API/Spinner/baseUrl'
-import {Button} from "@material-ui/core";
-import gap from "../Style/gap";
-import VideoGeneralInfos from "../Entity/Video/VideoGeneralInfos";
-import TextPreset from "../Entity/TextPreset";
-import Posting from "./Posting/Posting";
+import {Button} from '@material-ui/core';
+import gap from '../Style/gap';
+import VideoGeneralInfos from '../Entity/Video/VideoGeneralInfos';
+import TextPreset from '../Entity/TextPreset';
+import Posting from './Posting/Posting';
+import LanguageAndSubtitles from '../Entity/Subtitle/LanguageAndSubtitles';
+import Languages from './Subtitles/Languages';
 
 interface DetailProps {
     history: History
@@ -34,6 +36,7 @@ export default function Detail(props: DetailProps): JSX.Element {
     const contentId = parseInt(contentIdParam ?? '')
     const id = parseInt(idParam ?? '')
     const [video, setVideo] = useState<Video|null>(null)
+    const [languageAndSubtitles, setLanguageAndSubtitles] = useState<LanguageAndSubtitles[]|null>([])
     const [downloading, setDownloading] = useState(false)
     const videoUrl: VideoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
     const [videoDuration, setVideoDuration] = useState<VideoDuration>(null)
@@ -234,6 +237,7 @@ export default function Detail(props: DetailProps): JSX.Element {
             {video === null ? <h1>Loading...</h1> : <>
                 <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
                 {! previewOnly ? <>
+                    <Languages languageAndSubtitles={languageAndSubtitles} setLanguageAndSubtitles={setLanguageAndSubtitles} />
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
