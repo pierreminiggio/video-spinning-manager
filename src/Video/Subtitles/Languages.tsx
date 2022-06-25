@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { CSSProperties, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles'
 import Token from '../../Struct/Token';
 import flex from '../../Style/flex';
@@ -13,9 +13,10 @@ interface LanguagesProps {
 
 export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitles, token, contentId}: LanguagesProps): JSX.Element {
     const [pullingSubtitles, setPullingSubtitles] = useState<boolean>(false)
-    const subtitlesUrl = process.env.REACT_APP_SPINNER_API_URL + '/subtitles/' + contentId
 
-    const getLanguagesAndSubtitles = (update: boolean = false): void => {
+    const subtitlesUrl = useMemo<string>(() => process.env.REACT_APP_SPINNER_API_URL + '/subtitles/' + contentId, [contentId])
+
+    const getLanguagesAndSubtitles = useCallback((update: boolean = false): void => {
         setPullingSubtitles(true)
         fetch(
             subtitlesUrl,
@@ -26,7 +27,7 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
                     'Content-Type': 'application/json'
                 }), 
             }
-        ).then(response => response.json()).then(response => {
+        ).then(response => {
             if (response.status === 404) {
                 setPullingSubtitles(false)
                 getLanguagesAndSubtitles(true)
@@ -35,16 +36,21 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
             }
 
             if ([400, 401, 403].includes(response.status)) {
+                setPullingSubtitles(false)
+
                 return
             }
-        
-            setPullingSubtitles(false)
-            setLanguagesAndSubtitles(response)
-        }).catch(error => {
-            console.log(error)
+
+            response.json().then(response => {
+                setPullingSubtitles(false)
+                setLanguagesAndSubtitles(response)
+            }).catch(() => {
+                setPullingSubtitles(false)
+            })
+        }).catch(() => {
             setPullingSubtitles(false)
         });
-    }
+    }, [subtitlesUrl, token])
 
     useEffect(() => {
 
@@ -61,7 +67,7 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
         }
 
         getLanguagesAndSubtitles()
-    }, [languagesAndSubtitles, token, contentId])
+    }, [languagesAndSubtitles, token, contentId, getLanguagesAndSubtitles])
 
     const loading = languagesAndSubtitles === null || pullingSubtitles
 
