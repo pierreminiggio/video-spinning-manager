@@ -36,7 +36,7 @@ export default function Detail(props: DetailProps): JSX.Element {
     const contentId = parseInt(contentIdParam ?? '')
     const id = parseInt(idParam ?? '')
     const [video, setVideo] = useState<Video|null>(null)
-    const [languageAndSubtitles, setLanguageAndSubtitles] = useState<LanguageAndSubtitles[]|null>([])
+    const [languagesAndSubtitles, setLanguagesAndSubtitles] = useState<LanguageAndSubtitles[]|null>(null)
     const [downloading, setDownloading] = useState(false)
     const videoUrl: VideoUrl = video && video.downloaded ? process.env.REACT_APP_SPINNER_API_URL + '/cache/' + contentId + '.mp4' : null
     const [videoDuration, setVideoDuration] = useState<VideoDuration>(null)
@@ -237,7 +237,12 @@ export default function Detail(props: DetailProps): JSX.Element {
             {video === null ? <h1>Loading...</h1> : <>
                 <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
                 {! previewOnly ? <>
-                    <Languages languageAndSubtitles={languageAndSubtitles} setLanguageAndSubtitles={setLanguageAndSubtitles} />
+                    <Languages
+                        languagesAndSubtitles={languagesAndSubtitles}
+                        setLanguagesAndSubtitles={setLanguagesAndSubtitles}
+                        token={token}
+                        contentId={contentId}
+                    />
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}
