@@ -28,8 +28,9 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
             }
         ).then(response => response.json()).then(response => {
             if (response.status === 404) {
+                setPullingSubtitles(false)
                 getLanguagesAndSubtitles(true)
-                
+
                 return
             }
 
