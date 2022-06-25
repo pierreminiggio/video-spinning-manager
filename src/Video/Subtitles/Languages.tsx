@@ -41,6 +41,7 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
             setPullingSubtitles(false)
             setLanguagesAndSubtitles(response)
         }).catch(error => {
+            console.log(error)
             setPullingSubtitles(false)
         });
     }
