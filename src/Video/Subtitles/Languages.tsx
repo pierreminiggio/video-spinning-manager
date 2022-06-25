@@ -50,7 +50,7 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
         }).catch(() => {
             setPullingSubtitles(false)
         });
-    }, [subtitlesUrl, token])
+    }, [subtitlesUrl, token, setLanguagesAndSubtitles])
 
     useEffect(() => {
 
