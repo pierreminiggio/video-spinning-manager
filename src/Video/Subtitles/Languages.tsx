@@ -27,7 +27,13 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
                 }), 
             }
         ).then(response => response.json()).then(response => {
-            if ([400, 401, 403, 404].includes(response.status)) {
+            if (response.status === 404) {
+                getLanguagesAndSubtitles(true)
+                
+                return
+            }
+
+            if ([400, 401, 403].includes(response.status)) {
                 return
             }
         
