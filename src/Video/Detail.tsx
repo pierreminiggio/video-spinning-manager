@@ -115,6 +115,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                 getVideoDetails(token, id)
                 setDownloading(false)
             }).catch(error => {
+                console.log(error)
                 setDownloading(false)
             })
         },
