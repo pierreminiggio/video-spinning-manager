@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { CSSProperties, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles'
 import Token from '../../Struct/Token';
 import flex from '../../Style/flex';
+import flexColumn from '../../Style/flexColumn';
 import gap from '../../Style/gap';
+import SubtitlesFillerAction from './SubtitlesFillerAction';
 
 interface LanguagesProps {
     languagesAndSubtitles: LanguageAndSubtitles[]|null;
@@ -71,6 +71,10 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
         getLanguagesAndSubtitles()
     }, [languagesAndSubtitles, token, contentId, getLanguagesAndSubtitles])
 
+    const onSubtitlesFillerActionSelected = (languageAndSubtitlesId: number): void => {
+        alert(languageAndSubtitlesId)
+    }
+
     const loading = languagesAndSubtitles === null || pullingSubtitles
 
     const padding = `${gap / 10}px ${gap / 5}px`
@@ -115,10 +119,10 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
                     <div style={{
                         ...flex,
                         gap: gap / 10,
-                        flexDirection: 'column',
+                        ...flexColumn,
                         justifyContent: 'center'
                     }}>
-                        <Button><FormatColorFillIcon /></Button>
+                        <SubtitlesFillerAction languageAndSubtitlesId={languageAndSubtitlesIndex} onSelected={onSubtitlesFillerActionSelected} />
                     </div>
                 </div>
             })}
