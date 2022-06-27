@@ -11,9 +11,16 @@ interface LanguagesProps {
     setLanguagesAndSubtitles: Dispatch<SetStateAction<LanguageAndSubtitles[]|null>>
     token: Token
     contentId: number
+    onSubtitlesFillerActionSelected: (languageAndSubtitlesId: number) => void
 }
 
-export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitles, token, contentId}: LanguagesProps): JSX.Element {
+export default function Languages({
+    languagesAndSubtitles,
+    setLanguagesAndSubtitles,
+    token,
+    contentId,
+    onSubtitlesFillerActionSelected
+}: LanguagesProps): JSX.Element {
     const [pullingSubtitles, setPullingSubtitles] = useState<boolean>(false)
 
     const subtitlesUrl = useMemo<string>(() => process.env.REACT_APP_SPINNER_API_URL + '/subtitles/' + contentId, [contentId])
@@ -70,10 +77,6 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
 
         getLanguagesAndSubtitles()
     }, [languagesAndSubtitles, token, contentId, getLanguagesAndSubtitles])
-
-    const onSubtitlesFillerActionSelected = (languageAndSubtitlesId: number): void => {
-        alert(languageAndSubtitlesId)
-    }
 
     const loading = languagesAndSubtitles === null || pullingSubtitles
 

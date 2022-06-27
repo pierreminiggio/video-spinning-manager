@@ -231,6 +231,16 @@ export default function Detail(props: DetailProps): JSX.Element {
         })
     }, [token])
 
+    const onSubtitlesFillerActionSelected = (languageAndSubtitlesId: number): void => {
+        if (! languagesAndSubtitles) {
+            return
+        }
+
+        const languageAndSubtitles = languagesAndSubtitles[languageAndSubtitlesId]
+        console.log(languageAndSubtitles)
+        console.log(video?.editorState.texts)
+    }
+
     return <div style={{...flexColumn, alignItems: 'center'}}>
         <div>
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
@@ -242,6 +252,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                         setLanguagesAndSubtitles={setLanguagesAndSubtitles}
                         token={token}
                         contentId={contentId}
+                        onSubtitlesFillerActionSelected={onSubtitlesFillerActionSelected}
                     />
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
