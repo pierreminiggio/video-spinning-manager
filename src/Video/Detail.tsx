@@ -16,6 +16,7 @@ import TextPreset from '../Entity/TextPreset';
 import Posting from './Posting/Posting';
 import LanguageAndSubtitles from '../Entity/Subtitle/LanguageAndSubtitles';
 import Languages from './Subtitles/Languages';
+import buildEditorOutput from './Clip/buildEditorOutput';
 
 interface DetailProps {
     history: History
@@ -50,7 +51,7 @@ export default function Detail(props: DetailProps): JSX.Element {
     )
     const finishedVideoWidth = videoVideo && videoVideo.width ? videoVideo.width : null
     const finishedVideoHeight = videoVideo && videoVideo.height ? videoVideo.height : null
-    const fps = videoVideo && videoVideo.fps ? videoVideo.fps : null
+    const fps = videoVideo && videoVideo.fps ? videoVideo.fps : 60
     const previewOnly = useMemo<boolean>(() => videoVideo ? videoVideo.finishedAt !== null : false, [videoVideo])
 
     const getVideoDetails = (token: Token, id: number): void => {
@@ -257,6 +258,8 @@ export default function Detail(props: DetailProps): JSX.Element {
             rightOffset: 0,
             topOffset: 0,
         })
+        const editorOutput = buildEditorOutput(newVideo.editorState.clips, newVideo.editorState.texts, fps, videoUrl)
+        debouncedSaveEditorOutput(editorOutput)
         setVideo(newVideo)
     }
 
@@ -317,7 +320,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                     defaultTexts={video.editorState.texts}
                     finishedVideoWidth={finishedVideoWidth}
                     finishedVideoHeight={finishedVideoHeight}
-                    fps={fps ?? 60}
+                    fps={fps}
                     textPresets={textPresets}
                     videoDuration={videoDuration}
                     videoUrl={videoUrl}
