@@ -34,10 +34,7 @@ export interface EditorOutput {
     clipMakerProps: ClipMakerProps
 }
 
-const areObjectsTheSame = (output1: Object, output2: Object): boolean => {
-
-    return JSON.stringify(output1) === JSON.stringify(output2)
-}
+const areObjectsTheSame = (output1: Object, output2: Object): boolean => JSON.stringify(output1) === JSON.stringify(output2)
 
 export function Editor({
     contentId,
