@@ -238,7 +238,26 @@ export default function Detail(props: DetailProps): JSX.Element {
 
         const languageAndSubtitles = languagesAndSubtitles[languageAndSubtitlesId]
         console.log(languageAndSubtitles)
-        console.log(video?.editorState.texts)
+
+        if (! video) {
+            return
+        }
+
+        const newVideo: Video = JSON.parse(JSON.stringify(video))
+        newVideo.editorState.texts.push({
+            id: 1,
+            start: 0,
+            end: 10,
+            content: 'test',
+            height: 50,
+            color: 'orange',
+            backgroundColor: 'black',
+            backgroundColorOpacity: 0.6,
+            leftOffset: 0,
+            rightOffset: 0,
+            topOffset: 0,
+        })
+        setVideo(newVideo)
     }
 
     return <div style={{...flexColumn, alignItems: 'center'}}>

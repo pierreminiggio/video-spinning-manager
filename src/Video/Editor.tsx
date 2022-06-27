@@ -161,9 +161,9 @@ export function Editor({
 
     const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps);
 
+    const newEditorOutput = useMemo<EditorOutput>((): EditorOutput => ({clips, texts, clipMakerProps}) , [clips, texts, clipMakerProps])
+
     useEffect(() => {
-        const newEditorOutput: EditorOutput = {clips, texts, clipMakerProps}
-        
         if (lastEditorOutput === null) {
 
             if (
@@ -182,7 +182,7 @@ export function Editor({
             onEditorUpdate(newEditorOutput)
             setLastEditorOutput(newEditorOutput)
         }
-    }, [clips, texts, remotionProps, clipMakerProps, lastEditorOutput, onEditorUpdate, defaultClips, defaultTexts])
+    }, [newEditorOutput, remotionProps, lastEditorOutput, onEditorUpdate, defaultClips, defaultTexts])
 
     return (
         <div>
