@@ -1,17 +1,21 @@
-import {useEffect, useMemo, useState} from "react";
-import RemotionPreview from "./Preview/RemotionPreview";
-import VideoDuration from "../Struct/VideoDuration";
-import VideoUrl from "../Struct/VideoUrl";
-import NullableNumber from "../Struct/NullableNumber";
-import Clip from "../Entity/Clip";
-import Text from "../Entity/Text";
+import {useEffect, useMemo, useState} from 'react';
+import RemotionPreview from './Preview/RemotionPreview';
+import VideoDuration from '../Struct/VideoDuration';
+import VideoUrl from '../Struct/VideoUrl';
+import NullableNumber from '../Struct/NullableNumber';
+import Clip from '../Entity/Clip';
+import Text from '../Entity/Text';
 import {default as RemotionClip} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Clip.js';
-import {default as CropEntity} from '../Entity/Video/Clip/Crop/Crop'
 import ClipEditor from './Clip/ClipEditor'
 import ClipMakerProps from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/ClipMakerProps.js'
 import {default as RemotionText} from '../../node_modules/@pierreminiggio/spinning-manager-clip-maker/dist/Entity/Text.js'
-import TextEditor from "./Text/TextEditor";
-import TextPreset from "../Entity/TextPreset";
+import TextEditor from './Text/TextEditor';
+import TextPreset from '../Entity/TextPreset';
+import orderClips from './Clip/orderClips';
+import getRemotionClipsAndTotalClipTime from './Clip/getRemotionClipsAndTotalClipTime';
+import getRemotionTexts from './Clip/getRemotionTexts';
+import getClipMakerProps from './Clip/getClipMakerProps';
+import getEditorOutput from './Clip/getEditorOutput';
 
 interface EditorProps {
     contentId: number
@@ -65,21 +69,7 @@ export function Editor({
     }, [defaultTexts])
 
     const orderedClips = useMemo<Array<Clip>>(
-        (): Array<Clip> => {
-            const orderedClips = [...clips]
-            orderedClips.sort((firstClip, secondClip) => {
-                const firstClipOrder = firstClip.order
-                const secondClipOrder = secondClip.order
-
-                if (firstClipOrder === secondClipOrder) {
-                    return 0
-                }
-
-                return (secondClipOrder - firstClipOrder) > 0 ? -1 : 1
-            })
-
-            return orderedClips
-        },
+        (): Array<Clip> => orderClips(clips),
         [clips]
     )
 
@@ -87,67 +77,17 @@ export function Editor({
         remotionClips: Array<RemotionClip>
         totalClipTime: number
     }>(
-        () => {
-            let totalClipTime = 0
-            const remotionClips: Array<RemotionClip> = []
-            orderedClips.forEach(orderedClip => {
-                const startFrame = Math.ceil(orderedClip.start * fps)
-                const endFrame = Math.ceil(orderedClip.end * fps)
-                const remotionClipMoves: {[key: string]: CropEntity} = {}
-                const orderedClipMoves = orderedClip.moves
-
-                if (orderedClipMoves) {
-                    const timeStrings = Object.keys(orderedClipMoves)
-                    for (const timeStringKey in timeStrings) {
-                        const timeString = timeStrings[timeStringKey]
-                        const frame = (parseFloat(timeString) * fps).toFixed(0)
-                        const move: CropEntity = orderedClipMoves[timeString]
-                        remotionClipMoves[frame] = move
-                    }
-                }
-
-                const remotionClip: RemotionClip = {
-                    video: videoUrl ?? '',
-                    from: startFrame,
-                    durationInFrames: endFrame - startFrame,
-                    moves: remotionClipMoves
-                }
-                remotionClips.push(remotionClip)
-                totalClipTime += orderedClip.end - orderedClip.start
-            })
-
-            return {remotionClips, totalClipTime}
-        },
+        () => getRemotionClipsAndTotalClipTime(orderedClips, fps, videoUrl),
         [orderedClips, fps, videoUrl]
     )
 
     const remotionTexts = useMemo<Array<RemotionText>>(
-        (): Array<RemotionText> => {
-            const remotionTexts: Array<RemotionText> = []
-            texts.forEach((text: Text): void => {
-                const startFrame = Math.ceil(text.start * fps)
-                const endFrame = Math.ceil(text.end * fps)
-                remotionTexts.push({
-                    content: text.content,
-                    from: startFrame,
-                    durationInFrames: endFrame - startFrame,
-                    height: text.height,
-                    color: text.color,
-                    backgroundColor: text.backgroundColor,
-                    backgroundColorOpacity: text.backgroundColorOpacity,
-                    leftOffset: text.leftOffset,
-                    rightOffset: text.rightOffset,
-                    topOffset: text.topOffset
-                })
-            })
-
-            return remotionTexts
-        },
+        (): Array<RemotionText> => getRemotionTexts(texts, fps),
         [texts, fps]
     )
 
     const clipMakerProps = useMemo<ClipMakerProps>(
-        (): ClipMakerProps => ({clips: remotionClips, texts: remotionTexts}),
+        (): ClipMakerProps => getClipMakerProps(remotionClips, remotionTexts),
         [remotionClips, remotionTexts]
     )
 
@@ -158,7 +98,7 @@ export function Editor({
 
     const remotionProjectDurationInFrames = Math.ceil(totalClipTime * fps);
 
-    const newEditorOutput = useMemo<EditorOutput>((): EditorOutput => ({clips, texts, clipMakerProps}) , [clips, texts, clipMakerProps])
+    const newEditorOutput = useMemo<EditorOutput>((): EditorOutput => getEditorOutput(clips, texts, clipMakerProps) , [clips, texts, clipMakerProps])
 
     useEffect(() => {
         if (lastEditorOutput === null) {
