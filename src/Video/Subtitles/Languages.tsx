@@ -106,13 +106,17 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
                 style={languageStyle}
             >Loading...</div> : languagesAndSubtitles?.map((languageAndSubtitles, languageAndSubtitlesIndex) => {
                 return <div key={languageAndSubtitlesIndex} style={{
-                    ...flex, gap: gap / 10
+                    ...flex,
+                    gap: gap / 10
                 }}>
                     <div
                         style={languageStyle}
                     >{languageAndSubtitles.language}</div>
                     <div style={{
-                        ...flex, gap: gap / 10
+                        ...flex,
+                        gap: gap / 10,
+                        flexDirection: 'column',
+                        justifyContent: 'center'
                     }}>
                         <Button><FormatColorFillIcon /></Button>
                     </div>
