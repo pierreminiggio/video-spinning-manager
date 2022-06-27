@@ -1,3 +1,5 @@
+import { Button } from '@material-ui/core';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
 import { CSSProperties, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles'
 import Token from '../../Struct/Token';
@@ -103,10 +105,17 @@ export default function Languages({languagesAndSubtitles, setLanguagesAndSubtitl
             {loading ? <div
                 style={languageStyle}
             >Loading...</div> : languagesAndSubtitles?.map((languageAndSubtitles, languageAndSubtitlesIndex) => {
-                return <div key={languageAndSubtitlesIndex}>
+                return <div key={languageAndSubtitlesIndex} style={{
+                    ...flex, gap: gap / 10
+                }}>
                     <div
                         style={languageStyle}
                     >{languageAndSubtitles.language}</div>
+                    <div style={{
+                        ...flex, gap: gap / 10
+                    }}>
+                        <Button><FormatColorFillIcon /></Button>
+                    </div>
                 </div>
             })}
         </div>

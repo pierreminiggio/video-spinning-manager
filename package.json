@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@material-ui/core": "^4.11.4",
     "@material-ui/lab": "*",
+    "@mui/icons-material": "^5.8.4",
     "@pierreminiggio/spinning-manager-clip-maker": "github:pierreminiggio/spinning-manager-clip-maker",
     "@remotion/player": "^2.1.7",
     "@testing-library/jest-dom": "^4.2.4",
