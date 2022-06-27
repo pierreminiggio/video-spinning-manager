@@ -17,6 +17,7 @@ import Posting from './Posting/Posting';
 import LanguageAndSubtitles from '../Entity/Subtitle/LanguageAndSubtitles';
 import Languages from './Subtitles/Languages';
 import buildEditorOutput from './Clip/buildEditorOutput';
+import generateTexts from './Subtitles/generateTexts';
 
 interface DetailProps {
     history: History
@@ -245,19 +246,7 @@ export default function Detail(props: DetailProps): JSX.Element {
         }
 
         const newVideo: Video = JSON.parse(JSON.stringify(video))
-        newVideo.editorState.texts.push({
-            id: 1,
-            start: 0,
-            end: 10,
-            content: 'test',
-            height: 50,
-            color: 'orange',
-            backgroundColor: 'black',
-            backgroundColorOpacity: 0.6,
-            leftOffset: 0,
-            rightOffset: 0,
-            topOffset: 0,
-        })
+        newVideo.editorState.texts = generateTexts(newVideo.editorState.texts, languageAndSubtitles)
         const editorOutput = buildEditorOutput(newVideo.editorState.clips, newVideo.editorState.texts, fps, videoUrl)
         debouncedSaveEditorOutput(editorOutput)
         setVideo(newVideo)
