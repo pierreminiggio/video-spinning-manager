@@ -1,8 +1,9 @@
-import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles';
+import Clip from '../../Entity/Clip';
 import Text from '../../Entity/Text';
+import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles';
 
-export default function generateTexts(existingTexts: Text[], LanguageAndSubtitles: LanguageAndSubtitles): Text[] {
-    existingTexts.push({
+export default function generateTexts(clips: Clip[], texts: Text[], LanguageAndSubtitles: LanguageAndSubtitles): Text[] {
+    texts.push({
         id: 1,
         start: 0,
         end: 10,
@@ -16,5 +17,5 @@ export default function generateTexts(existingTexts: Text[], LanguageAndSubtitle
         topOffset: 0,
     })
 
-    return existingTexts
+    return texts
 }

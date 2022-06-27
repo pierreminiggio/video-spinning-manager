@@ -246,7 +246,7 @@ export default function Detail(props: DetailProps): JSX.Element {
         }
 
         const newVideo: Video = JSON.parse(JSON.stringify(video))
-        newVideo.editorState.texts = generateTexts(newVideo.editorState.texts, languageAndSubtitles)
+        newVideo.editorState.texts = generateTexts(newVideo.editorState.clips, newVideo.editorState.texts, languageAndSubtitles)
         const editorOutput = buildEditorOutput(newVideo.editorState.clips, newVideo.editorState.texts, fps, videoUrl)
         debouncedSaveEditorOutput(editorOutput)
         setVideo(newVideo)
