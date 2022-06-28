@@ -155,18 +155,27 @@ describe('Generate Texts', (): void => {
 
         const clip1Start = 6.336
         const clip1End = 13.6
+        const clip1Length = clip1End - clip1Start
 
         const clip2Start = 18.688
         const clip2End = 29.424
+        const clip2Length = clip2End - clip2Start
+        const clip1Et2Length = clip1Length + clip2Length
 
         const clip3Start = 40.256
         const clip3End = 43.52
+        const clip3Length = clip3End - clip3Start
+        const clip1Et2Et3Length = clip1Et2Length + clip3Length
 
         const clip4Start = 66
         const clip4End = 92.48
+        const clip4Length = clip4End - clip4Start
+        const clip1Et2Et3Et4Length = clip1Et2Et3Length + clip4Length
 
         const clip5Start = 113.856
         const clip5End = 121.8
+        const clip5Length = clip5End - clip5Start
+        const clip1Et2Et3Et4Et5Length = clip1Et2Et3Et4Length + clip5Length
 
         const clips: Clip[] = [
             {
@@ -425,23 +434,23 @@ describe('Generate Texts', (): void => {
         }
 
         const expectedTexts: Text[] = [
-            createText(1, clip1Start, importantEnd, importantText),
-            createText(2, facileStart, facileEnd, facileText),
-            createText(3, cEstToutStart, clip1End, cEstToutText),
-            createText(4, clip2Start, recetteEnd, recetteText),
-            createText(5, bruitsStart, bruitsEnd, bruitsText),
-            createText(6, marcheStart, clip2End, marcheText),
-            createText(7, clip3Start, unTiersEnd, unTiersText),
-            createText(8, melangeStart, clip3End, melangeText),
-            createText(9, clip4Start, aPeuPresEnd, aPeuPresText),
-            createText(10, cuireStart, cuireEnd, cuireText),
-            createText(11, demerderStart, demerderEnd, demerderText),
-            createText(12, nombreHeuresStart, nombreHeuresEnd, nombreHeuresText),
-            createText(13, lienStart, lienEnd, lienText),
-            createText(14, amazonStart, amazonEnd, amazonText),
-            createText(15, merciStart, clip4End, merciText),
-            createText(16, clip5Start, parametrerEnd, parametrerText),
-            createText(17, petitYaourtStart, clip5End, petitYaourtText)
+            createText(1, 0, importantEnd - clip1Start, importantText),
+            createText(2, facileStart - clip1Start, facileEnd - clip1Start, facileText),
+            createText(3, cEstToutStart - clip1Start, clip1End - clip1Start, cEstToutText),
+            createText(4, clip1Length, clip1Length + (recetteEnd - clip2Start), recetteText),
+            createText(5, clip1Length + (bruitsStart - clip2Start), clip1Length + (bruitsEnd - clip2Start), bruitsText),
+            createText(6, clip1Length + (marcheStart - clip2Start), clip1Et2Length, marcheText),
+            createText(7, clip1Et2Length, clip1Et2Length + (unTiersEnd - clip3Start), unTiersText),
+            createText(8, clip1Et2Length + (melangeStart - clip3Start), clip1Et2Et3Length, melangeText),
+            createText(9, clip1Et2Et3Length, clip1Et2Et3Length + (aPeuPresEnd - clip4Start), aPeuPresText),
+            createText(10, clip1Et2Et3Length + (cuireStart - clip4Start), clip1Et2Et3Length + (cuireEnd - clip4Start), cuireText),
+            createText(11, clip1Et2Et3Length + (demerderStart - clip4Start), clip1Et2Et3Length + (demerderEnd - clip4Start), demerderText),
+            createText(12, clip1Et2Et3Length + (nombreHeuresStart - clip4Start), clip1Et2Et3Length + (nombreHeuresEnd - clip4Start), nombreHeuresText),
+            createText(13, clip1Et2Et3Length + (lienStart - clip4Start), clip1Et2Et3Length + (lienEnd - clip4Start), lienText),
+            createText(14, clip1Et2Et3Length + (amazonStart - clip4Start), clip1Et2Et3Length + (amazonEnd - clip4Start), amazonText),
+            createText(15, clip1Et2Et3Length + (merciStart - clip4Start), clip1Et2Et3Et4Length, merciText),
+            createText(16, clip1Et2Et3Et4Length, clip1Et2Et3Et4Length + (parametrerEnd - clip5Start), parametrerText),
+            createText(17, clip1Et2Et3Et4Length + (petitYaourtStart - clip5Start), clip1Et2Et3Et4Et5Length, petitYaourtText)
         ]
 
         const newTexts = generateTexts(clips, texts, LanguageAndSubtitles)

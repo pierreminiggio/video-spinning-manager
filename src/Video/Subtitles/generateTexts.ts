@@ -10,9 +10,12 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
 
     const subtitles = languageAndSubtitles.subtitles
 
+    let textStartOffset = 0
+
     for (const clip of orderedClips) {
         const clipStart = clip.start
         const clipEnd = clip.end
+        const clipLength = clipEnd - clipStart
 
         for (const subtitle of subtitles) {
             const subtitleStart = subtitle.startTime
@@ -35,10 +38,10 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
 
             const newText: Text = {
                 id: findNextId(newTexts),
-                start: doesSubtitleStartBeforeClipStart ? clipStart : subtitleStart,
-                end: doesSubtitleEndAfterClipEnd ? clipEnd : subtitleEnd,
+                start: doesSubtitleStartBeforeClipStart ? textStartOffset : (textStartOffset + (subtitleStart - clipStart)),
+                end: doesSubtitleEndAfterClipEnd ? (textStartOffset + clipLength) : (textStartOffset + (subtitleEnd - clipStart)),
                 content: subtitle.text,
-                height: 0.7,
+                height: 3,
                 color: '#FFFFFF',
                 backgroundColor: '#CCCCCC',
                 backgroundColorOpacity: 0.6,
@@ -49,6 +52,8 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
 
             newTexts.push(newText)
         }
+
+        textStartOffset += clipLength
     }
 
     return newTexts
