@@ -1,14 +1,10 @@
-import Identifiable from "./Identifiable";
-import Timeable from "./Timeable";
+import Identifiable from './Identifiable';
+import Positionable from './Positionable';
+import Timeable from './Timeable';
 
-export default interface Text extends Identifiable, Timeable {
+export default interface Text extends Identifiable, Timeable, Positionable {
     content: string;
-    height: number;
     color: string;
     backgroundColor: string;
-    backgroundColorOpacity: number;
-    leftOffset: number;
-    rightOffset: number;
-    topOffset: number;
     subtitleId?: string
 }
