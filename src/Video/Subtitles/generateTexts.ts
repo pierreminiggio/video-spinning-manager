@@ -5,7 +5,16 @@ import orderClips from '../Clip/orderClips';
 import findNextId from '../../Math/findNextId';
 
 export default function generateTexts(clips: Clip[], texts: Text[], languageAndSubtitles: LanguageAndSubtitles): Text[] {
-    const newTexts: Text[] = JSON.parse(JSON.stringify(texts))
+    const newTexts: Text[] = []
+
+    for (const text of texts) {
+        if (text.subtitleId) {
+            continue
+        }
+
+        newTexts.push(text)
+    }
+
     const orderedClips = orderClips(clips)
 
     const language = languageAndSubtitles.language
