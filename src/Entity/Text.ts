@@ -10,4 +10,5 @@ export default interface Text extends IdentifiableEntity, TimeableEntity {
     leftOffset: number;
     rightOffset: number;
     topOffset: number;
+    subtitleId?: string
 }

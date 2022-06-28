@@ -1,13 +1,13 @@
-import {Dispatch, SetStateAction, useState} from 'react';
-import {Button} from '@material-ui/core';
-import Text from '../../Entity/Text';
-import TextTimeline from '../Timeline/Text/TextTimeline';
-import flex from '../../Style/flex';
-import gap from '../../Style/gap';
-import EditButtonClickHandler from './EditButtonClickHandler';
-import TextModalForm from './TextModalForm';
-import TextPreset from '../../Entity/TextPreset';
-import findNextId from '../../Math/findNextId';
+import {Dispatch, SetStateAction, useState} from 'react'
+import {Button} from '@material-ui/core'
+import Text from '../../Entity/Text'
+import TextTimeline from '../Timeline/Text/TextTimeline'
+import flex from '../../Style/flex'
+import gap from '../../Style/gap'
+import EditButtonClickHandler from './EditButtonClickHandler'
+import TextModalForm from './TextModalForm'
+import TextPreset from '../../Entity/TextPreset'
+import findNextId from '../../Math/findNextId'
 
 interface TextEditorProps {
     texts: Array<Text>
@@ -60,6 +60,10 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             textToEdit.leftOffset = text.leftOffset
             textToEdit.rightOffset = text.rightOffset
             textToEdit.topOffset = text.topOffset
+
+            if (text.subtitleId) {
+                textToEdit.subtitleId = text.subtitleId
+            }
         }
 
         setTexts(newTexts)

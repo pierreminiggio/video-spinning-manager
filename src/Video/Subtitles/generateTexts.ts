@@ -8,6 +8,7 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
     const newTexts: Text[] = JSON.parse(JSON.stringify(texts))
     const orderedClips = orderClips(clips)
 
+    const language = languageAndSubtitles.language
     const subtitles = languageAndSubtitles.subtitles
 
     let textStartOffset = 0
@@ -48,6 +49,7 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
                 leftOffset: 0,
                 rightOffset: 0,
                 topOffset: 0,
+                subtitleId: language
             }
 
             newTexts.push(newText)
