@@ -35,14 +35,14 @@ class TextListAssertor {
     }
 }
 
-const subtitleAssertor = (expected: Text, actual: Text): void => {
+const assertTextMatchesSubtitles = (expected: Text, actual: Text): void => {
     for (const key of ['id', 'start', 'end', 'content']) {
         expect(actual[key]).toStrictEqual(expected[key])
     }
 }
 
 const assertSameTextLists = (expected: Text[], actual: Text[]): void => new TextListAssertor(assertSameTexts).assertLists(expected, actual)
-const assertTextMatchesSubtitles = (expected: Text[], actual: Text[]): void => new TextListAssertor(subtitleAssertor).assertLists(expected, actual)
+const assertTextsMatchesSubtitles = (expected: Text[], actual: Text[]): void => new TextListAssertor(assertTextMatchesSubtitles).assertLists(expected, actual)
 
 const createText = (id: number, start: number, end: number, content: string): Text => {
     return {
@@ -452,6 +452,6 @@ describe('Generate Texts', (): void => {
         ]
 
         const newTexts = generateTexts(clips, texts, LanguageAndSubtitles)
-        assertTextMatchesSubtitles(expectedTexts, newTexts)
+        assertTextsMatchesSubtitles(expectedTexts, newTexts)
     })
 })
