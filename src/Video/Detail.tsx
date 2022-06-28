@@ -257,14 +257,14 @@ export default function Detail(props: DetailProps): JSX.Element {
             <a href={'/content/' + contentId} onClick={e => navigateToContent(e, contentId)}>‹ Retour</a>
             {video === null ? <h1>Loading...</h1> : <>
                 <h1 style={{textAlign: 'center'}}>{video.video.name}</h1>
+                <Languages
+                    languagesAndSubtitles={languagesAndSubtitles}
+                    setLanguagesAndSubtitles={setLanguagesAndSubtitles}
+                    token={token}
+                    contentId={contentId}
+                    onSubtitlesFillerActionSelected={onSubtitlesFillerActionSelected}
+                />
                 {! previewOnly ? <>
-                    <Languages
-                        languagesAndSubtitles={languagesAndSubtitles}
-                        setLanguagesAndSubtitles={setLanguagesAndSubtitles}
-                        token={token}
-                        contentId={contentId}
-                        onSubtitlesFillerActionSelected={onSubtitlesFillerActionSelected}
-                    />
                     {video.downloaded === false ? <div>
                         Youtube video : {downloading ? 'downloading...' : 'not downloaded'}
                     </div> : ''}

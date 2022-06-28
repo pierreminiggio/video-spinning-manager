@@ -11,6 +11,7 @@ interface LanguagesProps {
     setLanguagesAndSubtitles: Dispatch<SetStateAction<LanguageAndSubtitles[]|null>>
     token: Token
     contentId: number
+    displayActions: boolean
     onSubtitlesFillerActionSelected: (languageAndSubtitlesId: number) => void
 }
 
@@ -19,6 +20,7 @@ export default function Languages({
     setLanguagesAndSubtitles,
     token,
     contentId,
+    displayActions,
     onSubtitlesFillerActionSelected
 }: LanguagesProps): JSX.Element {
     const [pullingSubtitles, setPullingSubtitles] = useState<boolean>(false)
@@ -119,14 +121,14 @@ export default function Languages({
                     <div
                         style={languageStyle}
                     >{languageAndSubtitles.language}</div>
-                    <div style={{
+                    {displayActions && <div style={{
                         ...flex,
                         gap: gap / 10,
                         ...flexColumn,
                         justifyContent: 'center'
                     }}>
                         <SubtitlesFillerAction languageAndSubtitlesId={languageAndSubtitlesIndex} onSelected={onSubtitlesFillerActionSelected} />
-                    </div>
+                    </div>}
                 </div>
             })}
         </div>
