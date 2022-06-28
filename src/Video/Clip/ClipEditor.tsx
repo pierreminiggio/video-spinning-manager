@@ -1,16 +1,16 @@
-import EditButton from "../Timeline/Action/EditButton";
-import JunkButton from "../Timeline/Action/JunkButton";
-import CropButton from "../Timeline/Action/CropButton";
-import {DragDropContext, DropResult} from "react-beautiful-dnd";
-import {Button} from "@material-ui/core";
-import ClipTimeline from "../Timeline/Clip/ClipTimeline";
-import {Dispatch, SetStateAction, useState} from "react";
-import Clip from "../../Entity/Clip";
-import ClipModalForm from "./ClipModalForm";
-import CropModalForm from "./CropModalForm";
-import VideoDuration from "../../Struct/VideoDuration";
-import DraggingActionsContainer from "../Timeline/Action/DraggingActionsContainer";
-import findMaxId from "../../Math/findMaxId";
+import EditButton from '../Timeline/Action/EditButton';
+import JunkButton from '../Timeline/Action/JunkButton';
+import CropButton from '../Timeline/Action/CropButton';
+import {DragDropContext, DropResult} from 'react-beautiful-dnd';
+import {Button} from '@material-ui/core';
+import ClipTimeline from '../Timeline/Clip/ClipTimeline';
+import {Dispatch, SetStateAction, useState} from 'react';
+import Clip from '../../Entity/Clip';
+import ClipModalForm from './ClipModalForm';
+import CropModalForm from './CropModalForm';
+import VideoDuration from '../../Struct/VideoDuration';
+import DraggingActionsContainer from '../Timeline/Action/DraggingActionsContainer';
+import findNextId from '../../Math/findNextId';
 
 interface ClipEditorProps {
     clips: Array<Clip>
@@ -66,10 +66,9 @@ export default function ClipEditor({
         // @ts-ignore
         if (! clip.id) {
             const newClipValues: Clip|Object = {...clip}
-            const maxId = findMaxId(newClipList)
 
             // @ts-ignore
-            newClipValues.id = maxId + 1
+            newClipValues.id = findNextId(newClipList)
             // @ts-ignore
             newClipValues.order = clips.length + 1
             // @ts-ignore
