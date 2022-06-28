@@ -262,6 +262,7 @@ export default function Detail(props: DetailProps): JSX.Element {
                     setLanguagesAndSubtitles={setLanguagesAndSubtitles}
                     token={token}
                     contentId={contentId}
+                    displayActions={! previewOnly}
                     onSubtitlesFillerActionSelected={onSubtitlesFillerActionSelected}
                 />
                 {! previewOnly ? <>
