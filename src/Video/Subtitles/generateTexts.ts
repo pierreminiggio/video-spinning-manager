@@ -3,6 +3,7 @@ import Text from '../../Entity/Text';
 import LanguageAndSubtitles from '../../Entity/Subtitle/LanguageAndSubtitles';
 import orderClips from '../Clip/orderClips';
 import findNextId from '../../Math/findNextId';
+import defineSubtitlesSizeAndPosition from './defineSubtitlesSizeAndPosition';
 
 export default function generateTexts(clips: Clip[], texts: Text[], languageAndSubtitles: LanguageAndSubtitles): Text[] {
     const newTexts: Text[] = []
@@ -46,18 +47,17 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
             const doesSubtitleStartBeforeClipStart = subtitleStart < clipStart
             const doesSubtitleEndAfterClipEnd = clipEnd < subtitleEnd
 
+            const subtitleText = subtitle.text
+
             const newText: Text = {
                 id: findNextId(newTexts),
                 start: doesSubtitleStartBeforeClipStart ? textStartOffset : (textStartOffset + (subtitleStart - clipStart)),
                 end: doesSubtitleEndAfterClipEnd ? (textStartOffset + clipLength) : (textStartOffset + (subtitleEnd - clipStart)),
-                content: subtitle.text,
-                height: 3,
+                content: subtitleText,
+                ...defineSubtitlesSizeAndPosition(subtitleText),
                 color: '#FFFFFF',
                 backgroundColor: '#CCCCCC',
                 backgroundColorOpacity: 0.6,
-                leftOffset: 0,
-                rightOffset: 0,
-                topOffset: 0,
                 subtitleId: language
             }
 
