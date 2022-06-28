@@ -1,7 +1,7 @@
-import IdentifiableEntity from "./IdentifiableEntity";
-import TimeableEntity from "./TimeableEntity";
+import Identifiable from "./Identifiable";
+import Timeable from "./Timeable";
 
-export default interface Text extends IdentifiableEntity, TimeableEntity {
+export default interface Text extends Identifiable, Timeable {
     content: string;
     height: number;
     color: string;

@@ -1,8 +1,8 @@
 import Moves from './Moves';
-import IdentifiableEntity from './IdentifiableEntity';
-import TimeableEntity from './TimeableEntity';
+import Identifiable from './Identifiable';
+import Timeable from './Timeable';
 
-export default interface Clip extends IdentifiableEntity, TimeableEntity {
+export default interface Clip extends Identifiable, Timeable {
     order: number
     moves: Moves
 }

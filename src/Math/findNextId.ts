@@ -1,6 +1,6 @@
-import IdentifiableEntity from '../Entity/IdentifiableEntity';
+import Identifiable from '../Entity/Identifiable';
 import findMaxId from './findMaxId';
 
-export default function findNextId(entities: Array<IdentifiableEntity>): number {
+export default function findNextId(entities: Array<Identifiable>): number {
     return findMaxId(entities) + 1
 }
