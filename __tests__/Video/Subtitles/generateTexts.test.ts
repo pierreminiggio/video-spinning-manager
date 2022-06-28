@@ -42,9 +42,7 @@ const subtitleAssertor = (expected: Text, actual: Text): void => {
 }
 
 const assertSameTextLists = (expected: Text[], actual: Text[]): void => new TextListAssertor(assertSameTexts).assertLists(expected, actual)
-const assertTextMatchesSubtitles = (expected: Text[], actual: Text[]): void => new TextListAssertor(
-    subtitleAssertor
-).assertLists(expected, actual)
+const assertTextMatchesSubtitles = (expected: Text[], actual: Text[]): void => new TextListAssertor(subtitleAssertor).assertLists(expected, actual)
 
 const createText = (id: number, start: number, end: number, content: string): Text => {
     return {
