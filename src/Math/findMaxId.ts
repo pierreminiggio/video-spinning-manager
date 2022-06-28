@@ -1,4 +1,4 @@
-import IdentifiableEntity from "../Entity/IdentifiableEntity";
+import IdentifiableEntity from '../Entity/IdentifiableEntity';
 
 export default function findMaxId(entities: Array<IdentifiableEntity>): number {
     let maxId = 0
