@@ -5,29 +5,29 @@ import Transition from '../../../src/Entity/Video/Clip/Crop/Transition'
 import generateTexts from '../../../src/Video/Subtitles/generateTexts'
 
 const assertSameTexts = (expected: Text, actual: Text): void => {
-    expect(expected.id).toStrictEqual(actual.id)
-    expect(expected.start).toStrictEqual(actual.start)
-    expect(expected.end).toStrictEqual(actual.end)
-    expect(expected.content).toStrictEqual(actual.content)
-    expect(expected.height).toStrictEqual(actual.height)
-    expect(expected.color).toStrictEqual(actual.color)
-    expect(expected.backgroundColor).toStrictEqual(actual.backgroundColor)
-    expect(expected.backgroundColorOpacity).toStrictEqual(actual.backgroundColorOpacity)
-    expect(expected.leftOffset).toStrictEqual(actual.leftOffset)
-    expect(expected.rightOffset).toStrictEqual(actual.rightOffset)
-    expect(expected.topOffset).toStrictEqual(actual.topOffset)
+    expect(actual.id).toStrictEqual(expected.id)
+    expect(actual.start).toStrictEqual(expected.start)
+    expect(actual.end).toStrictEqual(expected.end)
+    expect(actual.content).toStrictEqual(expected.content)
+    expect(actual.height).toStrictEqual(expected.height)
+    expect(actual.color).toStrictEqual(expected.color)
+    expect(actual.backgroundColor).toStrictEqual(expected.backgroundColor)
+    expect(actual.backgroundColorOpacity).toStrictEqual(expected.backgroundColorOpacity)
+    expect(actual.leftOffset).toStrictEqual(expected.leftOffset)
+    expect(actual.rightOffset).toStrictEqual(expected.rightOffset)
+    expect(actual.topOffset).toStrictEqual(expected.topOffset)
 }
 
 class TextListAssertor {
 
-    assertOne: (expected: Text, actual: Text) => void
+    private assertOne: (expected: Text, actual: Text) => void
 
     constructor (assertOne: (expected: Text, actual: Text) => void) {
         this.assertOne = assertOne
     }
 
-    assertLists (expected: Text[], actual: Text[]): void {
-        expect(expected.length).toStrictEqual(actual.length)
+    public assertLists (expected: Text[], actual: Text[]): void {
+        expect(actual.length).toStrictEqual(expected.length)
     
         for (const textKey in expected) {
             this.assertOne(expected[textKey], actual[textKey])
@@ -35,24 +35,15 @@ class TextListAssertor {
     }
 }
 
-class SubtitleAssertor {
-    keys: string[]
-
-    constructor (keys: string[]) {
-        this.keys = keys
+const subtitleAssertor = (expected: Text, actual: Text): void => {
+    for (const key of ['id', 'start', 'end', 'content']) {
+        expect(actual[key]).toStrictEqual(expected[key])
     }
-
-    assertMatchesSubtitles(expected: Text, actual: Text): void {
-        for (const key of this.keys) {
-            expect(expected[key]).toStrictEqual(actual[key])
-        }
-    }
-
 }
 
 const assertSameTextLists = (expected: Text[], actual: Text[]): void => new TextListAssertor(assertSameTexts).assertLists(expected, actual)
 const assertTextMatchesSubtitles = (expected: Text[], actual: Text[]): void => new TextListAssertor(
-    new SubtitleAssertor(['id', 'start', 'end', 'content']).assertMatchesSubtitles
+    subtitleAssertor
 ).assertLists(expected, actual)
 
 const createText = (id: number, start: number, end: number, content: string): Text => {
@@ -251,7 +242,7 @@ describe('Generate Texts', (): void => {
 
         const facileStart = 6.703
         const facileEnd = 10.616
-        const facileText = "Salut ! Aujourd'hui je vais poster une vidéo\nqui a complètement rien à voir avec ce que je poste d'habitude"
+        const facileText = "J'sais pas si vous savez mais c'est incroyablement simple\nde faire ses propres yaourts."
 
         const cEstToutStart = 10.616
         const cEstToutText = "Donc pour faire ça il faut un yaourt, et du lait, c'est tout !"
@@ -298,18 +289,6 @@ describe('Generate Texts', (): void => {
         const merciStart = 90.724
         const merciText = "Donc merci si jamais il y en a qui font ça."
 
-        const demainEnd = 114.117
-        const demainText = "Et ensuite, et bah... j'ai plus qu'à paramétrer... euh... pour mettre 10 heures.\nHop ! Et puis je lance ! Et demain j'aurai des yaourts ! C'est aussi simple que ça."
-
-        const condenserStart = 97.218
-        const condenserEnd = 102
-        const condenserText = "C'est très important ça permet à l'eau de venir condenser\nsur le couvercle de la yaourtière plutôt que dans les yaourts."
-
-        const eauStart = 102
-        const eauEnd = 104.324
-        const eauText = "Parce que sinon il y aura de l'eau dans les yaourts, et ça c'est pas ouf. "
-
-        const parametrerStart = 104.324
         const parametrerEnd = 114.117
         const parametrerText = "Et ensuite, et bah... j'ai plus qu'à paramétrer... euh... pour mettre 10 heures.\nHop ! Et puis je lance ! Et demain j'aurai des yaourts ! C'est aussi simple que ça."
 
@@ -321,7 +300,7 @@ describe('Generate Texts', (): void => {
             subtitles: [{
                 startTime: 0,
                 endTime: 3.831,
-                text: facileText
+                text: "Salut ! Aujourd'hui je vais poster une vidéo\nqui a complètement rien à voir avec ce que je poste d'habitude"
             },{
                 startTime: 3.831,
                 endTime: importantEnd,
@@ -329,7 +308,7 @@ describe('Generate Texts', (): void => {
             },{
                 startTime: facileStart,
                 endTime: facileEnd,
-                text: "J'sais pas si vous savez mais c'est incroyablement simple\nde faire ses propres yaourts."
+                text: facileText
             },{
                 startTime: cEstToutStart,
                 endTime: 13.879,
@@ -400,18 +379,18 @@ describe('Generate Texts', (): void => {
                 text: merciText
             },{
                 startTime: 92.702,
-                endTime: demainEnd,
-                text: demainText
+                endTime: 97.218,
+                text: "Alors voilà j'ai mis les six yaourts dans la yaourtière.\nVous ferez bien attention je n'ai pas mis les couvercles."
             },{
-                startTime: condenserStart,
-                endTime: condenserEnd,
-                text: condenserText
+                startTime: 97.218,
+                endTime: 102,
+                text: "C'est très important ça permet à l'eau de venir condenser\nsur le couvercle de la yaourtière plutôt que dans les yaourts."
             },{
-                startTime: eauStart,
-                endTime: eauEnd,
-                text: eauText
+                startTime: 102,
+                endTime: 104.324,
+                text: "Parce que sinon il y aura de l'eau dans les yaourts, et ça c'est pas ouf. "
             },{
-                startTime: parametrerStart,
+                startTime: 104.324,
                 endTime: parametrerEnd,
                 text: parametrerText
             },{
@@ -461,11 +440,8 @@ describe('Generate Texts', (): void => {
             createText(13, lienStart, lienEnd, lienText),
             createText(14, amazonStart, amazonEnd, amazonText),
             createText(15, merciStart, clip4End, merciText),
-            createText(16, clip5Start, demainEnd, demainText),
-            createText(17, condenserStart, condenserEnd, condenserText),
-            createText(18, eauStart, eauEnd, eauText),
-            createText(19, parametrerStart, parametrerEnd, parametrerText),
-            createText(20, petitYaourtStart, clip5End, petitYaourtText)
+            createText(16, clip5Start, parametrerEnd, parametrerText),
+            createText(17, petitYaourtStart, clip5End, petitYaourtText)
         ]
 
         const newTexts = generateTexts(clips, texts, LanguageAndSubtitles)
