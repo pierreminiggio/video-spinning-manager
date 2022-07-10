@@ -49,7 +49,7 @@ export default function TextDetailModalForm({onClose, selectedValue, open}: Text
                     color="primary"
                     onClick={e => handleActionClick(e, TextDetailAction.EDIT)}
                 >
-                    {commandVerb}
+                    Edit
                 </Button>
                 <Button
                     variant="contained"
