@@ -10,7 +10,6 @@ import TextPreset from "../../Entity/TextPreset";
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void
-    onDelete: (text: Text|null) => void
     textPresets: Array<TextPreset>
     totalClipTime: VideoDuration
     selectedValue: Text|null
@@ -86,7 +85,7 @@ const copyPresetValuesToText = (presetValues: Partial<Text>, text: Text, totalCl
     }
 }
 
-export default function TextModalForm({onClose, onDelete, textPresets, totalClipTime, selectedValue, open}: TextModalFormProps) {
+export default function TextModalForm({onClose, textPresets, totalClipTime, selectedValue, open}: TextModalFormProps) {
     const [editedText, setEditedText] = useState<Text|null>(null)
 
     const defaultEditedText = useMemo<Text>((): Text => ({
@@ -346,13 +345,6 @@ export default function TextModalForm({onClose, onDelete, textPresets, totalClip
                     >
                         {commandVerb}
                     </Button>
-                    {selectedValue !== null ? <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={e => onDelete(selectedValue)}
-                    >
-                        Delete
-                    </Button> : ''}
 
                     <h2 style={{textAlign: 'center'}}>Presets</h2>
                     {textPresets.map((textPreset: TextPreset, textPresetIndex: number) => {

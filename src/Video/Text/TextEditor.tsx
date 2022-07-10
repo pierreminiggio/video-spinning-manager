@@ -129,7 +129,6 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             totalClipTime={totalClipTime}
             open={editFormOpen}
             onClose={handleEditFormClose}
-            onDelete={handleTextDelete}
         />
         <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, marginBottom: gap / 2, width: '100%'}}>
             <Button
