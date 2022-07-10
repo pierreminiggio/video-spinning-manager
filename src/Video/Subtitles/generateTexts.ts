@@ -55,8 +55,8 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
                 end: doesSubtitleEndAfterClipEnd ? (textStartOffset + clipLength) : (textStartOffset + (subtitleEnd - clipStart)),
                 content: subtitleText,
                 ...defineSubtitlesSizeAndPosition(subtitleText),
-                color: '#FFFFFF',
-                backgroundColor: '#CCCCCC',
+                color: '#ffffff',
+                backgroundColor: '#ffa500',
                 backgroundColorOpacity: 0.6,
                 subtitleId: language
             }
