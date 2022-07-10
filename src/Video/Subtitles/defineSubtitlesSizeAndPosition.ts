@@ -4,8 +4,8 @@ export default function defineSubtitlesSizeAndPosition(content: string): Positio
 {
     return {
         height: 3,
-        leftOffset: 0,
-        rightOffset: 0,
+        leftOffset: 3,
+        rightOffset: 3,
         topOffset: 0
     }
 }
