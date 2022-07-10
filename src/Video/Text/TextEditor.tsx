@@ -102,6 +102,12 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             return
         }
 
+        const areYouSure = window.confirm('Are you sure ?')
+
+        if (! areYouSure) {
+            return
+        }
+
         const newTexts = [...texts]
         for (const newTextStringIndex in newTexts) {
             const newTextIndex = parseInt(newTextStringIndex)
