@@ -1,10 +1,10 @@
 import {default as TextEntity} from '../../../Entity/Text'
 import TimecodesLine from '../TimecodesLine'
-import TimelineContainer from "../TimelineContainer";
-import Text from "./Text";
-import getWidthForTimeline from "../getWidthForTimeline";
-import findColliders from "./findColliders";
-import EditButtonClickHandler from "../../Text/EditButtonClickHandler";
+import TimelineContainer from '../TimelineContainer'
+import Text from './Text'
+import getWidthForTimeline from '../getWidthForTimeline'
+import findColliders from './findColliders'
+import EditButtonClickHandler from '../../Text/EditButtonClickHandler'
 
 interface TimelineProps {
     texts: Array<TextEntity>
@@ -21,8 +21,7 @@ const textGap = 5
 
 const removeDuplicates = (value: number, index: number, self: number[]): boolean => self.indexOf(value) === index
 
-export default function TextTimeline(props: TimelineProps) {
-    const {texts, totalTime, width, onEditButtonClickHandler} = props
+export default function TextTimeline({texts, totalTime, width, onEditButtonClickHandler}: TimelineProps) {
     const hasTexts = texts.length > 0
 
     let layers = 1

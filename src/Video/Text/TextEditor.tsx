@@ -5,6 +5,7 @@ import TextTimeline from '../Timeline/Text/TextTimeline'
 import flex from '../../Style/flex'
 import gap from '../../Style/gap'
 import EditButtonClickHandler from './EditButtonClickHandler'
+import TextDetailModalForm, { TextDetailAction } from './TextDetailModalForm'
 import TextModalForm from './TextModalForm'
 import TextPreset from '../../Entity/TextPreset'
 import findNextId from '../../Math/findNextId'
@@ -18,16 +19,43 @@ interface TextEditorProps {
 }
 
 export default function TextEditor({texts, setTexts, textPresets, totalClipTime, videoWidth}: TextEditorProps) {
-
+    const [detailFormOpen, setDetailFormOpen] = useState(false)
     const [editFormOpen, setEditFormOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Text|null>(null)
 
-    const handleFormClickOpen = () => {
-        openEditForm(null)
+    const handleDetailButtonClick: EditButtonClickHandler = (text: Text): void => {
+        openDetailForm(text)
     }
 
-    const handleEditButtonClick: EditButtonClickHandler = (text: Text): void => {
-        openEditForm(text)
+    const handleDetailFormClose = (text: Text|null, action: TextDetailAction|null): void => {
+        setDetailFormOpen(false)
+
+        if (! text || ! action) {
+            return
+        }
+
+        if (action === TextDetailAction.EDIT) {
+            openEditForm(text)
+
+            return
+        }
+
+        if (action === TextDetailAction.DELETE) {
+            handleTextDelete(text)
+
+            return
+        }
+
+        console.log('Action not handled')
+    }
+
+    const openDetailForm = (text: Text): void => {
+        setDetailFormOpen(true)
+        setSelectedValue(text)
+    }
+
+    const handleEditFormClickOpen = () => {
+        openEditForm(null)
     }
 
     const openEditForm = (text: Text|null): void => {
@@ -35,7 +63,7 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
         setSelectedValue(text)
     }
 
-    const handleFormClose = (text: Text|null): void => {
+    const handleEditFormClose = (text: Text|null): void => {
         setEditFormOpen(false)
 
         if (text === null) {
@@ -90,19 +118,24 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
     }
 
     return <>
+        <TextDetailModalForm
+            selectedValue={selectedValue}
+            open={detailFormOpen}
+            onClose={handleDetailFormClose}
+        />
         <TextModalForm
             selectedValue={selectedValue}
             textPresets={textPresets}
             totalClipTime={totalClipTime}
             open={editFormOpen}
-            onClose={handleFormClose}
+            onClose={handleEditFormClose}
             onDelete={handleTextDelete}
         />
         <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, marginBottom: gap / 2, width: '100%'}}>
             <Button
                 variant="contained"
                 color="primary"
-                onClick={handleFormClickOpen}
+                onClick={handleEditFormClickOpen}
                 style={{zIndex: 1}}
             >
                 Add a text
@@ -112,7 +145,7 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             texts={texts}
             totalTime={totalClipTime}
             width={videoWidth}
-            onEditButtonClickHandler={handleEditButtonClick}
+            onEditButtonClickHandler={handleDetailButtonClick}
         />
     </>
 }

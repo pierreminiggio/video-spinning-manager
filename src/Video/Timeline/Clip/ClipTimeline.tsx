@@ -2,9 +2,9 @@ import { Droppable } from 'react-beautiful-dnd'
 import Clip from './Clip'
 import {default as ClipEntity} from '../../../Entity/Clip'
 import TimecodesLine from '../TimecodesLine'
-import TimelineContainer from "../TimelineContainer";
-import TimelineClipList from "../TimelineClipList";
-import getWidthForTimeline from "../getWidthForTimeline";
+import TimelineContainer from '../TimelineContainer'
+import TimelineClipList from '../TimelineClipList'
+import getWidthForTimeline from '../getWidthForTimeline'
 
 interface TimelineProps {
     contentId: number
@@ -14,8 +14,7 @@ interface TimelineProps {
     width: number
 }
 
-export default function ClipTimeline(props: TimelineProps) {
-    const {contentId, clips, timelineId, totalTime, width} = props
+export default function ClipTimeline({contentId, clips, timelineId, totalTime, width}: TimelineProps) {
     const hasClips = clips.length > 0
 
     return <TimelineContainer displayTimeline={hasClips} width={width}>
