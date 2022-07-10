@@ -14,6 +14,8 @@ interface TimelineProps {
 }
 
 const minTextWidthPercent = 3
+const minTextWidthPercentWeCanCutInto = minTextWidthPercent * 2
+const cutLength = minTextWidthPercentWeCanCutInto - minTextWidthPercent
 const textHeight = 40
 const textGap = 5
 
@@ -55,7 +57,7 @@ export default function TextTimeline(props: TimelineProps) {
         checkedTexts.push(text)
     })
 
-    let minWidthOffset = 0
+    let leftOffset = 0
 
     return <TimelineContainer displayTimeline={hasTexts} width={width}>
         {hasTexts ? <TimecodesLine totalTime={totalTime} /> : ''}
@@ -68,12 +70,24 @@ export default function TextTimeline(props: TimelineProps) {
             {texts.map((text: TextEntity, textIndex: number) => {
 
                 const offsetForTimeline = Math.floor(100 * (text.start) / totalTime)
-                const left = offsetForTimeline + minWidthOffset
+                const left = offsetForTimeline + leftOffset
 
                 const widthForTimeline = getWidthForTimeline(text, totalTime)
                 const isWidthTooSmall = widthForTimeline < minTextWidthPercent
 
-                const width = isWidthTooSmall ? minTextWidthPercent : widthForTimeline
+                let width = widthForTimeline
+
+                if (isWidthTooSmall) {
+                    width = minTextWidthPercent
+                }
+
+                const isWidthBigEnoughThatWeCanCutInto = widthForTimeline > minTextWidthPercentWeCanCutInto
+                const isCutNeeded = leftOffset > 0
+
+                if (isWidthBigEnoughThatWeCanCutInto && isCutNeeded) {
+                    leftOffset -= cutLength
+                    width -= cutLength
+                }
 
                 const reactText = <Text
                     key={textIndex}
@@ -87,7 +101,7 @@ export default function TextTimeline(props: TimelineProps) {
                 />
 
                 if (isWidthTooSmall) {
-                    minWidthOffset += width
+                    leftOffset += width
                 }
 
                 return reactText
