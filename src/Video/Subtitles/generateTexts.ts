@@ -57,7 +57,7 @@ export default function generateTexts(clips: Clip[], texts: Text[], languageAndS
                 ...defineSubtitlesSizeAndPosition(subtitleText),
                 color: '#ffffff',
                 backgroundColor: '#ffa500',
-                backgroundColorOpacity: 0.6,
+                backgroundColorOpacity: 0.7,
                 subtitleId: language
             }
 
