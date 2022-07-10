@@ -4,23 +4,23 @@ import flexColumn from '../../Style/flexColumn'
 import gap from '../../Style/gap'
 import Text from '../../Entity/Text'
 
-export enum TextDetailAction {
+export enum DetailAction {
     EDIT = 'edit',
     DELETE = 'delete'
 }
 
-interface TextDetailModalFormProps {
-    onClose: (text: Text|null, action: TextDetailAction|null) => void
+interface DetailModalFormProps {
+    onClose: (text: Text|null, action: DetailAction|null) => void
     selectedValue: Text|null
     open: boolean
 }
 
-export default function TextDetailModalForm({onClose, selectedValue, open}: TextDetailModalFormProps) {
+export default function DetailModalForm({onClose, selectedValue, open}: DetailModalFormProps) {
     const handleClose = () => {
         onClose(selectedValue, null);
     }
   
-    const handleActionClick = (e: SyntheticEvent<EventTarget>, action: TextDetailAction) => {
+    const handleActionClick = (e: SyntheticEvent<EventTarget>, action: DetailAction) => {
         e.preventDefault()
         onClose(selectedValue, action);
     }
@@ -47,14 +47,14 @@ export default function TextDetailModalForm({onClose, selectedValue, open}: Text
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={e => handleActionClick(e, TextDetailAction.EDIT)}
+                    onClick={e => handleActionClick(e, DetailAction.EDIT)}
                 >
                     Edit
                 </Button>
                 <Button
                     variant="contained"
                     color="secondary"
-                    onClick={e => handleActionClick(e, TextDetailAction.DELETE)}
+                    onClick={e => handleActionClick(e, DetailAction.DELETE)}
                 >
                     Delete
                 </Button>

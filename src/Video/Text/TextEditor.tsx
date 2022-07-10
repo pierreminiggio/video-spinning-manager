@@ -5,7 +5,7 @@ import TextTimeline from '../Timeline/Text/TextTimeline'
 import flex from '../../Style/flex'
 import gap from '../../Style/gap'
 import EditButtonClickHandler from './EditButtonClickHandler'
-import TextDetailModalForm, { TextDetailAction } from './TextDetailModalForm'
+import DetailModalForm, { DetailAction } from './DetailModalForm'
 import TextModalForm from './TextModalForm'
 import TextPreset from '../../Entity/TextPreset'
 import findNextId from '../../Math/findNextId'
@@ -27,20 +27,20 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
         openDetailForm(text)
     }
 
-    const handleDetailFormClose = (text: Text|null, action: TextDetailAction|null): void => {
+    const handleDetailFormClose = (text: Text|null, action: DetailAction|null): void => {
         setDetailFormOpen(false)
 
         if (! text || ! action) {
             return
         }
 
-        if (action === TextDetailAction.EDIT) {
+        if (action === DetailAction.EDIT) {
             openEditForm(text)
 
             return
         }
 
-        if (action === TextDetailAction.DELETE) {
+        if (action === DetailAction.DELETE) {
             handleTextDelete(text)
 
             return
@@ -118,7 +118,7 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
     }
 
     return <>
-        <TextDetailModalForm
+        <DetailModalForm
             selectedValue={selectedValue}
             open={detailFormOpen}
             onClose={handleDetailFormClose}
