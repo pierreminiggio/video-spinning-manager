@@ -13,6 +13,7 @@ interface TimelineProps {
     onEditButtonClickHandler: EditButtonClickHandler
 }
 
+const minTextWidthPercent = 3
 const textHeight = 40
 const textGap = 5
 
@@ -54,6 +55,8 @@ export default function TextTimeline(props: TimelineProps) {
         checkedTexts.push(text)
     })
 
+    let minWidthOffset = 0
+
     return <TimelineContainer displayTimeline={hasTexts} width={width}>
         {hasTexts ? <TimecodesLine totalTime={totalTime} /> : ''}
         <div
@@ -62,16 +65,33 @@ export default function TextTimeline(props: TimelineProps) {
                 height: textHeight * layers
             }}
         >
-            {texts.map((text: TextEntity, textIndex: number) => <Text
-                key={textIndex}
-                text={text}
-                textGap={textGap}
-                textHeight={textHeight}
-                layer={textLayers[textIndex]}
-                left={Math.floor(100 * (text.start) / totalTime)}
-                width={getWidthForTimeline(text, totalTime)}
-                onEditButtonClickHandler={onEditButtonClickHandler}
-            />)}
+            {texts.map((text: TextEntity, textIndex: number) => {
+
+                const offsetForTimeline = Math.floor(100 * (text.start) / totalTime)
+                const left = offsetForTimeline + minWidthOffset
+
+                const widthForTimeline = getWidthForTimeline(text, totalTime)
+                const isWidthTooSmall = widthForTimeline < minTextWidthPercent
+
+                const width = isWidthTooSmall ? minTextWidthPercent : widthForTimeline
+
+                const reactText = <Text
+                    key={textIndex}
+                    text={text}
+                    textGap={textGap}
+                    textHeight={textHeight}
+                    layer={textLayers[textIndex]}
+                    left={left}
+                    width={width}
+                    onEditButtonClickHandler={onEditButtonClickHandler}
+                />
+
+                if (isWidthTooSmall) {
+                    minWidthOffset += width
+                }
+
+                return reactText
+            })}
         </div>
     </TimelineContainer>
 }
