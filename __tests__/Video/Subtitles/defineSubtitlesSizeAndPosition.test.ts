@@ -22,6 +22,11 @@ describe('Define Subtitles\' Size And Position', (): void => {
                 content: "*Bruits de yaourt*",
                 minWidth: 4,
                 maxWidth: 5.6
+            },
+            {
+                content: "Donc merci si jamais il y en a qui font ça.",
+                minWidth: 2.5,
+                maxWidth: 5
             }
         ]
         
