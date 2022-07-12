@@ -39,7 +39,7 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         onClose(editedText, null /* TODO BUILD NEW TEXTS */);
     }
 
-    if (! selectedValue || ! selectedValue.id) {
+    if (! editedText) {
         return <></>
     }
     
@@ -57,6 +57,7 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
+                <p>{editedText.content}</p>
                 <Button
                     variant="contained"
                     color="primary"
