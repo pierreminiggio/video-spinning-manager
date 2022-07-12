@@ -1,12 +1,12 @@
-import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from "@material-ui/core";
-import {ChangeEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
-import flexColumn from "../../Style/flexColumn";
-import gap from "../../Style/gap";
-import VideoDuration from "../../Struct/VideoDuration";
-import Text from "../../Entity/Text";
-import ColorInput from "../../Form/ColorInput";
+import {Button, Dialog, DialogTitle, Slider, TextField, Typography} from '@material-ui/core'
+import {ChangeEvent, SyntheticEvent, useEffect, useMemo, useState} from 'react'
+import flexColumn from '../../Style/flexColumn'
+import gap from '../../Style/gap'
+import VideoDuration from '../../Struct/VideoDuration'
+import Text from '../../Entity/Text'
+import ColorInput from '../../Form/ColorInput'
 import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
-import TextPreset from "../../Entity/TextPreset";
+import TextPreset from '../../Entity/TextPreset'
 
 interface TextModalFormProps {
     onClose: (text: Text|null) => void

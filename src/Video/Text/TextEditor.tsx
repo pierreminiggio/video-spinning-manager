@@ -7,6 +7,7 @@ import gap from '../../Style/gap'
 import EditButtonClickHandler from './EditButtonClickHandler'
 import DetailModalForm, { DetailAction } from './DetailModalForm'
 import TextModalForm from './TextModalForm'
+import SplitModalForm from './SplitModalForm'
 import TextPreset from '../../Entity/TextPreset'
 import findNextId from '../../Math/findNextId'
 
@@ -21,6 +22,7 @@ interface TextEditorProps {
 export default function TextEditor({texts, setTexts, textPresets, totalClipTime, videoWidth}: TextEditorProps) {
     const [detailFormOpen, setDetailFormOpen] = useState(false)
     const [editFormOpen, setEditFormOpen] = useState(false)
+    const [splitFormOpen, setSplitFormOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState<Text|null>(null)
 
     const handleDetailButtonClick: EditButtonClickHandler = (text: Text): void => {
@@ -36,6 +38,12 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
 
         if (action === DetailAction.EDIT) {
             openEditForm(text)
+
+            return
+        }
+
+        if (action === DetailAction.SPLIT) {
+            openSplitForm(text)
 
             return
         }
@@ -60,6 +68,11 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
 
     const openEditForm = (text: Text|null): void => {
         setEditFormOpen(true)
+        setSelectedValue(text)
+    }
+
+    const openSplitForm = (text: Text|null): void => {
+        setSplitFormOpen(true)
         setSelectedValue(text)
     }
 
@@ -93,6 +106,20 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
                 textToEdit.subtitleId = text.subtitleId
             }
         }
+
+        setTexts(newTexts)
+    }
+
+    const handleSplitFormClose = (oldText: Text|null, texts: Text[]|null): void => {
+        setSplitFormOpen(false)
+
+        if (oldText === null || texts === null) {
+            return
+        }
+
+        const newTexts = [...texts]
+
+        // TODO SET UP SPLIT
 
         setTexts(newTexts)
     }
@@ -135,6 +162,11 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             totalClipTime={totalClipTime}
             open={editFormOpen}
             onClose={handleEditFormClose}
+        />
+        <SplitModalForm
+            selectedValue={selectedValue}
+            open={splitFormOpen}
+            onClose={handleSplitFormClose}
         />
         <div style={{...flex, justifyContent: 'center', marginTop: gap / 2, marginBottom: gap / 2, width: '100%'}}>
             <Button

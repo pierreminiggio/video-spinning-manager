@@ -6,6 +6,7 @@ import Text from '../../Entity/Text'
 
 export enum DetailAction {
     EDIT = 'edit',
+    SPLIT = 'split',
     DELETE = 'delete'
 }
 
@@ -50,6 +51,13 @@ export default function DetailModalForm({onClose, selectedValue, open}: DetailMo
                     onClick={e => handleActionClick(e, DetailAction.EDIT)}
                 >
                     Edit
+                </Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={e => handleActionClick(e, DetailAction.SPLIT)}
+                >
+                    Split
                 </Button>
                 <Button
                     variant="contained"
