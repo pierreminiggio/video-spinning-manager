@@ -1,8 +1,12 @@
 import {Button, Dialog, DialogTitle} from '@material-ui/core'
 import {SyntheticEvent, useEffect, useState} from 'react'
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import styled from 'styled-components'
 import flexColumn from '../../Style/flexColumn'
 import gap from '../../Style/gap'
 import Text from '../../Entity/Text'
+import TimelineClipList from '../Timeline/TimelineClipList'
+import flex from '../../Style/flex'
 
 interface SplitModalFormProps {
     onClose: (oldText: Text|null, texts: Text[]|null) => void
@@ -10,8 +14,39 @@ interface SplitModalFormProps {
     open: boolean
 }
 
+interface SplitMarker {
+    textCharIndex: number
+    time: number
+}
+
+const defaultSplitMarkers: (text: Text) => SplitMarker[] = (text: Text) => [
+    {
+        textCharIndex: Math.floor(text.content.length / 2),
+        time: Math.floor((text.end - text.start) / 2)
+    }
+]
+
+interface MarkerProps {
+    isDragging: boolean
+}
+
+const Marker = styled.div`
+    border: 1px lightgrey solid;
+    border-radius: 2px;
+    padding: 8px 0;
+    min-width: 20px;
+    text-align: center;
+    background-color: #EEE;
+    box-sizing: border-box;
+    overflow: hidden;
+    ${(props: MarkerProps) => props.isDragging ? `
+        box-shadow: 0px 0px 0px 6px rgba(255, 255, 0, .7);
+    ` : ``}
+`
+
 export default function SplitModalForm({onClose, selectedValue, open}: SplitModalFormProps) {
-    const [editedText, setEditedText] = useState<Text|null>(null)
+    const [splitMarkers, setSplitMarkers] = useState<SplitMarker[]>([])
+    const [dragging, setDragging] = useState(false)
 
     useEffect(
         () => {
@@ -20,8 +55,7 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
             }
 
             if (selectedValue !== null) {
-                const newEditedText = {...selectedValue}
-                setEditedText(newEditedText)
+                setSplitMarkers(defaultSplitMarkers(selectedValue))
 
                 return
             }
@@ -32,20 +66,83 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
     const handleClose = () => {
         onClose(selectedValue, null);
     }
-
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()
-        onClose(editedText, null /* TODO BUILD NEW TEXTS */);
+        onClose(selectedValue, null /* TODO BUILD NEW TEXTS */);
     }
 
-    if (! editedText) {
+    const charMarkersId = 'char-markers-id'
+
+    const onClipDragStart = (result: DropResult) => {
+        setDragging(true)
+    }
+
+    const onClipDragEnd = (result: DropResult) => {
+        setDragging(false)
+
+        const { destination, source } = result
+
+        if (! destination) {
+            return
+        }
+
+        if (! selectedValue) {
+            return
+        }
+
+        const sourceDroppableId = source.droppableId
+        const destinationDroppableId = destination.droppableId
+
+        const sourceIndex = source.index
+        const destinationIndex = destination.index
+
+        if (
+            sourceDroppableId === destinationDroppableId
+            && sourceIndex === destinationIndex
+        ) {
+            return
+        }
+
+        if (sourceDroppableId !== charMarkersId) {
+            throw new Error('Where did you drop that shit ?')
+        }
+
+        if (destinationDroppableId === charMarkersId) {
+            const newMarkers: SplitMarker[] = []
+
+            for (const splitMarker of splitMarkers) {
+                const newMarker = {...splitMarker}
+                if (newMarker.textCharIndex === sourceIndex) {
+                    let newTextCharIndex = destinationIndex
+
+                    if (newTextCharIndex === 0) {
+                        newTextCharIndex++
+                    } else if (newTextCharIndex === selectedValue.content.length) {
+                        newTextCharIndex--
+                    }
+
+                    newMarker.textCharIndex = newTextCharIndex
+                }
+
+                newMarkers.push(newMarker)
+            }
+
+            setSplitMarkers(newMarkers)
+        }
+    }
+
+    if (! selectedValue) {
         return <></>
     }
+
+    const textContent = selectedValue.content
     
     const commandVerb = 'Split'
 
     const dialogLabel = 'split-form-modal'
+
+    let charIndexOffset = 0
 
     return (
         <Dialog
@@ -57,7 +154,63 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
-                <p>{editedText.content}</p>
+                <DragDropContext
+                    onDragStart={onClipDragStart}
+                    onDragEnd={onClipDragEnd}
+                >
+                    <Droppable droppableId={charMarkersId} direction="horizontal">
+                        {provided => <div
+                            style={{
+                                ...flex
+                            }}
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            {Array.from(textContent).map((char, charIndex) => {
+
+                                let cursor = <></>
+
+                                for (const splitMarkerId in splitMarkers) {
+                                    const splitMarker = splitMarkers[splitMarkerId]
+                                    if (splitMarker.textCharIndex === charIndex) {
+                                        cursor = <Draggable draggableId={'cursor-' + charIndex.toString()} index={charIndex + charIndexOffset}>
+                                            {(provided, snapshot) => (
+                                                <Marker
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    ref={provided.innerRef}
+                                                    isDragging={snapshot.isDragging}
+                                                >
+                                                    {Number(splitMarkerId) + 1}
+                                                </Marker>
+                                            )}
+                                        </Draggable>
+                                        charIndexOffset++
+                                    }
+                                }
+
+                                return <>
+                                    {cursor}
+                                    <Draggable draggableId={charIndex.toString()} index={charIndex + charIndexOffset} isDragDisabled={true}>
+                                        {(provided) => (
+                                            <div
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef}
+                                                style={{
+                                                    minWidth: 3
+                                                }}
+                                            >
+                                                {char}
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                </>
+                            })}
+                            {provided.placeholder}
+                        </div>}
+                    </Droppable>
+                </DragDropContext>
                 <Button
                     variant="contained"
                     color="primary"
