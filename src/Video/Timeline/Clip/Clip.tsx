@@ -1,20 +1,15 @@
 import styled from 'styled-components'
 import {Draggable} from 'react-beautiful-dnd'
 import getThumbnailUrlByContentIdAndTime from '../../../API/Spinner/Thumbnail/getThumbnailUrlByContentIdAndTime'
+import StyledDraggable, { StyledDraggableProps } from '../../../Style/StyledDraggable'
 
-interface ContainerProps {
+interface ContainerProps extends StyledDraggableProps {
     width: number
-    isDragging: boolean
 }
 
-const Container = styled.div`
-    border: 1px lightgrey solid;
-    border-radius: 2px;
-    padding: 8px 0;
-    background-color: #EEE;
+const Container = styled(StyledDraggable)`
     width: ${(props: ContainerProps) => props.width}%;
     height: 100px;
-    box-sizing: border-box;
     overflow: hidden;
     display: flex;
     ${(props: ContainerProps) => props.isDragging ? `

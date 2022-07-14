@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import flexColumn from '../../Style/flexColumn'
 import gap from '../../Style/gap'
 import Text from '../../Entity/Text'
-import TimelineClipList from '../Timeline/TimelineClipList'
 import flex from '../../Style/flex'
+import StyledDraggable from '../../Style/StyledDraggable'
 
 interface SplitModalFormProps {
     onClose: (oldText: Text|null, texts: Text[]|null) => void
@@ -26,22 +26,9 @@ const defaultSplitMarkers: (text: Text) => SplitMarker[] = (text: Text) => [
     }
 ]
 
-interface MarkerProps {
-    isDragging: boolean
-}
-
-const Marker = styled.div`
-    border: 1px lightgrey solid;
-    border-radius: 2px;
-    padding: 8px 0;
+const Marker = styled(StyledDraggable)`
     min-width: 20px;
     text-align: center;
-    background-color: #EEE;
-    box-sizing: border-box;
-    overflow: hidden;
-    ${(props: MarkerProps) => props.isDragging ? `
-        box-shadow: 0px 0px 0px 6px rgba(255, 255, 0, .7);
-    ` : ``}
 `
 
 export default function SplitModalForm({onClose, selectedValue, open}: SplitModalFormProps) {
