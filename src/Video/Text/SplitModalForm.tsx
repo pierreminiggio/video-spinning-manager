@@ -198,7 +198,7 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
 
     const handleMarkerDelete = (splitMarkerIndex: number): void => {
         const newSplitMarkers: SplitMarker[] = Object.assign([], splitMarkers)
-        delete newSplitMarkers[splitMarkerIndex]
+        newSplitMarkers.splice(splitMarkerIndex, 1)
 
         setSplitMarkers(newSplitMarkers)
     }
