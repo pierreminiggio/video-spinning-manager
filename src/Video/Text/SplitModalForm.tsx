@@ -1,5 +1,5 @@
-import {Button, Dialog, DialogTitle} from '@material-ui/core'
-import {SyntheticEvent, useEffect, useState} from 'react'
+import {Button, Dialog, DialogTitle, Slider, Typography} from '@material-ui/core'
+import {Fragment, SyntheticEvent, useEffect, useState} from 'react'
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import flexColumn from '../../Style/flexColumn'
@@ -7,6 +7,8 @@ import gap from '../../Style/gap'
 import Text from '../../Entity/Text'
 import flex from '../../Style/flex'
 import StyledDraggable from '../../Style/StyledDraggable'
+import {ReactComponent as Trash} from '../../Resources/Svg/Trash.svg'
+import inputStep from '../../Style/inputStep'
 
 interface SplitModalFormProps {
     onClose: (oldText: Text|null, texts: Text[]|null) => void
@@ -33,7 +35,6 @@ const Marker = styled(StyledDraggable)`
 
 export default function SplitModalForm({onClose, selectedValue, open}: SplitModalFormProps) {
     const [splitMarkers, setSplitMarkers] = useState<SplitMarker[]>([])
-    const [dragging, setDragging] = useState(false)
 
     useEffect(
         () => {
@@ -61,12 +62,7 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
 
     const charMarkersId = 'char-markers-id'
 
-    const onClipDragStart = (result: DropResult) => {
-        setDragging(true)
-    }
-
     const onClipDragEnd = (result: DropResult) => {
-        setDragging(false)
 
         const { destination, source } = result
 
@@ -119,6 +115,29 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         }
     }
 
+    const handleMarkerTimeChange = (splitMarkerIndex: number, newValue: number | number[]): void => {
+
+        if (! selectedValue) {
+            return
+        }
+
+        if (Array.isArray(newValue)) {
+            return
+        }
+
+        const newSplitMarkers: SplitMarker[] = Object.assign([], splitMarkers)
+        newSplitMarkers[splitMarkerIndex].time = newValue
+
+        setSplitMarkers(newSplitMarkers)
+    }
+
+    const handleMarkerDelete = (splitMarkerIndex: number): void => {
+        const newSplitMarkers: SplitMarker[] = Object.assign([], splitMarkers)
+        delete newSplitMarkers[splitMarkerIndex]
+
+        setSplitMarkers(newSplitMarkers)
+    }
+
     if (! selectedValue) {
         return <></>
     }
@@ -128,6 +147,8 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
     const commandVerb = 'Split'
 
     const dialogLabel = 'split-form-modal'
+
+    const markerTimeLabelPrefix = 'marker-time'
 
     let charIndexOffset = 0
 
@@ -142,7 +163,6 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn}}>
                 <DragDropContext
-                    onDragStart={onClipDragStart}
                     onDragEnd={onClipDragEnd}
                 >
                     <Droppable droppableId={charMarkersId} direction="horizontal">
@@ -160,7 +180,10 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
                                 for (const splitMarkerId in splitMarkers) {
                                     const splitMarker = splitMarkers[splitMarkerId]
                                     if (splitMarker.textCharIndex === charIndex) {
-                                        cursor = <Draggable draggableId={'cursor-' + charIndex.toString()} index={charIndex + charIndexOffset}>
+                                        cursor = <Draggable
+                                            draggableId={'cursor-' + charIndex.toString()}
+                                            index={charIndex + charIndexOffset}
+                                        >
                                             {(provided, snapshot) => (
                                                 <Marker
                                                     {...provided.draggableProps}
@@ -176,9 +199,13 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
                                     }
                                 }
 
-                                return <>
+                                return <Fragment key={charIndex}>
                                     {cursor}
-                                    <Draggable draggableId={charIndex.toString()} index={charIndex + charIndexOffset} isDragDisabled={true}>
+                                    <Draggable
+                                        draggableId={charIndex.toString()}
+                                        index={charIndex + charIndexOffset}
+                                        isDragDisabled={true}
+                                    >
                                         {(provided) => (
                                             <div
                                                 {...provided.draggableProps}
@@ -192,16 +219,41 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
                                             </div>
                                         )}
                                     </Draggable>
-                                </>
+                                </Fragment>
                             })}
                             {provided.placeholder}
                         </div>}
                     </Droppable>
                 </DragDropContext>
+                {splitMarkers.map((splitMarker, splitMarkerIndex) => {
+                    const label = markerTimeLabelPrefix + '-' + splitMarkerIndex.toString()
+                    return <div
+                        key={splitMarkerIndex}
+                    >
+                        <Typography id={label} style={{marginTop: gap / 2}}>
+                            Marker {splitMarkerIndex + 1} time <Button
+                                onClick={() => handleMarkerDelete(splitMarkerIndex)}
+                            >
+                                <Trash fill="#FF0000" width={20} height={20}/>
+                            </Button>
+                        </Typography>
+                        <Slider
+                            value={splitMarker.time}
+                            onChange={(event, newValue) => handleMarkerTimeChange(splitMarkerIndex, newValue)}
+                            valueLabelDisplay="on"
+                            aria-labelledby={label}
+                            min={0}
+                            max={selectedValue.end - selectedValue.start}
+                            step={inputStep}
+                        />
+                        {splitMarker.textCharIndex}
+                    </div>
+                })}
                 <Button
                     variant="contained"
                     color="primary"
                     onClick={handleFormSubmit}
+                    disabled={splitMarkers.length === 0}
                 >
                     {commandVerb}
                 </Button>

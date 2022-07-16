@@ -1,6 +1,6 @@
-import {CSSProperties, MouseEvent, ReactElement} from "react";
-import {Button} from "@material-ui/core";
-import CropFunction from "../../../Struct/CropFunction";
+import {CSSProperties, MouseEvent, ReactElement} from 'react'
+import {Button} from '@material-ui/core'
+import CropFunction from '../../../Struct/CropFunction'
 import {ReactComponent as Crop} from '../../../Resources/Svg/Crop.svg'
 import {ReactComponent as Trash} from '../../../Resources/Svg/Trash.svg'
 

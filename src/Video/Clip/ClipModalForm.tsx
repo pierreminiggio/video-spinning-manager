@@ -1,14 +1,14 @@
-import {Button, Dialog, DialogTitle, TextField} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import {ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState} from "react";
-import flexColumn from "../../Style/flexColumn";
-import gap from "../../Style/gap";
-import VideoDuration from "../../Struct/VideoDuration";
-import Clip from "../../Entity/Clip";
-import NullableString from "../../Struct/NullableString";
+import {Button, Dialog, DialogTitle, TextField} from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
+import {ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState} from 'react'
+import flexColumn from '../../Style/flexColumn'
+import gap from '../../Style/gap'
+import VideoDuration from '../../Struct/VideoDuration'
+import Clip from '../../Entity/Clip'
+import NullableString from '../../Struct/NullableString'
 import {TimelineRangeSlider, timelineRangeSliderIndexes} from '../../Form/Slider/TimelineRangeSlider'
-import flex from "../../Style/flex";
-import inputStep from "../../Style/inputStep";
+import flex from '../../Style/flex'
+import inputStep from '../../Style/inputStep'
 
 interface ClipModalFormProps {
     onClose: (clip: Object|Clip) => void
