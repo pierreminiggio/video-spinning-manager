@@ -115,6 +115,71 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         }
     }
 
+    const handleAddMarkerClick = (): void => {
+        if (! selectedValue) {
+            return
+        }
+
+        let newMarkerCharIndex = 0
+        let newMarkerTime = 0
+
+        for (const splitMarker of splitMarkers) {
+            const textCharIndex = splitMarker.textCharIndex
+
+            if (textCharIndex > newMarkerCharIndex) {
+                newMarkerCharIndex = textCharIndex
+            }
+
+            const time = splitMarker.time
+
+            if (time > newMarkerTime) {
+                newMarkerTime = time
+            }
+        }
+
+        const contentLength = selectedValue.content.length
+
+        if (newMarkerCharIndex >= contentLength) {
+            alert('A marker has its position after the text ended')
+
+            return
+        }
+
+        newMarkerCharIndex = newMarkerCharIndex + Math.floor((contentLength - newMarkerCharIndex) / 2)
+
+        if (newMarkerCharIndex >= contentLength - 1) {
+            alert('No more space to add a cursor, please move your furthest cursor slightly to the right')
+
+            return
+        }
+
+        const textDuration = selectedValue.end - selectedValue.start
+
+        if (newMarkerTime >= textDuration) {
+            alert('A marker has its time bigger than the text\'s duration')
+
+            return
+        }
+
+        newMarkerTime = newMarkerTime + Math.floor((textDuration - newMarkerTime) / 2)
+
+        if (newMarkerTime >= textDuration - 1) {
+            alert('No more space to add a cursor, please move your furthest cursor\'s time slightly to the right')
+
+            return
+        }
+
+        const newSplitMarkers: SplitMarker[] = Object.assign([], splitMarkers)
+        const newSplitMarker: SplitMarker = {
+            textCharIndex: newMarkerCharIndex,
+            time: newMarkerTime
+        }
+
+        newSplitMarkers.push(newSplitMarker)
+
+        setSplitMarkers(newSplitMarkers)
+    }
+
     const handleMarkerTimeChange = (splitMarkerIndex: number, newValue: number | number[]): void => {
 
         if (! selectedValue) {
@@ -161,7 +226,14 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
             maxWidth="md"
         >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
-            <div style={{padding: gap / 2, ...flexColumn}}>
+            <div style={{padding: gap / 2, ...flexColumn, gap: gap / 2}}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleAddMarkerClick()}
+                >
+                    Add a marker
+                </Button>
                 <DragDropContext
                     onDragEnd={onClipDragEnd}
                 >
