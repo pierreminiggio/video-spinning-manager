@@ -168,7 +168,9 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
                     <Droppable droppableId={charMarkersId} direction="horizontal">
                         {provided => <div
                             style={{
-                                ...flex
+                                ...flex,
+                                alignItems: 'center',
+                                justifyContent: 'center'
                             }}
                             ref={provided.innerRef}
                             {...provided.droppableProps}
