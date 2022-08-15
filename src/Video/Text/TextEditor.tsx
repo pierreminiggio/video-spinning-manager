@@ -110,14 +110,14 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
         setTexts(newTexts)
     }
 
-    const handleSplitFormClose = (oldText: Text|null, texts: Text[]|null): void => {
+    const handleSplitFormClose = (oldText: Text|null, splitTexts: Text[]|null): void => {
         setSplitFormOpen(false)
 
-        if (oldText === null || texts === null) {
+        if (oldText === null || splitTexts === null) {
             return
         }
 
-        const newTexts = [...texts]
+        const newTexts = [...splitTexts]
 
         // TODO SET UP SPLIT
 
