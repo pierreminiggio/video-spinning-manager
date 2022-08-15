@@ -117,9 +117,35 @@ export default function TextEditor({texts, setTexts, textPresets, totalClipTime,
             return
         }
 
-        const newTexts = [...splitTexts]
+        const newTexts = [...texts]
 
-        // TODO SET UP SPLIT
+        let splitTextIndex = null
+        let maxId = 0
+
+        for (const newTextIndex in newTexts) {
+            const newText = newTexts[newTextIndex]
+
+            if (newText.id === oldText.id) {
+                splitTextIndex = Number(newTextIndex)
+            }
+
+            if (newText.id > maxId) {
+                maxId = newText.id
+            }
+        }
+
+        if (splitTextIndex === null) {
+            return
+        }
+
+        newTexts.splice(splitTextIndex, 1)
+
+        for (const splitText of splitTexts) {
+            maxId += 1
+            const newText: Text = {...splitText}
+            newText.id = maxId
+            newTexts.push(newText)
+        }
 
         setTexts(newTexts)
     }
