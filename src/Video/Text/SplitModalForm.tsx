@@ -9,16 +9,12 @@ import flex from '../../Style/flex'
 import StyledDraggable from '../../Style/StyledDraggable'
 import {ReactComponent as Trash} from '../../Resources/Svg/Trash.svg'
 import inputStep from '../../Style/inputStep'
+import splitText, { SplitMarker } from './splitText'
 
 interface SplitModalFormProps {
     onClose: (oldText: Text|null, texts: Text[]|null) => void
     selectedValue: Text|null
     open: boolean
-}
-
-interface SplitMarker {
-    textCharIndex: number
-    time: number
 }
 
 const defaultSplitMarkers: (text: Text) => SplitMarker[] = (text: Text) => [
@@ -57,7 +53,12 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
   
     const handleFormSubmit = (e: SyntheticEvent<EventTarget>) => {
         e.preventDefault()
-        onClose(selectedValue, null /* TODO BUILD NEW TEXTS */);
+
+        if (! selectedValue) {
+            return
+        }
+
+        onClose(selectedValue, splitText(selectedValue, splitMarkers));
     }
 
     const charMarkersId = 'char-markers-id'
