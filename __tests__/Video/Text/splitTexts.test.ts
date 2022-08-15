@@ -1,6 +1,6 @@
 import Text from '../../../src/Entity/Text'
 import splitText, {SplitMarker} from '../../../src/Video/Text/splitText'
-import assertSameTextLists from '../../Helper/TextAssertion'
+import {assertSameTextLists} from '../../Helper/TextAssertion'
 
 describe('Split Text', (): void => {
     it('Test je sais pas si vous savez', (): void => {
@@ -55,6 +55,6 @@ describe('Split Text', (): void => {
             }
         ]
 
-        expect(splitText(jeSaisSiVousSavezText, jeSaisPasSiVousSavezMarkers)).toBe(finalTexts)
+        assertSameTextLists(finalTexts, splitText(jeSaisSiVousSavezText, jeSaisPasSiVousSavezMarkers))
     })
 })
