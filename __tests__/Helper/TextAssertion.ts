@@ -1,14 +1,22 @@
 import Text from '../../src/Entity/Text'
 
 const assertSameTexts = (expected: Text, actual: Text): void => {
+    assertSameTextsDontCareAboutSizeAndPosition(expected, actual)
+    assertSameTextSizesAndPositions(expected, actual)
+}
+
+const assertSameTextsDontCareAboutSizeAndPosition = (expected: Text, actual: Text): void => {
     expect(actual.id).toStrictEqual(expected.id)
     expect(actual.start).toStrictEqual(expected.start)
     expect(actual.end).toStrictEqual(expected.end)
     expect(actual.content).toStrictEqual(expected.content)
-    expect(actual.height).toStrictEqual(expected.height)
     expect(actual.color).toStrictEqual(expected.color)
     expect(actual.backgroundColor).toStrictEqual(expected.backgroundColor)
     expect(actual.backgroundColorOpacity).toStrictEqual(expected.backgroundColorOpacity)
+}
+
+const assertSameTextSizesAndPositions = (expected: Text, actual: Text): void => {
+    expect(actual.height).toStrictEqual(expected.height)
     expect(actual.leftOffset).toStrictEqual(expected.leftOffset)
     expect(actual.rightOffset).toStrictEqual(expected.rightOffset)
     expect(actual.topOffset).toStrictEqual(expected.topOffset)
@@ -39,6 +47,10 @@ const assertTextMatchesSubtitles = (expected: Text, actual: Text): void => {
 
 export function assertSameTextLists (expected: Text[], actual: Text[]): void {
     return new TextListAssertor(assertSameTexts).assertLists(expected, actual)
+}
+
+export function assertSameTextListsDontCareAboutSizeAndPosition (expected: Text[], actual: Text[]): void {
+    return new TextListAssertor(assertSameTextsDontCareAboutSizeAndPosition).assertLists(expected, actual)
 }
 
 export function assertTextsMatchesSubtitles (expected: Text[], actual: Text[]): void {

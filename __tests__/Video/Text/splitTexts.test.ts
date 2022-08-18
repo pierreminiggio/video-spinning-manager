@@ -1,6 +1,6 @@
 import Text from '../../../src/Entity/Text'
 import splitText, {SplitMarker} from '../../../src/Video/Text/splitText'
-import {assertSameTextLists} from '../../Helper/TextAssertion'
+import {assertSameTextListsDontCareAboutSizeAndPosition} from '../../Helper/TextAssertion'
 
 describe('Split Text', (): void => {
     it('Test je sais pas si vous savez', (): void => {
@@ -55,6 +55,6 @@ describe('Split Text', (): void => {
             }
         ]
 
-        assertSameTextLists(finalTexts, splitText(jeSaisSiVousSavezText, jeSaisPasSiVousSavezMarkers))
+        assertSameTextListsDontCareAboutSizeAndPosition(finalTexts, splitText(jeSaisSiVousSavezText, jeSaisPasSiVousSavezMarkers))
     })
 })
