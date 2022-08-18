@@ -9,6 +9,16 @@ describe('Define Subtitles\' Size And Position', (): void => {
             maxWidth: number
         }[] = [
             {
+                content: "J'sais pas si vous savez",
+                minWidth: 3.5,
+                maxWidth: 4.4
+            },
+            {
+                content: "mais c'est incroyablement simplede faire ses propres yaourts.",
+                minWidth: 2.5,
+                maxWidth: 3.9
+            },
+            {
                 content: "J'sais pas si vous savez mais c'est incroyablement simplede faire ses propres yaourts.",
                 minWidth: 2.1,
                 maxWidth: 3.7
