@@ -17,6 +17,8 @@ interface SplitModalFormProps {
     open: boolean
 }
 
+const enableMultipleMarkersFeature = false // Not supported everywhere in the program yet
+
 const defaultSplitMarkers: (text: Text) => SplitMarker[] = (text: Text) => [
     {
         textCharIndex: Math.floor(text.content.length / 2),
@@ -228,13 +230,13 @@ export default function SplitModalForm({onClose, selectedValue, open}: SplitModa
         >
         <DialogTitle id={dialogLabel} style={{textAlign: 'center'}}>{commandVerb} text</DialogTitle>
             <div style={{padding: gap / 2, ...flexColumn, gap: gap / 2}}>
-                <Button
+                {(enableMultipleMarkersFeature || (! enableMultipleMarkersFeature && splitMarkers.length < 1)) && <Button
                     variant="contained"
                     color="primary"
                     onClick={() => handleAddMarkerClick()}
                 >
                     Add a marker
-                </Button>
+                </Button>}
                 <DragDropContext
                     onDragEnd={onClipDragEnd}
                 >
