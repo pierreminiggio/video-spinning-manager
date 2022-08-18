@@ -10,15 +10,15 @@ export default function splitText(text: Text, splitMarkers: SplitMarker[]): Text
     const newTexts: Text[] = []
     for (const splitMarkerIndex in splitMarkers) {
         const splitMarker = splitMarkers[splitMarkerIndex]
-        const newText = {...text}
-        newText.end = splitMarker.time
-        updateTextAndSizeAndPosition(newText, newText.content.substring(0, splitMarker.textCharIndex).trim())
+        let newText = {...text}
+        newText = updateTextAndSizeAndPosition(newText, newText.content.substring(0, splitMarker.textCharIndex).trim())
+        newText.end = newText.start + splitMarker.time
         newTexts.push(newText)
 
         if (Number(splitMarkerIndex) === splitMarkers.length - 1) {
-            const newText = {...text}
-            newText.start = splitMarker.time
-            updateTextAndSizeAndPosition(newText, newText.content.substring(splitMarker.textCharIndex).trim())
+            let newText = {...text}
+            newText = updateTextAndSizeAndPosition(newText, newText.content.substring(splitMarker.textCharIndex).trim())
+            newText.start = newText.start + splitMarker.time
             newTexts.push(newText)
         }
     }
