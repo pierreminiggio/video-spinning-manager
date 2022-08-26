@@ -13,6 +13,6 @@ export default function defineSubtitlesSizeAndPosition(content: string): Positio
         height: height,
         leftOffset: 3,
         rightOffset: 3,
-        topOffset: 0
+        topOffset: 75
     }
 }
