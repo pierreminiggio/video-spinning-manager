@@ -14,6 +14,7 @@ function Dashboard(props) {
 
   // handle click event of logout button
   const handleLogout = () => {
+    props.setToken(null)
     removeUserSession();
     props.history.push('/login');
   }

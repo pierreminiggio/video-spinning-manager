@@ -38,13 +38,15 @@ function Login(props) {
         const user = {...jsonResponse}
         delete user.token
 
-        setUserSession(jsonResponse.token, user);
+        const token = jsonResponse.token;
+        props.setToken(token);
+        setUserSession(token, user);
         props.history.push('/dashboard');
       })
     }).catch(error => {
       setLoading(false);
       if (error.response.status === 403) setError(error.response.data.error);
-      else setError("Something went wrong. Please try again later.");
+      else setError('Something went wrong. Please try again later.');
     });
   }
 

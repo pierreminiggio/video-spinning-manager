@@ -12,7 +12,8 @@ import PrivateRoute from './Utils/PrivateRoute';
 import PublicRoute from './Utils/PublicRoute';
 import { getToken, removeUserSession, setUserSession } from './Utils/Common';
 import Detail from './Video/Detail';
-import Token from "./Struct/Token";
+import Token from './Struct/Token';
+import VideosToUpload from './Video/Upload/VideosToUpload';
 
 function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -54,14 +55,16 @@ function App() {
         <div>
           <div className="header">
             <NavLink exact activeClassName="active" to="/">Home</NavLink>
-            <NavLink exact activeClassName="active" to="/login">Login</NavLink>
-            <NavLink exact activeClassName="active" to="/dashboard">Dashboard</NavLink>
+            { token && <NavLink exact activeClassName="active" to="/dashboard">Videos to clip</NavLink> }
+            { token && <NavLink exact activeClassName="active" to="/to-upload">Videos to upload</NavLink> }
+            { (! token) && <NavLink exact activeClassName="active" to="/login">Login</NavLink> }
           </div>
           <div className="content">
             <Switch>
               <Route exact path="/" component={Home} />
-              <PublicRoute path="/login" component={Login} />
-              <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token}} />
+              <PublicRoute path="/login" component={Login} passProps={{setToken}} />
+              <PrivateRoute path="/dashboard" component={Dashboard} passProps={{token, setToken}} />
+              <PrivateRoute path="/to-upload" component={VideosToUpload} passProps={{token}} />
               <PrivateRoute path="/content/:id/new" component={NewForm} passProps={{token}} />
               <PrivateRoute path="/content/:contentId/video/:id" component={Detail} passProps={{token}} />
               <PrivateRoute path="/content/:id" component={ContentToSpin} passProps={{token}} />
