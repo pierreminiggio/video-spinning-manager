@@ -1,10 +1,10 @@
 import { Button } from '@material-ui/core';
-import {MouseEvent, useEffect, useMemo, useState} from 'react';
+import { MouseEvent, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import flexColumn from './Style/flexColumn';
 import gap from './Style/gap';
-import {History} from "history";
-import Content from "./Entity/Content/Content";
+import { History } from 'history';
+import Content from './Entity/Content/Content';
 
 interface ContentToSpinProps {
   history: History
