@@ -33,7 +33,8 @@
     "typescript": "^4.3.2"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
+    "legacy-start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject"
