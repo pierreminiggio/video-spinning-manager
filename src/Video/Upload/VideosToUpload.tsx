@@ -9,10 +9,28 @@ interface VideosToUploadProps {
 
 export default function VideosToUpload(props: VideosToUploadProps) {
     const [videosToUpload, setVideosToUpload] = useState<VideoToUpload[]|null>(null);
+    const [uploadingVideos, setUploadingVideos] = useState<number[]>([]);
+    const [loadingVideos, setLoadingVideos] = useState<number[]>([]);
     let token = props.token
   
     if (token === null) {
         token = getToken()
+    }
+
+    const addNewIdToLoadingListIfNotPresent = (id: number): void => {
+      if (! loadingVideos.includes(id)) {
+        const newLoadingVideos = [... loadingVideos]
+        newLoadingVideos.push(id)
+
+        setLoadingVideos(newLoadingVideos)
+      }
+    }
+
+    const removeIdToLoadingListIfPresent = (id: number): void => {
+      const newLoadingVideos = [... loadingVideos]
+      const index = newLoadingVideos.indexOf(id);
+      if (index > -1) newLoadingVideos.splice(index, 1)
+      setLoadingVideos(newLoadingVideos)
     }
 
     useEffect(() => {
@@ -53,7 +71,63 @@ export default function VideosToUpload(props: VideosToUploadProps) {
     }, [token]);
 
     const handleStartUploading = (id: number): void => {
-      alert('Uploading ' + id)
+      const addNewIdToUploadingListIfNotPresent = (id: number): void => {
+        if (! uploadingVideos.includes(id)) {
+          const newUploadingVideos = [... uploadingVideos]
+          newUploadingVideos.push(id)
+
+          setUploadingVideos(newUploadingVideos)
+        }
+      }
+
+      addNewIdToLoadingListIfNotPresent(id)
+
+      fetch(
+        process.env.REACT_APP_SPINNER_API_URL + '/to-upload/' + id + '/to-uploading',
+        {
+          method: 'POST',
+          headers: new Headers({
+            'Authorization': 'Bearer ' + token, 
+            'Content-Type': 'application/json'
+          }), 
+        }
+      ).then(response => {
+        if (response.status === 201) {
+          removeIdToLoadingListIfPresent(id)
+          addNewIdToUploadingListIfNotPresent(id)
+          
+          return new Promise(resolve => resolve(null))
+        }
+
+        return response.json()
+      }).then(response => {
+
+        if (! response) {
+          removeIdToLoadingListIfPresent(id)
+          return
+        }
+
+        if (response.status === 409) {
+          alert('Video ' + id + ' already is set as uploading')
+          removeIdToLoadingListIfPresent(id)
+          addNewIdToUploadingListIfNotPresent(id)
+
+          return
+        }
+
+        if ([400, 401, 403, 404].includes(response.status)) {
+          alert('Error');
+          removeIdToLoadingListIfPresent(id)
+
+          return
+        }
+
+        removeIdToLoadingListIfPresent(id)
+        addNewIdToUploadingListIfNotPresent(id)
+      }).catch(error => {
+          alert('Error : ' + error)
+          removeIdToLoadingListIfPresent(id)
+      });
     }
     
     return <div>
@@ -71,38 +145,49 @@ export default function VideosToUpload(props: VideosToUploadProps) {
             </TableHead>
             <TableBody>
               {videosToUpload ? videosToUpload.map((videoToUpload: VideoToUpload, i) => {
-                  return <TableRow>
+                  const {id: videoId, publishAt, tiktokName, legend, fileUrl} = videoToUpload
+
+                  return <TableRow key={i}>
                     <TableCell>
-                      {videoToUpload.publishAt.toLocaleDateString() + ' à ' + videoToUpload.publishAt.toLocaleTimeString()}
+                      {publishAt.toLocaleDateString() + ' à ' + publishAt.toLocaleTimeString()}
                     </TableCell>
                     <TableCell>
                       <a
-                        href={'https://tiktok.com/@' + videoToUpload.tiktokName}
+                        href={'https://tiktok.com/@' + tiktokName}
                         target='_blank'
                         rel='noreferrer'
-                      >{videoToUpload.tiktokName}</a>
+                      >{tiktokName}</a>
                     </TableCell>
                     <TableCell>
-                      {videoToUpload.legend}
+                      {legend}
                     </TableCell>
                     <TableCell>
                       <a
-                        href={videoToUpload.fileUrl}
+                        href={fileUrl}
                         target='_blank'
                         rel='noreferrer'
-                      >{videoToUpload.fileUrl}</a>
+                      >{fileUrl}</a>
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {handleStartUploading(videoToUpload.id)}}
-                      >
-                        Start upload
-                      </Button>
+                      { loadingVideos.includes(videoId) ? <p>Loading...</p> : (
+                          uploadingVideos.includes(videoId) ? <>
+                          <p>Form for uploading</p>
+                        </> : <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {handleStartUploading(videoId)}}
+                        >
+                          Start upload
+                        </Button>
+                      ) }
                     </TableCell>
                   </TableRow>;
-              }) : <p>Loading...</p>}
+              }) : <TableRow>
+                  <TableCell colSpan={5} style={{textAlign: 'center'}}>
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              }
             </TableBody>
           </Table>
         </TableContainer>
