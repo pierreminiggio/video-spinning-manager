@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getToken } from '../../Utils/Common';
 import VideoToUpload from '../../Entity/Video/VideoToUpload';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@material-ui/core';
+import flex from '../../Style/flex';
+import gap from '../../Style/gap';
 
 interface VideosToUploadProps {
     token: string|null
@@ -11,6 +13,9 @@ export default function VideosToUpload(props: VideosToUploadProps) {
     const [videosToUpload, setVideosToUpload] = useState<VideoToUpload[]|null>(null);
     const [uploadingVideos, setUploadingVideos] = useState<number[]>([]);
     const [loadingVideos, setLoadingVideos] = useState<number[]>([]);
+    const [tikTokLinkInputs, setTikTokLinkInputs] = useState<{[key: number]: string;}>({});
+    const [uploadedVideos, setUploadedVideos] = useState<number[]>([]);
+
     let token = props.token
   
     if (token === null) {
@@ -26,11 +31,24 @@ export default function VideosToUpload(props: VideosToUploadProps) {
       }
     }
 
-    const removeIdToLoadingListIfPresent = (id: number): void => {
+    const removeIdFromLoadingListIfPresent = (id: number): void => {
       const newLoadingVideos = [... loadingVideos]
       const index = newLoadingVideos.indexOf(id);
       if (index > -1) newLoadingVideos.splice(index, 1)
       setLoadingVideos(newLoadingVideos)
+    }
+
+    const removeIdFromUploadingListIfPresent = (id: number): void => {
+      const newUploadingVideos = [... uploadingVideos]
+      const index = newUploadingVideos.indexOf(id);
+      if (index > -1) newUploadingVideos.splice(index, 1)
+      setUploadingVideos(newUploadingVideos)
+    }
+
+    const updateTikTokLinkInput = (id: number, tikTokLink: string): void => {
+      const newTikTokLinkInputs = {...tikTokLinkInputs}
+      newTikTokLinkInputs[id] = tikTokLink
+      setTikTokLinkInputs(newTikTokLinkInputs)
     }
 
     useEffect(() => {
@@ -66,7 +84,7 @@ export default function VideosToUpload(props: VideosToUploadProps) {
   
         setVideosToUpload(newVideosToUpload);
       }).catch(error => {
-          setVideosToUpload(null);
+        setVideosToUpload(null);
       });
     }, [token]);
 
@@ -93,7 +111,7 @@ export default function VideosToUpload(props: VideosToUploadProps) {
         }
       ).then(response => {
         if (response.status === 201) {
-          removeIdToLoadingListIfPresent(id)
+          removeIdFromLoadingListIfPresent(id)
           addNewIdToUploadingListIfNotPresent(id)
           
           return new Promise(resolve => resolve(null))
@@ -103,13 +121,13 @@ export default function VideosToUpload(props: VideosToUploadProps) {
       }).then(response => {
 
         if (! response) {
-          removeIdToLoadingListIfPresent(id)
+          removeIdFromLoadingListIfPresent(id)
           return
         }
 
         if (response.status === 409) {
           alert('Video ' + id + ' already is set as uploading')
-          removeIdToLoadingListIfPresent(id)
+          removeIdFromLoadingListIfPresent(id)
           addNewIdToUploadingListIfNotPresent(id)
 
           return
@@ -117,16 +135,84 @@ export default function VideosToUpload(props: VideosToUploadProps) {
 
         if ([400, 401, 403, 404].includes(response.status)) {
           alert('Error');
-          removeIdToLoadingListIfPresent(id)
+          removeIdFromLoadingListIfPresent(id)
 
           return
         }
 
-        removeIdToLoadingListIfPresent(id)
+        removeIdFromLoadingListIfPresent(id)
         addNewIdToUploadingListIfNotPresent(id)
       }).catch(error => {
           alert('Error : ' + error)
-          removeIdToLoadingListIfPresent(id)
+          removeIdFromLoadingListIfPresent(id)
+      });
+    }
+
+    const handleMarkAsUploaded = (id: number): void => {
+      const tikTokLink = tikTokLinkInputs[id]
+
+      if (! tikTokLink) {
+        alert('TikTok link missing')
+        return
+      }
+
+      const addNewIdToUploadedListIfNotPresent = (id: number): void => {
+        if (! uploadedVideos.includes(id)) {
+          const newUploadedVideos = [... uploadedVideos]
+          newUploadedVideos.push(id)
+
+          setUploadedVideos(newUploadedVideos)
+        }
+      }
+
+      addNewIdToLoadingListIfNotPresent(id)
+
+      fetch(
+        process.env.REACT_APP_SPINNER_API_URL + '/uploading/' + id + '/to-uploaded',
+        {
+          method: 'POST',
+          headers: new Headers({
+            'Authorization': 'Bearer ' + token, 
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify({remoteUrl: tikTokLink})
+        }
+      ).then(response => {
+        if (response.status === 201) {
+          removeIdFromLoadingListIfPresent(id)
+          addNewIdToUploadedListIfNotPresent(id)
+          
+          return new Promise(resolve => resolve(null))
+        }
+
+        return response.json()
+      }).then(response => {
+
+        if (! response) {
+          removeIdFromLoadingListIfPresent(id)
+          return
+        }
+
+        if (response.status === 409) {
+          alert('Video ' + id + ' is not uploading')
+          removeIdFromLoadingListIfPresent(id)
+          removeIdFromUploadingListIfPresent(id)
+
+          return
+        }
+
+        if ([400, 401, 403, 404].includes(response.status)) {
+          alert('Error');
+          removeIdFromLoadingListIfPresent(id)
+
+          return
+        }
+
+        removeIdFromLoadingListIfPresent(id)
+        addNewIdToUploadedListIfNotPresent(id)
+      }).catch(error => {
+          alert('Error : ' + error)
+          removeIdFromLoadingListIfPresent(id)
       });
     }
     
@@ -169,17 +255,34 @@ export default function VideosToUpload(props: VideosToUploadProps) {
                       >{fileUrl}</a>
                     </TableCell>
                     <TableCell>
-                      { loadingVideos.includes(videoId) ? <p>Loading...</p> : (
-                          uploadingVideos.includes(videoId) ? <>
-                          <p>Form for uploading</p>
-                        </> : <Button
+                      { loadingVideos.includes(videoId) ? <p>Loading...</p> : (uploadedVideos.includes(videoId) ? <>
+                        {tikTokLinkInputs[videoId] ? (
+                          <a
+                            href={tikTokLinkInputs[videoId]}
+                            target="_blank"
+                            rel="noreferrer"
+                          >{tikTokLinkInputs[videoId]}</a>
+                        ) : 'Uploaded'}
+                      </> : (
+                          uploadingVideos.includes(videoId) ? <div style={{...flex, gap: gap / 2}}>
+                          <TextField
+                              label="TikTok Link"
+                              value={tikTokLinkInputs[videoId] ?? ''}
+                              onChange={e => {updateTikTokLinkInput(videoId, e.target.value)}}
+                          />
+                          <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleMarkAsUploaded(videoId)}
+                          >Mark as uploaded</Button>
+                        </div> : <Button
                           variant="contained"
                           color="primary"
                           onClick={() => {handleStartUploading(videoId)}}
                         >
                           Start upload
                         </Button>
-                      ) }
+                      )) }
                     </TableCell>
                   </TableRow>;
               }) : <TableRow>
